@@ -1,16 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Utilities.Memory.Unmanaged
 {
     public class UnmanagedMemoryChunk : IUnmanagedMemory
     {
         #region Attributes
-        private int memorySize;
         private bool disposeCalled;
         #endregion
 
@@ -22,7 +17,7 @@ namespace Utilities.Memory.Unmanaged
             //Used for the IDisposable pattern (pattern generated via VS2017)
             this.disposeCalled = false;
             //Nothing has been initializes
-            this.memorySize = 0;
+            this.MemorySize = 0;
         } 
         #endregion
 
@@ -36,7 +31,7 @@ namespace Utilities.Memory.Unmanaged
             }
         }
 
-        public int MemorySize => this.memorySize;
+        public int MemorySize { get; private set; }
 
         public IntPtr Memory { get; private set; }
         #endregion
@@ -81,7 +76,7 @@ namespace Utilities.Memory.Unmanaged
             catch (OutOfMemoryException)
             {
                 //Nothing was allocated, if we are out of memory
-                this.memorySize = 0;
+                this.MemorySize = 0;
             }
             catch (Exception)
             {
@@ -105,7 +100,7 @@ namespace Utilities.Memory.Unmanaged
             //Indicate, that nothing is allocated
             this.Memory = IntPtr.Zero;
             //The size is 0, since it was freed
-            this.memorySize = 0;
+            this.MemorySize = 0;
         } 
         #endregion
     }

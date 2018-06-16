@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Utilities.Memory.Unmanaged
 {
-    public sealed class UnmanagedMemoryChunk : IUnmanagedMemory
+    public class UnmanagedMemoryChunk : IUnmanagedMemory
     {
         #region Attributes
         private int memorySize;
@@ -48,7 +48,7 @@ namespace Utilities.Memory.Unmanaged
             GC.SuppressFinalize(this);
         }
 
-        private void Dispose(bool disposing)
+        protected virtual void Dispose(bool disposing)
         {
             if (!this.disposeCalled)
             {

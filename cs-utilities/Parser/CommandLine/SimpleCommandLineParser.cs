@@ -7,6 +7,7 @@ namespace Utilities.Parser.CommandLine
 {
     public class SimpleCommandLineParser : ICommandLineParser
     {
+        #region Attributes
         //The prefix of the commands
         private const string COMMAND_PREFIX = "-";
         //An array of the available commands
@@ -17,13 +18,20 @@ namespace Utilities.Parser.CommandLine
                                                             };
         //The storage for the parsed commands; Key: argument name; Value: argument value
         private readonly Dictionary<string, string> commands;
+        #endregion
 
+        #region Constructor
+        /// <summary>
+        ///     Initializes the instance
+        /// </summary>
         public SimpleCommandLineParser()
         {
             //Initialize the dictionary with a default size
             this.commands = new Dictionary<string, string>();
-        }
+        } 
+        #endregion
 
+        #region ICommandLineParser implementation
         public string[] Commands
         {
             set
@@ -35,7 +43,7 @@ namespace Utilities.Parser.CommandLine
                     this.ParseCommands(value);
             }
         }
-
+        
         public T Get<T>(string command)
         {
             try
@@ -57,7 +65,9 @@ namespace Utilities.Parser.CommandLine
                 return default(T);
             }
         }
+        #endregion
 
+        #region Helpers
         /// <summary>
         ///     Does the actual parsing of the parameters
         /// </summary>
@@ -73,6 +83,7 @@ namespace Utilities.Parser.CommandLine
             //Put the pairs in the dictionary
             foreach (var pair in argPairs)
                 this.commands[pair.Command.Trim()] = pair.Value.Trim();
-        }
+        } 
+        #endregion
     }
 }

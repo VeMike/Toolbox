@@ -9,7 +9,6 @@ namespace Utilities.Memory.Unmanaged
 {
     public sealed class UnmanagedMemoryChunk : IUnmanagedMemory
     {
-
         #region Attributes
         private int memorySize;
         private bool disposeCalled;

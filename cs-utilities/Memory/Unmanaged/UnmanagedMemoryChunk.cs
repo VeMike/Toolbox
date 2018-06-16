@@ -81,7 +81,7 @@ namespace Utilities.Memory.Unmanaged
             }
             catch (OutOfMemoryException)
             {
-                //Nothing was allocated, if the we are out of memory
+                //Nothing was allocated, if we are out of memory
                 this.memorySize = 0;
             }
             catch (Exception)

@@ -7,7 +7,7 @@
     <ProjectGuid>{4EEA5596-43B3-4F0D-AC20-06CF32714764}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>cs_utilities</RootNamespace>
+    <RootNamespace>Utilities</RootNamespace>
     <AssemblyName>cs-utilities</AssemblyName>
     <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -40,8 +40,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Singleton\Singleton.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Memory\Unmanaged\" />
+    <Folder Include="Parser\CommandLine\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

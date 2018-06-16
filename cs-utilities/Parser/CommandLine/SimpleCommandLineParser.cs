@@ -31,7 +31,7 @@ namespace Utilities.Parser.CommandLine
                 //Clear any previous commands
                 this.commands.Clear();
                 //Parse the commands
-                if (value != null)
+                if (value != null && value.Length % 2 == 0)
                     this.ParseCommands(value);
             }
         }

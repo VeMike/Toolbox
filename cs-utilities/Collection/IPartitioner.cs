@@ -14,11 +14,11 @@ namespace Utilities.Collection
         ///     The number of elements from the <paramref name="sourceCollection"/>, 
         ///     that should be contained in one partition.
         /// </param>
-        void Partition(IList<T> sourceCollection, uint partitionSize);
+        void Partition(IList<T> sourceCollection, int partitionSize);
 
         /// <summary>
         ///     Returns the partition at <paramref name="index"/>, that was
-        ///     created by <see cref="Partition(IList{T}, uint)"/>
+        ///     created by <see cref="Partition(IList{T}, int)"/>
         /// </summary>
         /// <param name="index">
         ///     The <paramref name="index"/> of a partition
@@ -26,6 +26,8 @@ namespace Utilities.Collection
         /// <returns>
         ///     The partition at the specified <paramref name="index"/>
         /// </returns>
-        IList<T> GetPartitionAt(uint index);
+        IList<T> GetPartitionAt(int index);
+
+        int Partitions { get; }
     }
 }

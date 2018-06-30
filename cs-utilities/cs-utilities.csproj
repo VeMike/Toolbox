@@ -42,6 +42,7 @@
   <ItemGroup>
     <Compile Include="Collection\IPartitioner.cs" />
     <Compile Include="Collection\SequentialPartitioner.cs" />
+    <Compile Include="Enumeration\EnumerationExtension.cs" />
     <Compile Include="Memory\Unmanaged\IUnmanagedMemory.cs" />
     <Compile Include="Memory\Unmanaged\UnmanagedMemoryChunk.cs" />
     <Compile Include="Parser\CommandLine\ICommandLineParser.cs" />

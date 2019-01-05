@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Reflection;
 
 namespace Utilities.Enumeration
 {
@@ -11,41 +10,45 @@ namespace Utilities.Enumeration
     {
         #region Extension Methods
         /// <summary>
-        ///     An extension method, that returns the value of a <see cref="DescriptionAttribute"/>,
+        ///     An extension method, that returns the value of a DescriptionAttribute,
         ///     that was attached to the given enum.
         /// </summary>
         /// <param name="value">
-        ///     The <see cref="Enum"/> whose Description will be extracted
+        ///     The enum whose Description will be extracted
         /// </param>
         /// <returns>
-        ///     The value of the <see cref="DescriptionAttribute"/> or 'enum.ToString()' 
-        ///     if there is no description.
+        ///     The value of the description attribute or 'enum.ToString()' if there is no
+        ///     description.
         /// </returns>
         public static string GetDescription(this Enum value)
         {
             try
             {
-                Type type = value.GetType();
-                string name = Enum.GetName(type, value);
+                //Get the enums type
+                var type = value.GetType();
+                //The name of the enum
+                var name = Enum.GetName(type, value);
+                //Could the name be retreived?
                 if (name != null)
                 {
-                    FieldInfo field = type.GetField(name);
+                    //A single enum value
+                    var field = type.GetField(name);
+                    //Did we get a field?
                     if (field != null)
                     {
-                        DescriptionAttribute attribute = Attribute.GetCustomAttribute(field, typeof(DescriptionAttribute)) as DescriptionAttribute;
+                        //Get the attribute
+                        var attribute = Attribute.GetCustomAttribute(field, typeof(DescriptionAttribute)) as DescriptionAttribute;
+                        //Did the cast succeed?
                         if (attribute != null)
-                        {
-                            //The value of the description attribute
                             return attribute.Description;
-                        }
                     }
                 }
-                //No DescriptionAttribute has been found. Just return ToString as default value.
+                //Return the default value
                 return value.ToString();
             }
             catch (Exception)
             {
-                //Something went wrong. Just return enum.ToString()
+                //Return the default value
                 return value.ToString();
             }
         }

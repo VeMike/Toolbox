@@ -28,6 +28,9 @@ namespace Utilities.Collection
         /// </returns>
         IList<T> GetPartitionAt(int index);
 
+        /// <summary>
+        ///     The number of partitions created
+        /// </summary>
         int Partitions { get; }
     }
 }

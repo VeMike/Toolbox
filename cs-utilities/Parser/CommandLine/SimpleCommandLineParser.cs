@@ -17,7 +17,7 @@ namespace Utilities.Parser.CommandLine
                                                                 "command3"
                                                             };
         //The storage for the parsed commands; Key: argument name; Value: argument value
-        private readonly Dictionary<string, string> commands;
+        private Dictionary<string, string> commands;
         #endregion
 
         #region Constructor
@@ -32,6 +32,9 @@ namespace Utilities.Parser.CommandLine
         #endregion
 
         #region ICommandLineParser implementation
+        /// <summary>
+        ///     Sets the commands array accessed from command line
+        /// </summary>
         public string[] Commands
         {
             set
@@ -40,7 +43,7 @@ namespace Utilities.Parser.CommandLine
                 this.commands.Clear();
                 //Parse the commands
                 if (value != null && value.Length % 2 == 0)
-                    this.ParseCommands(value);
+                    this.ParseCommandlineArguments(value);
             }
         }
         
@@ -69,21 +72,22 @@ namespace Utilities.Parser.CommandLine
 
         #region Helpers
         /// <summary>
-        ///     Does the actual parsing of the parameters
+        ///     Parses the command line arguments
         /// </summary>
         /// <param name="arguments">
-        ///     The command line parameters. Expected format: -command1 value -command2 value
+        ///     An array of command line arguments
         /// </param>
-        private void ParseCommands(string[] arguments)
+        private void ParseCommandlineArguments(string[] arguments)
         {
-            //Create Command-Value-Pairs, filter out any disallowed command, put the commands in the dictionary
-            var argPairs = arguments.Where((arg, i) => i < arguments.Length - 1)
-                                    .Select((arg, i) => new { Command = arg.Replace(COMMAND_PREFIX, string.Empty).ToLower(), Value = arguments[i + 1].ToLower() })
-                                    .Where(pair => AVAILABLE_COMMANDS.Contains(pair.Command));
-            //Put the pairs in the dictionary
-            foreach (var pair in argPairs)
-                this.commands[pair.Command.Trim()] = pair.Value.Trim();
-        } 
+            //Create Command-Value-Pairs, filter out any disallowed command and put them in the dictionary
+            this.commands = arguments.Where((arg, i) => i < arguments.Length - 1)
+                         //Make some command <> command value pairs
+                         .Select((arg, i) => new { Command = arg.Replace(COMMAND_PREFIX, string.Empty).ToLower(), Value = arguments[i + 1].ToLower() })
+                         //Filter out any disallowed commands
+                         .Where(pair => AVAILABLE_COMMANDS.Contains(pair.Command))
+                         //Create a dictionary with the now filtered command/value pairs.
+                         .ToDictionary(pair => pair.Command, pair => pair.Value);
+        }
         #endregion
     }
 }

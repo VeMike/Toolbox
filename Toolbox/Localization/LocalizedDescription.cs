@@ -5,8 +5,7 @@ using System.Resources;
 namespace Localization
 {
     /// <summary>
-    ///     Allows to use localized description attributes
-    ///     for enums.
+    ///     Allows to use localized description attributes.
     /// </summary>
     class LocalizedDescription : DescriptionAttribute
     {

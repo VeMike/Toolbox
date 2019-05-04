@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Threading;
 
-namespace Utilities.ControlFlow
+namespace Com.Toolbox.Utils.ControlFlow
 {
+    /// <summary>
+    ///     Provides mechanisms for retrying operations
+    /// </summary>
     public static class Retry
     {
         #region Public Methods
@@ -31,18 +34,11 @@ namespace Utilities.ControlFlow
             {
                 //Call the passed function and evaluate the result
                 if (function())
-                {
-                    //Return, since the callback succeeded
                     return;
-                }
-                else
-                {
-                    //Sleep for the specified amount of time before retrying
-                    Thread.Sleep(retryInterval);
-                }
+                Thread.Sleep(retryInterval);
             }
             //Throw an exception
-            throw new RetryFailedException($"All {maxAttempts} to call the method failed");
+            throw new RetryFailedException($"All {maxAttempts} to call the method failed", maxAttempts);
         }
         #endregion
     }

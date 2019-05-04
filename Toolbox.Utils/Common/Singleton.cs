@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Utilities.Singleton
+namespace Com.Toolbox.Utils.Common
 {
     /// <summary>
     ///     An abstract singleton class

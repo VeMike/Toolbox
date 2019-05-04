@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Utilities.ControlFlow
+namespace Com.Toolbox.Utils.ControlFlow
 {
     /// <summary>
     ///     The <see cref="Exception"/>, that is thrown, whenever
@@ -13,7 +13,7 @@ namespace Utilities.ControlFlow
         /// <summary>
         ///     The default constructor
         /// </summary>
-        public RetryFailedException() : base()
+        public RetryFailedException(int attempts) : this(string.Empty, attempts)
         {
 
         }
@@ -24,10 +24,16 @@ namespace Utilities.ControlFlow
         /// <param name="message">
         ///     The error message of the exception
         /// </param>
-        public RetryFailedException(string message) : base(message)
+        public RetryFailedException(string message, int attempts) : base(message)
         {
-
+            this.Attempts = attempts;
         }
         #endregion
+
+        /// <summary>
+        ///     The attempty that were made before the operation
+        ///     was considered failed
+        /// </summary>
+        public int Attempts { get; set; }
     }
 }

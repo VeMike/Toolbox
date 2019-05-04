@@ -3,20 +3,29 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 
-namespace Utilities.Parser.CommandLine
+namespace Com.Toolbox.Utils.Parser
 {
+    /// <summary>
+    ///     An implementation of <see cref="ICommandLineParser"/>
+    /// </summary>
     public class SimpleCommandLineParser : ICommandLineParser
     {
         #region Attributes
-        //The prefix of the commands
+        /// <summary>
+        ///     The prefix of the commands
+        /// </summary>
         private const string COMMAND_PREFIX = "-";
-        //An array of the available commands
+        /// <summary>
+        ///     An array of the available commands
+        /// </summary>
         private static readonly string[] AVAILABLE_COMMANDS = {
                                                                 "command1",
                                                                 "command2",
                                                                 "command3"
-                                                            };
-        //The storage for the parsed commands; Key: argument name; Value: argument value
+                                                                };
+        /// <summary>
+        ///     The storage for the parsed commands; Key: argument name; Value: argument value
+        /// </summary>
         private Dictionary<string, string> commands;
         #endregion
 
@@ -46,7 +55,21 @@ namespace Utilities.Parser.CommandLine
                     this.ParseCommandlineArguments(value);
             }
         }
-        
+
+        /// <summary>
+        ///     Converts the value of command line argument to the appropriate type
+        /// </summary>
+        /// <typeparam name="T">
+        ///     The type, the commands value should be converted to
+        /// </typeparam>
+        /// <param name="command">
+        ///     The 'command' whose 'value' should be accessed.
+        /// </param>
+        /// <returns>
+        ///     The command line value for the specified command line parameter converted to T. 
+        ///     If the command is not found or any exception occurs while trying to convert it
+        ///     default(T) is returned.
+        /// </returns>
         public T Get<T>(string command)
         {
             try

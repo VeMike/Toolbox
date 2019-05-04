@@ -1,7 +1,14 @@
 ﻿using System.Collections.Generic;
 
-namespace Utilities.Collection
+namespace Com.Toolbox.Utils.Collection
 {
+    /// <summary>
+    ///     The interface for a class capable of creating
+    ///     partitions of a list of objects
+    /// </summary>
+    /// <typeparam name="T">
+    ///     The type of object in the list
+    /// </typeparam>
     interface IPartitioner<T>
     {
         /// <summary>
@@ -26,7 +33,7 @@ namespace Utilities.Collection
         /// <returns>
         ///     The partition at the specified <paramref name="index"/>
         /// </returns>
-        IList<T> GetPartitionAt(int index);
+        IList<T> Get(int index);
 
         /// <summary>
         ///     The number of partitions created

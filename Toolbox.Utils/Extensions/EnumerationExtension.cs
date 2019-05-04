@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 
-namespace Utilities.Enumeration
+namespace Com.Toolbox.Utils.Enumeration
 {
     /// <summary>
     ///     This class contains extension methods for enums
@@ -37,9 +37,8 @@ namespace Utilities.Enumeration
                     if (field != null)
                     {
                         //Get the attribute
-                        var attribute = Attribute.GetCustomAttribute(field, typeof(DescriptionAttribute)) as DescriptionAttribute;
                         //Did the cast succeed?
-                        if (attribute != null)
+                        if (Attribute.GetCustomAttribute(field, typeof(DescriptionAttribute)) is DescriptionAttribute attribute)
                             return attribute.Description;
                     }
                 }

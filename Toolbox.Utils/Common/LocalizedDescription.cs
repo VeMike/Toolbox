@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.Resources;
 
-namespace Localization
+namespace Com.Toolbox.Utils.Common
 {
     /// <summary>
     ///     Allows to use localized description attributes.
@@ -52,9 +52,7 @@ namespace Localization
                     //Read the string from the resources
                     var displayName = this.resource.GetString(this.resourceKey);
                     //Check, if there is a resource with this name
-                    if (string.IsNullOrEmpty(displayName))
-                        return this.resourceKey;
-                    return displayName;
+                    return string.IsNullOrEmpty(displayName) ? this.resourceKey : displayName;
                 }
                 catch (Exception)
                 {

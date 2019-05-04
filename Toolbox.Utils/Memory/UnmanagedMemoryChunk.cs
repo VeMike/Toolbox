@@ -1,27 +1,38 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace Utilities.Memory.Unmanaged
+namespace Com.Toolbox.Utils.Memory
 {
+    /// <summary>
+    ///     An implementation of <see cref="IUnmanagedMemory"/>
+    /// </summary>
     public class UnmanagedMemoryChunk : IUnmanagedMemory
     {
         #region Attributes
+        /// <summary>
+        ///     Indicates, if dispose was called
+        /// </summary>
         private bool disposeCalled;
         #endregion
 
         #region Constructor
+        /// <summary>
+        ///     Creates a new instance
+        /// </summary>
         public UnmanagedMemoryChunk()
         {
             //Indicate, that nothing has been allocated.
             this.Memory = IntPtr.Zero;
-            //Used for the IDisposable pattern (pattern generated via VS2017)
-            this.disposeCalled = false;
             //Nothing has been initializes
             this.MemorySize = 0;
-        } 
+        }
         #endregion
 
         #region IUnmanagedMemory implementation
+        /// <summary>
+        ///     Sets the data, which will be copied into unmanaged
+        ///     memory
+        /// </summary>
         public byte[] Data
         {
             set
@@ -31,9 +42,17 @@ namespace Utilities.Memory.Unmanaged
             }
         }
 
-        public int MemorySize { get; private set; }
-
+        /// <summary>
+        ///     A pointer/handle representing the unmanaged memory,
+        ///     that stores the bytes passed to <see cref="Data"/>
+        /// </summary>
         public IntPtr Memory { get; private set; }
+
+        /// <summary>
+        ///     The number of bytes, that are currently stored in unmanaged
+        ///     memory.
+        /// </summary>
+        public int MemorySize { get; private set; }
         #endregion
 
         #region IDisposable implementation
@@ -62,6 +81,12 @@ namespace Utilities.Memory.Unmanaged
         #endregion
 
         #region Helpers
+        /// <summary>
+        ///     Copies the passed bytes into unmanaged memory
+        /// </summary>
+        /// <param name="data">
+        ///     The bytes copied to unmanaged memory
+        /// </param>
         private void CopyToUnmanagedMemory(byte[] data)
         {
             //Free any previously allocated memory

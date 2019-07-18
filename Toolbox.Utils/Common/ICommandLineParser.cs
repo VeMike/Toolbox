@@ -1,4 +1,4 @@
-﻿namespace Com.Toolbox.Utils.Parser
+﻿namespace Com.Toolbox.Utils.Common
 {
     interface ICommandLineParser
     {

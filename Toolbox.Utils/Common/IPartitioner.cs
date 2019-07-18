@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Com.Toolbox.Utils.Collection
+namespace Com.Toolbox.Utils.Common
 {
     /// <summary>
     ///     The interface for a class capable of creating

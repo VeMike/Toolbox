@@ -7,7 +7,7 @@ namespace Com.Toolbox.Utils.Common
     /// <summary>
     ///     Allows to use localized description attributes.
     /// </summary>
-    class LocalizedDescription : DescriptionAttribute
+    public class LocalizedDescription : DescriptionAttribute
     {
         #region Attributes
         /// <summary>

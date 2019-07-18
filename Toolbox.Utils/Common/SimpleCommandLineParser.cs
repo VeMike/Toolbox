@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 
-namespace Com.Toolbox.Utils.Parser
+namespace Com.Toolbox.Utils.Common
 {
     /// <summary>
     ///     An implementation of <see cref="ICommandLineParser"/>

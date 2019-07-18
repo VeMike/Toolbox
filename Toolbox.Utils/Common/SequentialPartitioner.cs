@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Com.Toolbox.Utils.Collection
+namespace Com.Toolbox.Utils.Common
 {
     /// <summary>
     ///     An implementation of <see cref="IPartitioner{T}"/>

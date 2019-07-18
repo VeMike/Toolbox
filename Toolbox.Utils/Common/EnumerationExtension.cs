@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 
-namespace Com.Toolbox.Utils.Enumeration
+namespace Com.Toolbox.Utils.Common
 {
     /// <summary>
     ///     This class contains extension methods for enums

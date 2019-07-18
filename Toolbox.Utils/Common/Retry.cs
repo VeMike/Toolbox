@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading;
 
-namespace Com.Toolbox.Utils.ControlFlow
+namespace Com.Toolbox.Utils.Common
 {
     /// <summary>
     ///     Provides mechanisms for retrying operations

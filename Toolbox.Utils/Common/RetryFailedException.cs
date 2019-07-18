@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Com.Toolbox.Utils.ControlFlow
+namespace Com.Toolbox.Utils.Common
 {
     /// <summary>
     ///     The <see cref="Exception"/>, that is thrown, whenever

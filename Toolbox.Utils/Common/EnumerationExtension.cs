@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Runtime.Remoting.Channels;
 
 namespace Com.Toolbox.Utils.Common
 {
@@ -27,7 +28,7 @@ namespace Com.Toolbox.Utils.Common
                 //Get the enums type
                 var type = value.GetType();
                 //The name of the enum
-                var name = Enum.GetName(type, value);
+                string name = Enum.GetName(type, value);
                 //Could the name be retreived?
                 if (name != null)
                 {

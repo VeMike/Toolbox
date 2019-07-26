@@ -51,6 +51,8 @@
     <Compile Include="Common\UnmanagedMemoryChunk.cs" />
     <Compile Include="Common\ICommandLineParser.cs" />
     <Compile Include="Common\SimpleCommandLineParser.cs" />
+    <Compile Include="Probing\AreWe.cs" />
+    <Compile Include="Probing\Guard.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Common\Singleton.cs" />
   </ItemGroup>

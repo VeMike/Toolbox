@@ -53,6 +53,7 @@
     <Compile Include="Common\SimpleCommandLineParser.cs" />
     <Compile Include="Probing\AreWe.cs" />
     <Compile Include="Probing\Guard.cs" />
+    <Compile Include="Probing\Repair.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Common\Singleton.cs" />
   </ItemGroup>

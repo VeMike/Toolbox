@@ -64,9 +64,9 @@ namespace Com.Toolbox.Utils.Probing
             {
                 if (throwIfNot)
                     throw;
-            }
 
-            return false;
+                return false;
+            }
         }
 
         #endregion

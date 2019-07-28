@@ -57,14 +57,12 @@ namespace Com.Toolbox.Utils.Probing
                 //Delete the file again
                 if (File.Exists(fullFilePath))
                     File.Delete(fullFilePath);
-
                 return true;
             }
             catch
             {
                 if (throwIfNot)
                     throw;
-
                 return false;
             }
         }

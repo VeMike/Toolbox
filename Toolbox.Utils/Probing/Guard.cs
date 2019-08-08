@@ -14,7 +14,7 @@ namespace Com.Toolbox.Utils.Probing
     /// </summary>
     public static class Guard
     {
-        #region Methods
+        #region Null Guards
 
         /// <summary>
         ///     Guards against a null argument by throwing and exception
@@ -69,5 +69,9 @@ namespace Com.Toolbox.Utils.Probing
         }
 
         #endregion
+
+        //TODO: Implement guard against empty string
+
+        //TODO: Implement guards that guard against empty collections
     }
 }

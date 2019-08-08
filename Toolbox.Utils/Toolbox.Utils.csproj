@@ -43,8 +43,8 @@
   <ItemGroup>
     <Compile Include="Common\IPartitioner.cs" />
     <Compile Include="Common\SequentialPartitioner.cs" />
-    <Compile Include="Common\Retry.cs" />
-    <Compile Include="Common\RetryFailedException.cs" />
+    <Compile Include="Probing\Retry.cs" />
+    <Compile Include="Probing\RetryFailedException.cs" />
     <Compile Include="Common\EnumerationExtension.cs" />
     <Compile Include="Common\LocalizedDescription.cs" />
     <Compile Include="Common\IUnmanagedMemory.cs" />

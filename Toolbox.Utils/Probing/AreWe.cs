@@ -6,6 +6,7 @@
 //                  conditions and/or states
 // ===================================================================================================
 
+using System;
 using System.IO;
 
 namespace Com.Toolbox.Utils.Probing
@@ -37,31 +38,35 @@ namespace Com.Toolbox.Utils.Probing
         ///     The full path to the directory tested for
         ///     write access
         /// </param>
-        /// <param name="throwIfNot"> </param>
-        /// <returns> </returns>
-        public static bool AbleToWrite(string fullPath, bool throwIfNot)
+        /// <param name="throwOnException"> </param>
+        /// <returns>
+        ///     'true', if the we can write to the passed
+        ///     path, false if not.
+        ///     Possible exceptions: <see cref="File.Create(string)"/>
+        /// </returns>
+        public static bool AbleToWrite(string fullPath, bool throwOnException)
         {
             if (fullPath is null)
                 return false;
 
-            //The path cannot end with '\', otherwise the combine will fail
-            var fullFilePath = Path.Combine(Repair.RemoveAllTrailing(fullPath, "\\"),
-                                            TEMP_FILE_NAME);
+            var pathToFile = Path.GetDirectoryName(fullPath)
+                             + Path.DirectorySeparatorChar
+                             + TEMP_FILE_NAME;
 
             try
             {
-                using (File.Create(fullFilePath))
+                using (File.Create(pathToFile))
                 {
                 }
 
                 //Delete the file again
-                if (File.Exists(fullFilePath))
-                    File.Delete(fullFilePath);
+                if (File.Exists(pathToFile))
+                    File.Delete(pathToFile);
                 return true;
             }
-            catch
+            catch(Exception)
             {
-                if (throwIfNot)
+                if (throwOnException)
                     throw;
                 return false;
             }

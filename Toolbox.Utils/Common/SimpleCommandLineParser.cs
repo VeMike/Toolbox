@@ -18,7 +18,7 @@ namespace Com.Toolbox.Utils.Common
         /// <summary>
         ///     An array of the available commands
         /// </summary>
-        private static readonly string[] AVAILABLE_COMMANDS = {
+        private static readonly string[] availableCommands = {
                                                                 "command1",
                                                                 "command2",
                                                                 "command3"
@@ -107,7 +107,7 @@ namespace Com.Toolbox.Utils.Common
                          //Make some command <> command value pairs
                          .Select((arg, i) => new { Command = arg.Replace(COMMAND_PREFIX, string.Empty).ToLower(), Value = arguments[i + 1].ToLower() })
                          //Filter out any disallowed commands
-                         .Where(pair => AVAILABLE_COMMANDS.Contains(pair.Command))
+                         .Where(pair => availableCommands.Contains(pair.Command))
                          //Create a dictionary with the now filtered command/value pairs.
                          .ToDictionary(pair => pair.Command, pair => pair.Value);
         }

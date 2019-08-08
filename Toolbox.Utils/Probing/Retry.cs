@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Threading;
 
-namespace Com.Toolbox.Utils.Common
+namespace Com.Toolbox.Utils.Probing
 {
     /// <summary>
     ///     Provides mechanisms for retrying operations
     /// </summary>
     public static class Retry
     {
-        #region Public Methods
+        #region Methods
+
         /// <summary>
         ///     Provides a generic retry-mechanism for methods, that return a boolean
         /// </summary>
@@ -21,7 +22,7 @@ namespace Com.Toolbox.Utils.Common
         ///     of time before it tries to call the method again.
         /// </param>
         /// <param name="maxAttempts">
-        ///     The maximum number of attemts that will be made to call the passed
+        ///     The maximum number of attempts that will be made to call the passed
         ///     method (default = 3).
         /// </param>
         /// <exception cref="RetryFailedException">
@@ -30,16 +31,18 @@ namespace Com.Toolbox.Utils.Common
         public static void Do(Func<bool> function, TimeSpan retryInterval, int maxAttempts = 3)
         {
             //Try to call the method the passed number of times
-            for (int attempts = 0; attempts < maxAttempts; attempts++)
+            for (var attempts = 0; attempts < maxAttempts; attempts++)
             {
                 //Call the passed function and evaluate the result
                 if (function())
                     return;
                 Thread.Sleep(retryInterval);
             }
+
             //Throw an exception
-            throw new RetryFailedException($"All {maxAttempts} to call the method failed", maxAttempts);
+            throw new RetryFailedException($"All '{maxAttempts}' to call the method failed", maxAttempts);
         }
+
         #endregion
     }
 }

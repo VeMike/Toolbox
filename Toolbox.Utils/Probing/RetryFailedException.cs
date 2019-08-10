@@ -10,20 +10,6 @@ namespace Com.Toolbox.Utils.Probing
     public class RetryFailedException : Exception
     {
         #region Constructor
-
-        /// <summary>
-        ///     The default constructor
-        /// </summary>
-        /// <param name="attempts">
-        ///     The number of attempts made before
-        ///     the retry mechanism stopped and failed
-        /// </param>
-        public RetryFailedException(int attempts) : this(string.Empty, 
-                                                         attempts)
-        {
-            //Nothing further to do
-        }
-
         /// <summary>
         ///     The constructor
         /// </summary>

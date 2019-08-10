@@ -6,6 +6,7 @@
 // ===================================================================================================
 
 using System;
+using System.Collections.Generic;
 
 namespace Com.Toolbox.Utils.Probing
 {
@@ -68,10 +69,43 @@ namespace Com.Toolbox.Utils.Probing
                 throw new ArgumentException($"{className}.{propertyName} is null");
         }
 
+        /// <summary>
+        ///     Guards against an empty string
+        /// </summary>
+        /// <param name="value">
+        ///     The string checked for emptiness
+        /// </param>
+        /// <exception cref="ArgumentException">
+        ///     Thrown if <paramref name="value" /> is empty
+        /// </exception>
+        public static void AgainstEmptyString(string value)
+        {
+            AgainstNullArgument(nameof(value), value);
+
+            if(value.Equals(string.Empty))
+                throw new ArgumentException("The passed string is empty");
+        }
+
+        /// <summary>
+        ///     Guards against an empty collection
+        /// </summary>
+        /// <typeparam name="TElement">
+        ///     The type of element in the collection
+        /// </typeparam>
+        /// <param name="collection">
+        ///     The collection checked for emptiness
+        /// </param>
+        /// <exception cref="ArgumentException">
+        ///     Thrown if <paramref name="collection" /> is empty
+        /// </exception>
+        public static void AgainstEmptyCollection<TElement>(ICollection<TElement> collection)
+        {
+            AgainstNullArgument(nameof(collection), collection);
+
+            if(collection.Count == 0)
+                throw new ArgumentException($"The collection of '{typeof(TElement).Name}' is empty");
+        }
+
         #endregion
-
-        //TODO: Implement guard against empty string
-
-        //TODO: Implement guards that guard against empty collections
     }
 }

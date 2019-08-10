@@ -38,7 +38,10 @@ namespace Com.Toolbox.Utils.Probing
         ///     The full path to the directory tested for
         ///     write access
         /// </param>
-        /// <param name="throwOnException"> </param>
+        /// <param name="throwOnException">
+        ///     If write access fails due to an exception,
+        ///     it will be re-thrown if this is set to true
+        /// </param>
         /// <returns>
         ///     'true', if the we can write to the passed
         ///     path, false if not.
@@ -46,22 +49,22 @@ namespace Com.Toolbox.Utils.Probing
         /// </returns>
         public static bool AbleToWrite(string fullPath, bool throwOnException)
         {
-            if (fullPath is null)
+            if (string.IsNullOrEmpty(fullPath))
                 return false;
-
-            var pathToFile = Path.GetDirectoryName(fullPath)
-                             + Path.DirectorySeparatorChar
-                             + TEMP_FILE_NAME;
 
             try
             {
-                using (File.Create(pathToFile))
+                var file = new FileInfo(fullPath 
+                                        + Path.DirectorySeparatorChar
+                                        + TEMP_FILE_NAME);
+
+                using (file.Create())
                 {
                 }
 
                 //Delete the file again
-                if (File.Exists(pathToFile))
-                    File.Delete(pathToFile);
+                if (file.Exists)
+                    file.Delete();
                 return true;
             }
             catch(Exception)

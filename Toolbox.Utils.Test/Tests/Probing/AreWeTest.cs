@@ -5,6 +5,7 @@
 // = Description : Tests the 'AreWe' class
 // ===================================================================================================
 
+using System;
 using System.IO;
 using Com.Toolbox.Utils.Probing;
 using NUnit.Framework;
@@ -52,6 +53,18 @@ namespace Toolbox.Utils.Test.Tests.Probing
             var actualResult = AreWe.AbleToWrite(null, false);
 
             Assert.IsFalse(actualResult, "Passing 'null' to 'AreWe.AbleToWrite' returned 'true'");
+        }
+
+        [Test]
+        [Description("Passes a path we can write to to 'AreWe.AbleToWrite'")]
+        public void AreWeAbleToWriteWritablePath()
+        {
+            //The 'Documents' folder of the current user
+            var path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+
+            var ableToWrite = AreWe.AbleToWrite(path, false);
+
+            Assert.IsTrue(ableToWrite, "'AreWe.AbleToWrite' event though we are able to write to the path");
         }
     }
 }

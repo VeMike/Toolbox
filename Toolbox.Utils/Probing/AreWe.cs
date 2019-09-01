@@ -8,6 +8,7 @@
 
 using System;
 using System.IO;
+using Microsoft.SqlServer.Server;
 
 namespace Com.Toolbox.Utils.Probing
 {
@@ -54,18 +55,7 @@ namespace Com.Toolbox.Utils.Probing
 
             try
             {
-                var file = new FileInfo(fullPath 
-                                        + Path.DirectorySeparatorChar
-                                        + TEMP_FILE_NAME);
-
-                using (file.Create())
-                {
-                }
-
-                //Delete the file again
-                if (file.Exists)
-                    file.Delete();
-                return true;
+                return CreateAndDeleteFileInDir(fullPath);
             }
             catch(Exception)
             {
@@ -73,6 +63,34 @@ namespace Com.Toolbox.Utils.Probing
                     throw;
                 return false;
             }
+        }
+
+        private static bool CreateAndDeleteFileInDir(string directoryPath)
+        {
+            var file = CreateFileInDir(directoryPath);
+
+            DeleteFile(file);
+
+            return true;
+        }
+
+        private static FileInfo CreateFileInDir(string directoryPath)
+        {
+            var file = new FileInfo(directoryPath
+                                    + Path.DirectorySeparatorChar
+                                    + TEMP_FILE_NAME);
+
+            using (file.Create())
+            {
+            }
+
+            return file;
+        }
+
+        private static void DeleteFile(FileInfo file)
+        {
+            if (file.Exists)
+                file.Delete();
         }
 
         #endregion

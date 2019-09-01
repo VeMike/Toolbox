@@ -69,6 +69,10 @@ namespace Com.Toolbox.Utils.Probing
                 throw new ArgumentException($"{className}.{propertyName} is null");
         }
 
+        #endregion
+
+        #region Emptiness Guards
+
         /// <summary>
         ///     Guards against an empty string
         /// </summary>

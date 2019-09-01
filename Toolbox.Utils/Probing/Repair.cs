@@ -37,9 +37,13 @@ namespace Com.Toolbox.Utils.Probing
             if (string.IsNullOrEmpty(text) || string.IsNullOrEmpty(occurence))
                 return text;
 
-            while (text.EndsWith(occurence))
-                text = text.Substring(0, text.Length - occurence.Length);
+            return RemoveFromEnd(text, occurence);
+        }
 
+        private static string RemoveFromEnd(string text, string removeText)
+        {
+            while (text.EndsWith(removeText))
+                text = text.Substring(0, text.Length - removeText.Length);
             return text;
         }
 

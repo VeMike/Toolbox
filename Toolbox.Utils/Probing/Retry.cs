@@ -33,14 +33,23 @@ namespace Com.Toolbox.Utils.Probing
             //Try to call the method the passed number of times
             for (var attempts = 0; attempts < maxAttempts; attempts++)
             {
-                //Call the passed function and evaluate the result
-                if (function())
+                if (CallDelegateAndWait(function, retryInterval))
+                {
                     return;
-                Thread.Sleep(retryInterval);
+                }
             }
 
             //Throw an exception
             throw new RetryFailedException($"All '{maxAttempts}' to call the method failed", maxAttempts);
+        }
+
+        private static bool CallDelegateAndWait(Func<bool> function, TimeSpan retryInterval)
+        {
+            //Call the passed function and evaluate the result
+            if (function())
+                return true;
+            Thread.Sleep(retryInterval);
+            return false;
         }
 
         #endregion

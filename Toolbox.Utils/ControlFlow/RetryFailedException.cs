@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Com.Toolbox.Utils.Probing
+namespace Com.Toolbox.Utils.ControlFlow
 {
     /// <summary>
     ///     The <see cref="Exception"/>, that is thrown, whenever

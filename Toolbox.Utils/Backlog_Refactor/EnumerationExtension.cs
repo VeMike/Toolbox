@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 
-namespace Com.Toolbox.Utils.Common
+namespace Com.Toolbox.Utils.Backlog_Refactor
 {
     /// <summary>
     ///     This class contains extension methods for enums

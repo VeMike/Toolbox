@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.Resources;
 
-namespace Com.Toolbox.Utils.Common
+namespace Com.Toolbox.Utils.Backlog_Refactor
 {
     /// <summary>
     ///     Allows to use localized description attributes.

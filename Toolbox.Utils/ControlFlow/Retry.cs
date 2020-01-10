@@ -43,6 +43,21 @@ namespace Com.Toolbox.Utils.ControlFlow
             throw new RetryFailedException($"All '{maxAttempts}' to call the method failed", maxAttempts);
         }
 
+        /// <summary>
+        ///     Calls <paramref name="function"/> and waits for
+        ///     <paramref name="retryInterval"/> if the function
+        ///     did not return 'true'
+        /// </summary>
+        /// <param name="function">
+        ///     The function whose call possibly fails
+        /// </param>
+        /// <param name="retryInterval">
+        ///     The wait time (<see cref="Thread.Sleep(TimeSpan)"/>) after
+        ///     the call of <paramref name="function"/>
+        /// </param>
+        /// <returns>
+        ///     The return value of <paramref name="function"/>
+        /// </returns>
         private static bool CallDelegateAndWait(Func<bool> function, TimeSpan retryInterval)
         {
             //Call the passed function and evaluate the result

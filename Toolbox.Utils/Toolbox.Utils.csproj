@@ -41,20 +41,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Common\IPartitioner.cs" />
-    <Compile Include="Common\SequentialPartitioner.cs" />
+    <Compile Include="Backlog_Refactor\IPartitioner.cs" />
+    <Compile Include="Backlog_Refactor\SequentialPartitioner.cs" />
+    <Compile Include="Common\StringUtils.cs" />
     <Compile Include="ControlFlow\Retry.cs" />
     <Compile Include="ControlFlow\RetryFailedException.cs" />
-    <Compile Include="Common\EnumerationExtension.cs" />
-    <Compile Include="Common\LocalizedDescription.cs" />
-    <Compile Include="Common\IUnmanagedMemory.cs" />
-    <Compile Include="Common\UnmanagedMemoryChunk.cs" />
-    <Compile Include="Common\ICommandLineParser.cs" />
-    <Compile Include="Common\SimpleCommandLineParser.cs" />
+    <Compile Include="Backlog_Refactor\EnumerationExtension.cs" />
+    <Compile Include="Backlog_Refactor\LocalizedDescription.cs" />
+    <Compile Include="Backlog_Refactor\IUnmanagedMemory.cs" />
+    <Compile Include="Backlog_Refactor\UnmanagedMemoryChunk.cs" />
+    <Compile Include="Backlog_Refactor\ICommandLineParser.cs" />
+    <Compile Include="Backlog_Refactor\SimpleCommandLineParser.cs" />
     <Compile Include="Probing\AreWe.cs" />
     <Compile Include="Probing\Guard.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Common\Singleton.cs" />
+    <Compile Include="Backlog_Refactor\Singleton.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

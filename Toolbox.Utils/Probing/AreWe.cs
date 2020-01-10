@@ -8,7 +8,6 @@
 
 using System;
 using System.IO;
-using Microsoft.SqlServer.Server;
 
 namespace Com.Toolbox.Utils.Probing
 {
@@ -65,6 +64,20 @@ namespace Com.Toolbox.Utils.Probing
             }
         }
 
+        #endregion
+
+        #region Helpers
+        /// <summary>
+        ///    Creates a temporary file in <paramref name="directoryPath"/>
+        ///     and deletes it again, if it was created.
+        /// </summary>
+        /// <param name="directoryPath">
+        ///     The target directory for the temporary file
+        /// </param>
+        /// <returns>
+        ///     'true', if the temporary file was successfully
+        ///     created and deleted, 'false' otherwise.
+        /// </returns>
         private static bool CreateAndDeleteFileInDir(string directoryPath)
         {
             var file = CreateFileInDir(directoryPath);
@@ -74,11 +87,18 @@ namespace Com.Toolbox.Utils.Probing
             return true;
         }
 
+        /// <summary>
+        ///     Creates a single temporary file in <paramref name="directoryPath"/>
+        /// </summary>
+        /// <param name="directoryPath">
+        ///     The target directory for the temporary file
+        /// </param>
+        /// <returns>
+        ///     The created temporary file
+        /// </returns>
         private static FileInfo CreateFileInDir(string directoryPath)
         {
-            var file = new FileInfo(directoryPath
-                                    + Path.DirectorySeparatorChar
-                                    + TEMP_FILE_NAME);
+            var file = new FileInfo(Path.Combine(directoryPath, TEMP_FILE_NAME));
 
             using (file.Create())
             {
@@ -87,7 +107,14 @@ namespace Com.Toolbox.Utils.Probing
             return file;
         }
 
-        private static void DeleteFile(FileInfo file)
+        /// <summary>
+        ///     Deletes the passed temporary file from
+        ///     the directory
+        /// </summary>
+        /// <param name="file">
+        ///     The file, that will be deleted
+        /// </param>
+        private static void DeleteFile(FileSystemInfo file)
         {
             if (file.Exists)
                 file.Delete();

@@ -29,7 +29,7 @@ namespace Toolbox.Utils.Test.Tests.Probing
         public void AreWeAbleToWriteNonExistingDir()
         {
             var actualResult = AreWe.AbleToWrite("C:\\this\\is\\a\\path\\that\\does\\not\\exist",
-                                                 false);
+                                                     false);
 
             Assert.IsFalse(actualResult, "Passing a non-existing dir to 'AreWe.AbleToWrite' returned 'true'");
         }
@@ -38,12 +38,11 @@ namespace Toolbox.Utils.Test.Tests.Probing
         [Description("Passes a non-existing path to 'AreWe.AbleToWrite' with throwing")]
         public void AreWeAbleToWriteNonExistingDirThrow()
         {
-            void ThrowingDelegate()
+            Assert.Throws<DirectoryNotFoundException>(() =>
             {
-                AreWe.AbleToWrite("C:\\this\\is\\a\\path\\that\\does\\not\\exist", true);
-            }
-
-            Assert.Throws<DirectoryNotFoundException>(ThrowingDelegate);
+                AreWe.AbleToWrite("C:\\this\\is\\a\\path\\that\\does\\not\\exist", 
+                                  true);
+            });
         }
 
         [Test]
@@ -64,7 +63,7 @@ namespace Toolbox.Utils.Test.Tests.Probing
 
             var ableToWrite = AreWe.AbleToWrite(path, false);
 
-            Assert.IsTrue(ableToWrite, "'AreWe.AbleToWrite' event though we are able to write to the path");
+            Assert.IsTrue(ableToWrite, "'AreWe.AbleToWrite' is 'false' even though we are able to write to the path");
         }
     }
 }

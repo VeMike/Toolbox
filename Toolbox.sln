@@ -10,6 +10,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Toolbox.Utils.Test", "Toolbox.Utils.Test\Toolbox.Utils.Test.csproj", "{919FBBF5-30F7-4ADC-A731-BABB9483C20B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Toolbox.CommandLineMapper", "Toolbox.CommandLineMapper\Toolbox.CommandLineMapper.csproj", "{F3C1401C-55DE-481F-A781-DB8726AD4271}"
+	ProjectSection(ProjectDependencies) = postProject
+		{4EEA5596-43B3-4F0D-AC20-06CF32714764} = {4EEA5596-43B3-4F0D-AC20-06CF32714764}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Toolbox.CommandLineMapper.Test", "Toolbox.CommandLineMapper.Test\Toolbox.CommandLineMapper.Test.csproj", "{C84C9808-A297-4888-BED5-FB5D946B232E}"
 EndProject

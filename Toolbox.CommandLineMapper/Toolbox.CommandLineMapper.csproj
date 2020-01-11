@@ -41,7 +41,26 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\Wrappers\AssignablePropertyBase.cs" />
+    <Compile Include="Core\Wrappers\BooleanAssignableProperty.cs" />
+    <Compile Include="Core\Wrappers\DoubleAssignableProperty.cs" />
+    <Compile Include="Core\Wrappers\IAssignableProperty.cs" />
+    <Compile Include="Core\Wrappers\IntegerAssignableProperty.cs" />
+    <Compile Include="Core\Wrappers\IPropertyContainer.cs" />
+    <Compile Include="Core\Wrappers\PropertyContainer.cs" />
+    <Compile Include="Core\Wrappers\PropertyNotFoundException.cs" />
+    <Compile Include="Core\Wrappers\StringAssignableProperty.cs" />
+    <Compile Include="Core\Wrappers\TypeMismatchException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Specification\AttributeBase.cs" />
+    <Compile Include="Specification\OptionAttribute.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Toolbox.Utils\Toolbox.Utils.csproj">
+      <Project>{4eea5596-43b3-4f0d-ac20-06cf32714764}</Project>
+      <Name>Toolbox.Utils</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

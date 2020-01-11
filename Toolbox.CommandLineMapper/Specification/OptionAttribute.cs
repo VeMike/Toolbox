@@ -8,6 +8,7 @@
 
 using System;
 using Com.Toolbox.Utils.Probing;
+using Toolbox.CommandLineMapper.Common;
 
 namespace Toolbox.CommandLineMapper.Specification
 {
@@ -26,7 +27,7 @@ namespace Toolbox.CommandLineMapper.Specification
         ///     The long name of the option consisting of a
         ///     single word.
         /// </param>
-        public OptionAttribute(string longName) : this(string.Empty, longName)
+        public OptionAttribute(string longName) : this(longName.ToSingleCharString(), longName)
         {
 
         }

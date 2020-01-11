@@ -14,7 +14,7 @@ namespace Toolbox.CommandLineMapper.Core.Wrappers
     ///     An implementation of <see cref="IPropertyContainer"/> that just
     ///     holds a collection of <see cref="IAssignableProperty"/>s
     /// </summary>
-    internal class PropertyContainer : IPropertyContainer
+    internal class DefaultPropertyContainer : IPropertyContainer
     {
         #region Attributes
 
@@ -30,19 +30,19 @@ namespace Toolbox.CommandLineMapper.Core.Wrappers
         /// <summary>
         ///     Creates a new instance of the class
         /// </summary>
-        /// <param name="container">
+        /// <param name="source">
         ///     The containing type of the collection
         ///     of <paramref name="properties"/>
         /// </param>
         /// <param name="properties">
         ///     The collection of propertyCollection contained
-        ///     in <paramref name="container"/>
+        ///     in <paramref name="source"/>
         /// </param>
-        public PropertyContainer(object container, IEnumerable<IAssignableProperty> properties)
+        public DefaultPropertyContainer(object source, IEnumerable<IAssignableProperty> properties)
         {
-            Guard.AgainstNullArgument(nameof(container), container);
+            Guard.AgainstNullArgument(nameof(source), source);
 
-            this.Source = container;
+            this.Source = source;
             this.properties = new Dictionary<string, IAssignableProperty>();
 
             this.PutPropertiesInContainer(properties);

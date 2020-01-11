@@ -1,0 +1,42 @@
+﻿// ===================================================================================================
+// = Author      :  Mike
+// = Created     :  2020-01-11 23:53
+// ===================================================================================================
+// = Description :
+// ===================================================================================================
+
+using System;
+using System.Reflection;
+
+namespace Toolbox.CommandLineMapper.Core.Wrappers
+{
+    /// <summary>
+    ///     An implementation of <see cref="IAssignableProperty"/> that
+    ///     assigns properties of type <see cref="short"/>
+    /// </summary>
+    internal class ShortAssignableProperty : AssignablePropertyBase
+    {
+        /// <inheritdoc />
+        public ShortAssignableProperty(string name, 
+                                       object owner, 
+                                       PropertyInfo property) : base(name, 
+                                                                     owner, 
+                                                                     property)
+        {
+        }
+
+        /// <inheritdoc />
+        /// <exception cref="InvalidCastException">
+        ///     Thrown  if the <see cref="value"/> can not be cast to <see cref="short"/>
+        /// </exception>
+        protected override object Convert(string value)
+        {
+            if (short.TryParse(value, out var shortValue))
+            {
+                return shortValue;
+            }
+
+            throw new InvalidCastException($"Can not cast '{value}' to 'short'");
+        }
+    }
+}

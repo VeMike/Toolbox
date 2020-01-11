@@ -55,6 +55,14 @@ namespace Toolbox.Utils.Test.Tests.Common
             Assert.AreEqual(expected, actual);
         }
 
+        [Test]
+        public void ReturnsEmptyStringsIfAllParametersAreInvalid()
+        {
+            var actual = StringUtils.UrlCombine(null, "");
+
+            Assert.AreEqual(string.Empty, actual);
+        }
+
         #endregion
     }
 }

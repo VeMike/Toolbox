@@ -109,5 +109,64 @@ namespace Toolbox.CommandLineMapper.Core.Wrappers
         protected abstract object Convert(string value);
 
         #endregion
+
+
+        #region IEquatable Implementation
+
+        public bool Equals(IAssignableProperty<TAttribute> other)
+        {
+            return other != null && 
+                   this.Name == other.Name && 
+                   Equals(this.Owner, other.Owner);
+        }
+
+        /// <inheritdoc />
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+
+            if (obj.GetType() != this.GetType())
+            {
+                return false;
+            }
+
+            return Equals((AssignablePropertyBase<TAttribute>) obj);
+        }
+
+        /// <inheritdoc />
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return ((this.Name != null ? this.Name.GetHashCode() : 0) * 397) ^ 
+                       (this.Owner != null ? this.Owner.GetHashCode() : 0);
+            }
+        }
+
+        #endregion
+
+        #region Operators
+
+        public static bool operator ==(AssignablePropertyBase<TAttribute> left,
+                                       AssignablePropertyBase<TAttribute> right)
+        {
+            return Equals(left, right);
+        }
+
+        public static bool operator !=(AssignablePropertyBase<TAttribute> left,
+                                       AssignablePropertyBase<TAttribute> right)
+        {
+            return !Equals(left, right);
+        } 
+
+        #endregion
     }
 }

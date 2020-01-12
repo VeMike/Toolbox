@@ -14,7 +14,7 @@ namespace Toolbox.CommandLineMapper.Core.Wrappers
     ///     Defines a wrapper around <see cref="PropertyInfo"/> that is assignable
     ///     from a string value
     /// </summary>
-    internal interface IAssignableProperty<TAttribute> where TAttribute : Attribute
+    internal interface IAssignableProperty<TAttribute> : IEquatable<IAssignableProperty<TAttribute>> where TAttribute : Attribute
     {
         #region Properties
 

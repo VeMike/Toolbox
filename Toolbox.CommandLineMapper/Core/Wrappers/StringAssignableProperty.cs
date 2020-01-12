@@ -6,22 +6,25 @@
 // ===================================================================================================
 
 
+using System;
 using System.Reflection;
 
 namespace Toolbox.CommandLineMapper.Core.Wrappers
 {
     /// <summary>
-    ///     An implementation of <see cref="IAssignableProperty"/> that
+    ///     An implementation of <see cref="IAssignableProperty{TAttribute}"/> that
     ///     assigns properties of type <see cref="string"/>
     /// </summary>
-    internal sealed class StringAssignableProperty : AssignablePropertyBase
+    internal sealed class StringAssignableProperty<TAttribute> : AssignablePropertyBase<TAttribute> where TAttribute : Attribute
     {
         /// <inheritdoc />
         public StringAssignableProperty(string name, 
                                         object owner, 
-                                        PropertyInfo property) : base(name, 
+                                        PropertyInfo property,
+                                        TAttribute attribute) : base(name, 
                                                                       owner, 
-                                                                      property)
+                                                                      property, 
+                                                                      attribute)
         {
         }
 

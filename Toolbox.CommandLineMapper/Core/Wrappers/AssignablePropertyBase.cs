@@ -5,6 +5,7 @@
 // = Description :
 // ===================================================================================================
 
+using System;
 using System.Reflection;
 using Com.Toolbox.Utils.Probing;
 
@@ -14,7 +15,7 @@ namespace Toolbox.CommandLineMapper.Core.Wrappers
     ///     The base implementation/skelleton for assignable
     ///     properties.
     /// </summary>
-    internal abstract class AssignablePropertyBase : IAssignableProperty
+    internal abstract class AssignablePropertyBase<TAttribute> : IAssignableProperty<TAttribute> where TAttribute : Attribute
     {
         #region Attributes
 
@@ -32,7 +33,7 @@ namespace Toolbox.CommandLineMapper.Core.Wrappers
         ///     properties
         /// </summary>
         /// <param name="name">
-        ///     The name of this <see cref="IAssignableProperty"/>
+        ///     The name of this <see cref="IAssignableProperty{TAttribute}"/>
         /// </param>
         /// <param name="owner">
         ///     The <see cref="object"/> that owns the property
@@ -40,15 +41,23 @@ namespace Toolbox.CommandLineMapper.Core.Wrappers
         /// <param name="property">
         ///     The <see cref="PropertyInfo"/> wrapped by this instance
         /// </param>
-        protected AssignablePropertyBase(string name, object owner, PropertyInfo property)
+        /// <param name="attribute">
+        ///     The <see cref="Attribute"/> the property has applied
+        /// </param>
+        protected AssignablePropertyBase(string name, 
+                                         object owner, 
+                                         PropertyInfo property,
+                                         TAttribute attribute)
         {
             Guard.AgainstNullArgument(nameof(name), name);
             Guard.AgainstNullArgument(nameof(owner), owner);
             Guard.AgainstNullArgument(nameof(property), property);
+            Guard.AgainstNullArgument(nameof(attribute), attribute);
 
             this.Name = name;
             this.Owner = owner;
             this.property = property;
+            this.Attribute = attribute;
         }
 
         #endregion
@@ -60,6 +69,9 @@ namespace Toolbox.CommandLineMapper.Core.Wrappers
 
         /// <inheritdoc />
         public object Owner { get; }
+
+        /// <inheritdoc />
+        public TAttribute Attribute { get; }
 
         /// <inheritdoc />
         public void Assign(string value)

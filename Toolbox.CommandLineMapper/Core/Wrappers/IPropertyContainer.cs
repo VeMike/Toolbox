@@ -5,13 +5,15 @@
 // = Description : 
 // ===================================================================================================
 
+using System;
+
 namespace Toolbox.CommandLineMapper.Core.Wrappers
 {
     /// <summary>
     ///     Wraps around any <see cref="object"/> that has
-    ///     <see cref="IAssignableProperty"/>s
+    ///     <see cref="IAssignableProperty{TAttribute}"/>s
     /// </summary>
-    internal interface IPropertyContainer
+    internal interface IPropertyContainer<TAttribute> where TAttribute : Attribute
     {
         #region Properties
 
@@ -26,19 +28,19 @@ namespace Toolbox.CommandLineMapper.Core.Wrappers
         #region Methods
 
         /// <summary>
-        ///     Gets a <see cref="IAssignableProperty"/> with the
+        ///     Gets a <see cref="IAssignableProperty{TAttribute}"/> with the
         ///     passed name
         /// </summary>
         /// <param name="name"></param>
         /// <returns>
-        ///     The <see cref="IAssignableProperty"/> with the
+        ///     The <see cref="IAssignableProperty{TAttribute}"/> with the
         ///     given <paramref name="name"/>
         /// </returns>
         /// <exception cref="PropertyNotFoundException">
         ///     Thrown if no property with the <paramref name="name"/>
         ///      was found
         /// </exception>
-        IAssignableProperty GetProperty(string name);
+        IAssignableProperty<TAttribute> GetProperty(string name);
 
         #endregion
     }

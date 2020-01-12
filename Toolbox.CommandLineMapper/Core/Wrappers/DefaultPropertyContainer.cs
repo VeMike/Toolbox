@@ -5,23 +5,24 @@
 // = Description :
 // ===================================================================================================
 
+using System;
 using System.Collections.Generic;
 using Com.Toolbox.Utils.Probing;
 
 namespace Toolbox.CommandLineMapper.Core.Wrappers
 {
     /// <summary>
-    ///     An implementation of <see cref="IPropertyContainer"/> that just
-    ///     holds a collection of <see cref="IAssignableProperty"/>s
+    ///     An implementation of <see cref="IPropertyContainer{TAttribute}"/> that just
+    ///     holds a collection of <see cref="IAssignableProperty{TAttribute}"/>s
     /// </summary>
-    internal class DefaultPropertyContainer : IPropertyContainer
+    internal class DefaultPropertyContainer<TAttribute> : IPropertyContainer<TAttribute> where TAttribute : Attribute
     {
         #region Attributes
 
         /// <summary>
         ///     The property container
         /// </summary>
-        private Dictionary<string, IAssignableProperty> properties;
+        private Dictionary<string, IAssignableProperty<TAttribute>> properties;
 
         #endregion
 
@@ -38,12 +39,12 @@ namespace Toolbox.CommandLineMapper.Core.Wrappers
         ///     The collection of propertyCollection contained
         ///     in <paramref name="source"/>
         /// </param>
-        public DefaultPropertyContainer(object source, IEnumerable<IAssignableProperty> properties)
+        public DefaultPropertyContainer(object source, IEnumerable<IAssignableProperty<TAttribute>> properties)
         {
             Guard.AgainstNullArgument(nameof(source), source);
 
             this.Source = source;
-            this.properties = new Dictionary<string, IAssignableProperty>();
+            this.properties = new Dictionary<string, IAssignableProperty<TAttribute>>();
 
             this.PutPropertiesInContainer(properties);
         } 
@@ -57,7 +58,7 @@ namespace Toolbox.CommandLineMapper.Core.Wrappers
         public object Source { get; }
 
         /// <inheritdoc />
-        public IAssignableProperty GetProperty(string name)
+        public IAssignableProperty<TAttribute> GetProperty(string name)
         {
             Guard.AgainstNullArgument(nameof(name), name);
 
@@ -78,10 +79,10 @@ namespace Toolbox.CommandLineMapper.Core.Wrappers
         ///     data structure
         /// </summary>
         /// <param name="propertyCollection">
-        ///     The collection of <see cref="IAssignableProperty"/> to place in
+        ///     The collection of <see cref="IAssignableProperty{TAttribute}"/> to place in
         ///     the container
         /// </param>
-        private void PutPropertiesInContainer(IEnumerable<IAssignableProperty> propertyCollection)
+        private void PutPropertiesInContainer(IEnumerable<IAssignableProperty<TAttribute>> propertyCollection)
         {
             foreach (var property in propertyCollection)
             {

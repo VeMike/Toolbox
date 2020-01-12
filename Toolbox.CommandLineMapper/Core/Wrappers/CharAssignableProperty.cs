@@ -12,17 +12,19 @@ using Toolbox.CommandLineMapper.Common;
 namespace Toolbox.CommandLineMapper.Core.Wrappers
 {
     /// <summary>
-    ///     An implementation of <see cref="IAssignableProperty"/> that
+    ///     An implementation of <see cref="IAssignableProperty{TAttribute}"/> that
     ///     assigns properties of type <see cref="char"/>
     /// </summary>
-    internal class CharAssignableProperty : AssignablePropertyBase
+    internal class CharAssignableProperty<TAttribute> : AssignablePropertyBase<TAttribute> where TAttribute : Attribute
     {
         /// <inheritdoc />
         public CharAssignableProperty(string name, 
                                       object owner, 
-                                      PropertyInfo property) : base(name, 
-                                                                    owner, 
-                                                                    property)
+                                      PropertyInfo property,
+                                      TAttribute attribute) : base(name, 
+                                                                   owner, 
+                                                                   property, 
+                                                                   attribute)
         {
         }
 

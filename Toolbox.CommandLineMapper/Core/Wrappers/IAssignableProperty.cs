@@ -5,6 +5,7 @@
 // = Description :
 // ===================================================================================================
 
+using System;
 using System.Reflection;
 
 namespace Toolbox.CommandLineMapper.Core.Wrappers
@@ -13,7 +14,7 @@ namespace Toolbox.CommandLineMapper.Core.Wrappers
     ///     Defines a wrapper around <see cref="PropertyInfo"/> that is assignable
     ///     from a string value
     /// </summary>
-    internal interface IAssignableProperty
+    internal interface IAssignableProperty<TAttribute> where TAttribute : Attribute
     {
         #region Properties
 
@@ -27,6 +28,12 @@ namespace Toolbox.CommandLineMapper.Core.Wrappers
         ///     Gets the object the property belongs to
         /// </summary>
         object Owner { get; }
+
+        /// <summary>
+        ///     The <see cref="Attribute"/> this <see cref="IAssignableProperty{TAttribute}"/>
+        ///     has applied
+        /// </summary>
+        TAttribute Attribute { get; }
 
         #endregion
 

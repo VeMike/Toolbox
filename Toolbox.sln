@@ -15,6 +15,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Toolbox.CommandLineMapper",
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Toolbox.CommandLineMapper.Test", "Toolbox.CommandLineMapper.Test\Toolbox.CommandLineMapper.Test.csproj", "{C84C9808-A297-4888-BED5-FB5D946B232E}"
+	ProjectSection(ProjectDependencies) = postProject
+		{F3C1401C-55DE-481F-A781-DB8726AD4271} = {F3C1401C-55DE-481F-A781-DB8726AD4271}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

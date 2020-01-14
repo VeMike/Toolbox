@@ -16,13 +16,37 @@ namespace Toolbox.CommandLineMapper.Mapper
         #region Methods
 
         /// <summary>
-        ///     Registers a new object type at the mapper. 
+        ///     Registers a new object type at the mapper. Each type
+        ///     can only be registered once. Multiple calls to
+        ///     <see cref="Register{T}"/> using the same type will
+        ///     be ignored.
         /// </summary>
         /// <typeparam name="T">
         ///     The object to register. This is the object to
         ///     whom command line arguments are mapped.
         /// </typeparam>
         void Register<T>() where T : new();
+
+        /// <summary>
+        ///     The inverse method of <see cref="Register{T}"/>.
+        ///     Unregisteres a type previously added.
+        /// </summary>
+        /// <typeparam name="T">
+        ///     The object to unregister. This object will no longer
+        ///     be used for mapping of command line arguments
+        /// </typeparam>
+        void UnRegister<T>() where T : new();
+
+        /// <summary>
+        ///     Checks, if a type is registered at this instance
+        /// </summary>
+        /// <typeparam name="T">
+        ///     The type whose registration shall be checked
+        /// </typeparam>
+        /// <returns>
+        ///     'true' if the type is registered, 'false' otherwise
+        /// </returns>
+        bool IsRegistered<T>() where T : new();
 
         /// <summary>
         ///     Gets the result the <see cref="Map"/> operation for
@@ -45,6 +69,17 @@ namespace Toolbox.CommandLineMapper.Mapper
         ///     launched.
         /// </param>
         void Map(string args);
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        ///     Gets the current number of registrations. Those are
+        ///     all calls to <see cref="Register{T}"/> with unique
+        ///     objects types (same type registrations are ignored).
+        /// </summary>
+        int Registrations { get; }
 
         #endregion
 

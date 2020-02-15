@@ -54,7 +54,7 @@ namespace Toolbox.CommandLineMapper.Core
         ///     <see cref="object"/>.
         ///     The creation of the object happens when
         ///     <see cref="GetOptions"/> or <see cref="GetValues"/>
-        ///     of this class are called
+        ///     are called or when <see cref="Source"/> is accessed
         /// </summary>
         /// <param name="objectFactory">
         ///     A factory that creates a new instance of the
@@ -70,6 +70,13 @@ namespace Toolbox.CommandLineMapper.Core
         }
 
         #endregion
+
+        /// <summary>
+        ///     The <see cref="object"/> whose properties with
+        ///     applied <see cref="OptionAttribute"/> or
+        ///     <see cref="ValueAttribute"/> should be reflected
+        /// </summary>
+        public object Source => this.source.Value;
 
         #region Methods
 

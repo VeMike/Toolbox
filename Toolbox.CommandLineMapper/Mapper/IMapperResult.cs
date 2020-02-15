@@ -15,6 +15,8 @@ namespace Toolbox.CommandLineMapper.Mapper
     /// </typeparam>
     public interface IMapperResult<out T>
     {
+        //TODO: With information should this result object have?
+
         #region Properties
 
         /// <summary>

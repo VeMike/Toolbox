@@ -7,6 +7,8 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using Com.Toolbox.Utils.Probing;
 using Toolbox.CommandLineMapper.Core;
 
 namespace Toolbox.CommandLineMapper.Mapper
@@ -27,6 +29,7 @@ namespace Toolbox.CommandLineMapper.Mapper
         #endregion
 
         #region Constructor
+
         /// <summary>
         ///     Creates a new instance of the class
         /// </summary>
@@ -74,19 +77,76 @@ namespace Toolbox.CommandLineMapper.Mapper
         }
 
         /// <inheritdoc />
-        public void Map(IEnumerable<string> args)
-        {
-            this.Map(args, new MapperOptions());
-        }
+        public void Map(IEnumerable<string> args) => this.Map(args, new MapperOptions());
 
         /// <inheritdoc />
         public void Map(IEnumerable<string> args, MapperOptions options)
         {
-            throw new NotImplementedException();
+            // ReSharper disable once PossibleMultipleEnumeration
+            Guard.AgainstNullArgument(nameof(args), args);
+            Guard.AgainstNullArgument(nameof(options), options);
+
+            // ReSharper disable once PossibleMultipleEnumeration
+            this.ProcessArgumentList(args.ToList(), options);
         }
 
         /// <inheritdoc />
         public int Registrations => this.registeredObjects.Count;
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        ///     Processes the passed <paramref name="argsList"/> by applying
+        ///     the mapping to all registered objects
+        /// </summary>
+        /// <param name="argsList">
+        ///     A l
+        /// </param>
+        /// <param name="options">
+        ///     The <see cref="MapperOptions"/> passed to on of the mapping
+        ///     methods
+        /// </param>
+        private void ProcessArgumentList(IList<string> argsList, MapperOptions options)
+        {
+            var optionValuePairs = new Dictionary<string, string>();
+
+            for (int i = 0; i < argsList.Count - 1; i++)
+            {
+                /*
+                 * We only need every 2nd iteration. Every first iteration
+                 * is the option, the second the value
+                 */
+                if (i % 2 == 0)
+                    continue;
+
+                argsList[i] = argsList[i].Replace(options.OptionPrefix, string.Empty);
+
+                if (optionValuePairs.ContainsKey(argsList[i]))
+                    continue;
+
+                optionValuePairs.Add(argsList[i], argsList[i + 1]);
+            }
+
+            this.MapCommandLineValuesToObjects(optionValuePairs);
+
+            //TODO: Implement this
+
+            //1. Create pairs of option <-> value
+
+            //2. Search the registered types for all objects having a property with option-name
+
+            //3. Assign the value to the correct property of all found objects
+
+            //4. Create IMappingResult
+            //4.1 What information should be in 'IMapperResult'
+        }
+
+        private void MapCommandLineValuesToObjects(IDictionary<string, string> optionValuePairs)
+        {
+            throw new NotImplementedException();
+        }
 
         #endregion
     }

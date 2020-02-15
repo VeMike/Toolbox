@@ -17,13 +17,11 @@ namespace Toolbox.CommandLineMapper.Core.Wrappers
     internal class BooleanAssignableProperty<TAttribute> : AssignablePropertyBase<TAttribute> where TAttribute : Attribute
     {
         /// <inheritdoc />
-        public BooleanAssignableProperty(string name, 
-                                         object owner, 
+        public BooleanAssignableProperty(object owner,
                                          PropertyInfo property,
-                                         TAttribute attribute) : base(name, 
-                                                                       owner, 
-                                                                       property, 
-                                                                       attribute)
+                                         TAttribute attribute) : base(owner, 
+                                                                      property, 
+                                                                      attribute)
         {
         }
 

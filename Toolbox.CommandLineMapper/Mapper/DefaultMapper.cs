@@ -32,7 +32,14 @@ namespace Toolbox.CommandLineMapper.Mapper
         /// </summary>
         public DefaultMapper()
         {
-            this.registeredObjects = new Dictionary<Type, AttributedObjectReflector>();
+            /*
+             * We set the default size to 10, since it is not considered typical to
+             * map many objects to command line parameters. The cost of resizing the
+             * collection is not that high if more than 10 objects are added to the
+             * mapper (such a mapping typically happens just once when an application
+             * is started).
+             */
+            this.registeredObjects = new Dictionary<Type, AttributedObjectReflector>(10);
         }
 
         #endregion
@@ -45,7 +52,7 @@ namespace Toolbox.CommandLineMapper.Mapper
             if (this.IsRegistered<T>())
                 return;
             
-            this.registeredObjects.Add(typeof(T), new AttributedObjectReflector(new T()));
+            this.registeredObjects.Add(typeof(T), new AttributedObjectReflector(() => new T()));
         }
 
         /// <inheritdoc />
@@ -67,9 +74,15 @@ namespace Toolbox.CommandLineMapper.Mapper
         }
 
         /// <inheritdoc />
-        public void Map(string args)
+        public void Map(IEnumerable<string> args)
         {
-            throw new System.NotImplementedException();
+            this.Map(args, new MapperOptions());
+        }
+
+        /// <inheritdoc />
+        public void Map(IEnumerable<string> args, MapperOptions options)
+        {
+            throw new NotImplementedException();
         }
 
         /// <inheritdoc />

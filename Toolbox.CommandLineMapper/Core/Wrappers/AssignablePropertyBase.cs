@@ -32,9 +32,6 @@ namespace Toolbox.CommandLineMapper.Core.Wrappers
         ///     Provides default initialization for assignable
         ///     properties
         /// </summary>
-        /// <param name="name">
-        ///     The name of this <see cref="IAssignableProperty{TAttribute}"/>
-        /// </param>
         /// <param name="owner">
         ///     The <see cref="object"/> that owns the property
         /// </param>
@@ -44,17 +41,14 @@ namespace Toolbox.CommandLineMapper.Core.Wrappers
         /// <param name="attribute">
         ///     The <see cref="Attribute"/> the property has applied
         /// </param>
-        protected AssignablePropertyBase(string name, 
-                                         object owner, 
+        protected AssignablePropertyBase(object owner,
                                          PropertyInfo property,
                                          TAttribute attribute)
         {
-            Guard.AgainstNullArgument(nameof(name), name);
             Guard.AgainstNullArgument(nameof(owner), owner);
             Guard.AgainstNullArgument(nameof(property), property);
             Guard.AgainstNullArgument(nameof(attribute), attribute);
 
-            this.Name = name;
             this.Owner = owner;
             this.property = property;
             this.Attribute = attribute;
@@ -65,7 +59,7 @@ namespace Toolbox.CommandLineMapper.Core.Wrappers
         #region IAssignableProperty Implementation
 
         /// <inheritdoc />
-        public string Name { get; }
+        public string Name => this.property.Name;
 
         /// <inheritdoc />
         public object Owner { get; }
@@ -109,7 +103,6 @@ namespace Toolbox.CommandLineMapper.Core.Wrappers
         protected abstract object Convert(string value);
 
         #endregion
-
 
         #region IEquatable Implementation
 

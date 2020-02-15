@@ -11,7 +11,7 @@ namespace Toolbox.CommandLineMapper.Core.Wrappers
 {
     /// <summary>
     ///     Thrown if the type of objects assigned to an
-    ///     <see cref="IAssignableProperty"/> does not
+    ///     <see cref="IAssignableProperty{TAttribute}"/> does not
     ///     mach the actual type of the property.
     /// </summary>
     internal class TypeMismatchException : Exception

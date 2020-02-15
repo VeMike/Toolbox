@@ -17,11 +17,9 @@ namespace Toolbox.CommandLineMapper.Core.Wrappers
     internal class FloatAssignableProperty<TAttribute> : AssignablePropertyBase<TAttribute> where TAttribute : Attribute
     {
         /// <inheritdoc />
-        public FloatAssignableProperty(string name, 
-                                       object owner, 
+        public FloatAssignableProperty(object owner,
                                        PropertyInfo property,
-                                       TAttribute attribute) : base(name, 
-                                                                    owner, 
+                                       TAttribute attribute) : base(owner, 
                                                                     property, 
                                                                     attribute)
         {

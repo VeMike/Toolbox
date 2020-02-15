@@ -5,6 +5,8 @@
 // = Description :
 // ===================================================================================================
 
+using System.Collections.Generic;
+
 namespace Toolbox.CommandLineMapper.Mapper
 {
     /// <summary>
@@ -49,26 +51,41 @@ namespace Toolbox.CommandLineMapper.Mapper
         bool IsRegistered<T>() where T : new();
 
         /// <summary>
-        ///     Gets the result the <see cref="Map"/> operation for
-        ///     a specific type
+        ///     Gets the result the mapping operation for
+        ///     a specific type.
         /// </summary>
         /// <typeparam name="T">
         ///     The type of objects whose map result should be accessed.
         /// </typeparam>
         /// <returns>
-        ///     The result of the <see cref="Map"/> operation
+        ///     The result of the mapping operation
         /// </returns>
         IMapperResult<T> GetMapperResult<T>() where T : new();
 
         /// <summary>
         ///     Maps the passed <paramref name="args"/> to the objects
-        ///     that were registered at this instance
+        ///     that were registered at this instance.
+        ///     The mapping is made with the default <see cref="MapperOptions"/>
         /// </summary>
         /// <param name="args">
-        ///     An argument string passed to the application when
-        ///     launched.
+        ///     The arguments passed to the applications 'Main'-method
+        ///     when started.
         /// </param>
-        void Map(string args);
+        void Map(IEnumerable<string> args);
+
+        /// <summary>
+        ///     Maps the passed <paramref name="args"/> to the objects
+        ///     that were registered at this instance.
+        ///     The mapping is made with a custom set of <see cref="MapperOptions"/>
+        /// </summary>
+        /// <param name="args">
+        ///     The arguments passed to the applications 'Main'-method
+        ///     when started.
+        /// </param>
+        /// <param name="options">
+        ///     Options for the command line mapping
+        /// </param>
+        void Map(IEnumerable<string> args, MapperOptions options);
 
         #endregion
 

@@ -18,11 +18,9 @@ namespace Toolbox.CommandLineMapper.Core.Wrappers
     internal class CharAssignableProperty<TAttribute> : AssignablePropertyBase<TAttribute> where TAttribute : Attribute
     {
         /// <inheritdoc />
-        public CharAssignableProperty(string name, 
-                                      object owner, 
+        public CharAssignableProperty(object owner,
                                       PropertyInfo property,
-                                      TAttribute attribute) : base(name, 
-                                                                   owner, 
+                                      TAttribute attribute) : base(owner, 
                                                                    property, 
                                                                    attribute)
         {

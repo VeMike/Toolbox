@@ -17,13 +17,11 @@ namespace Toolbox.CommandLineMapper.Core.Wrappers
     internal class ByteAssignableProperty<TAttribute> : AssignablePropertyBase<TAttribute> where TAttribute : Attribute
     {
         /// <inheritdoc />
-        public ByteAssignableProperty(string name, 
-                                      object owner, 
+        public ByteAssignableProperty(object owner,
                                       PropertyInfo property,
-                                      TAttribute attribute) : base(name, 
-                                                                    owner, 
-                                                                    property, 
-                                                                    attribute)
+                                      TAttribute attribute) : base(owner, 
+                                                                   property, 
+                                                                   attribute)
         {
         }
 

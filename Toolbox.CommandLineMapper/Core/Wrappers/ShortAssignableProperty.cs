@@ -17,13 +17,11 @@ namespace Toolbox.CommandLineMapper.Core.Wrappers
     internal class ShortAssignableProperty<TAttribute> : AssignablePropertyBase<TAttribute> where TAttribute : Attribute
     {
         /// <inheritdoc />
-        public ShortAssignableProperty(string name, 
-                                       object owner, 
+        public ShortAssignableProperty(object owner,
                                        PropertyInfo property,
-                                       TAttribute attribute) : base(name, 
-                                                                     owner, 
-                                                                     property, 
-                                                                     attribute)
+                                       TAttribute attribute) : base(owner, 
+                                                                    property, 
+                                                                    attribute)
         {
         }
 

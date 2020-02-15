@@ -18,13 +18,11 @@ namespace Toolbox.CommandLineMapper.Core.Wrappers
     internal sealed class StringAssignableProperty<TAttribute> : AssignablePropertyBase<TAttribute> where TAttribute : Attribute
     {
         /// <inheritdoc />
-        public StringAssignableProperty(string name, 
-                                        object owner, 
+        public StringAssignableProperty(object owner,
                                         PropertyInfo property,
-                                        TAttribute attribute) : base(name, 
-                                                                      owner, 
-                                                                      property, 
-                                                                      attribute)
+                                        TAttribute attribute) : base(owner, 
+                                                                     property, 
+                                                                     attribute)
         {
         }
 

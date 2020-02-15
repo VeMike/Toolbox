@@ -87,7 +87,7 @@ namespace Toolbox.CommandLineMapper.Mapper
             Guard.AgainstNullArgument(nameof(options), options);
 
             // ReSharper disable once PossibleMultipleEnumeration
-            this.ProcessArgumentList(args.ToList(), options);
+            this.ProcessArgumentList(args.Select(a => a.ToLower()).ToList(), options);
         }
 
         /// <inheritdoc />
@@ -102,7 +102,7 @@ namespace Toolbox.CommandLineMapper.Mapper
         ///     the mapping to all registered objects
         /// </summary>
         /// <param name="argsList">
-        ///     A l
+        ///     The list of arguments passed via command line
         /// </param>
         /// <param name="options">
         ///     The <see cref="MapperOptions"/> passed to on of the mapping
@@ -143,9 +143,39 @@ namespace Toolbox.CommandLineMapper.Mapper
             //4.1 What information should be in 'IMapperResult'
         }
 
+        /// <summary>
+        ///     Maps all passed <paramref name="optionValuePairs"/> to the objects that
+        ///     were registered at this mapper class
+        /// </summary>
+        /// <param name="optionValuePairs">
+        ///     The pairs of options and values that are mapped to objects properties.
+        /// </param>
         private void MapCommandLineValuesToObjects(IDictionary<string, string> optionValuePairs)
         {
-            throw new NotImplementedException();
+            foreach (var optionValuePair in optionValuePairs)
+            {
+                foreach (var attributedObject in this.registeredObjects.Values)
+                {
+                    MapCommandLineValueToSingleObject(optionValuePair, 
+                                                      attributedObject);
+                }
+            }
+        }
+
+        /// <summary>
+        ///     Maps a single pair of option and value to all suitable
+        ///     properties of the object held by <paramref name="attributedObject"/>
+        /// </summary>
+        /// <param name="optionValuePair">
+        ///     A single pair of option and value
+        /// </param>
+        /// <param name="attributedObject">
+        ///     An object whose properties are mapped to <paramref name="optionValuePair"/>
+        /// </param>
+        private static void MapCommandLineValueToSingleObject(KeyValuePair<string, string> optionValuePair, 
+                                                              AttributedObjectReflector attributedObject)
+        {
+
         }
 
         #endregion

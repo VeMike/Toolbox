@@ -59,7 +59,7 @@ namespace Toolbox.CommandLineMapper.Core.Wrappers
         #region IAssignableProperty Implementation
 
         /// <inheritdoc />
-        public string Name => this.property.Name;
+        public string Name => this.property.Name.ToLower();
 
         /// <inheritdoc />
         public object Owner { get; }

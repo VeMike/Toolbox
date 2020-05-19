@@ -74,7 +74,7 @@ namespace Toolbox.CommandLineMapper.Core.Wrappers
 
             if (converted.GetType() != this.property.PropertyType)
             {
-                throw new TypeMismatchException("The type of the property does not match the converted type",
+                throw new TypeMismatchException("The type of the property does not match the type returned by 'Convert()'",
                                                 this.property.PropertyType,
                                                 converted.GetType());
             }

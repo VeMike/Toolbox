@@ -27,7 +27,7 @@ namespace Toolbox.CommandLineMapper.Mapper
         ///     The object to register. This is the object to
         ///     whom command line arguments are mapped.
         /// </typeparam>
-        void Register<T>() where T : new();
+        void Register<T>() where T : class, new();
 
         /// <summary>
         ///     The inverse method of <see cref="Register{T}"/>.
@@ -37,7 +37,7 @@ namespace Toolbox.CommandLineMapper.Mapper
         ///     The object to unregister. This object will no longer
         ///     be used for mapping of command line arguments
         /// </typeparam>
-        void UnRegister<T>() where T : new();
+        void UnRegister<T>() where T : class, new();
 
         /// <summary>
         ///     Checks, if a type is registered at this instance
@@ -48,7 +48,7 @@ namespace Toolbox.CommandLineMapper.Mapper
         /// <returns>
         ///     'true' if the type is registered, 'false' otherwise
         /// </returns>
-        bool IsRegistered<T>() where T : new();
+        bool IsRegistered<T>() where T : class, new();
 
         /// <summary>
         ///     Gets the result the mapping operation for
@@ -60,7 +60,7 @@ namespace Toolbox.CommandLineMapper.Mapper
         /// <returns>
         ///     The result of the mapping operation
         /// </returns>
-        IMapperResult<T> GetMapperResult<T>() where T : new();
+        IMapperResult<T> GetMapperResult<T>() where T : class, new();
 
         /// <summary>
         ///     Maps the passed <paramref name="args"/> to the objects

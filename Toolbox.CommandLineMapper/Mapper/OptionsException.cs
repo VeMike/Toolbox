@@ -37,21 +37,29 @@ namespace Toolbox.CommandLineMapper.Mapper
         }
 
         /// <summary>
-        ///     Creates a new instance of the class
+        ///    Creates a new instance of the class
         /// </summary>
         /// <param name="message">
-        ///     The message of the exception
+        ///    The message of the exception    
         /// </param>
-        /// <param name="innerException">
-        ///     The <see cref="Exception"/> that caused this
-        ///     <see cref="OptionsException"/> to be raised.
+        /// <param name="propertyName">
+        ///    The name of the property, that caused this
+        ///    exception.
         /// </param>
-        public OptionsException(string message,
-                 Exception innerException) : base(message,
-                                                  innerException)
+        public OptionsException(string message, string propertyName) : base(message)
         {
-
+            this.PropertyName = propertyName;
         }
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        ///    The name of the property, that caused this
+        ///    exception.
+        /// </summary>
+        public string PropertyName { get;  }    
 
         #endregion
     }

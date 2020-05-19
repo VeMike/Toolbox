@@ -13,7 +13,7 @@ using Toolbox.CommandLineMapper.Test.MockData.MockObjects;
 namespace Toolbox.CommandLineMapper.Test.Tests.Mapper
 {
     [TestFixture]
-    public class MapperTests
+    public class DefaultMapperTests
     {
         #region Tests
 

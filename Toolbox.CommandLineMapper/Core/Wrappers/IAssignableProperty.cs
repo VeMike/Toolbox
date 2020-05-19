@@ -49,7 +49,6 @@ namespace Toolbox.CommandLineMapper.Core.Wrappers
         void Assign(string value);
 
         #endregion
-
-
+        
     }
 }

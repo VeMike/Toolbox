@@ -26,8 +26,8 @@ namespace Toolbox.CommandLineMapper.Core
         #region Attributes
 
         /// <summary>
-        ///     applied <see cref="OptionAttribute"/> or
-        ///     <see cref="ValueAttribute"/> should be reflected  
+        ///     The applied <see cref="OptionAttribute"/> or
+        ///     <see cref="ValueAttribute"/> that should be reflected  
         /// </summary>
         private readonly Lazy<object> source;
 

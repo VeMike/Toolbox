@@ -7,6 +7,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Com.Toolbox.Utils.Probing;
 
 namespace Toolbox.CommandLineMapper.Core.Wrappers
@@ -51,7 +52,6 @@ namespace Toolbox.CommandLineMapper.Core.Wrappers
 
         #endregion
 
-
         #region IPropertyContainer Implementation
 
         /// <inheritdoc />
@@ -65,6 +65,11 @@ namespace Toolbox.CommandLineMapper.Core.Wrappers
             if (this.properties.TryGetValue(name, out var value))
             {
                 return value;
+            }
+
+            foreach (var pair in this.properties.Where(pair => pair.Key.StartsWith(name)))
+            {
+                return pair.Value;
             }
 
             throw new PropertyNotFoundException($"The property '{name}' was not found", name);

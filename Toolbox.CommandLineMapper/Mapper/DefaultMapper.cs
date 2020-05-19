@@ -10,6 +10,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Com.Toolbox.Utils.Probing;
 using Toolbox.CommandLineMapper.Core;
+using Toolbox.CommandLineMapper.Core.Wrappers;
+using Toolbox.CommandLineMapper.Specification;
 
 namespace Toolbox.CommandLineMapper.Mapper
 {
@@ -22,9 +24,9 @@ namespace Toolbox.CommandLineMapper.Mapper
 
         /// <summary>
         ///     Contains the collection of <see cref="object"/> whose
-        ///     attributes are reflected.
+        ///     attributes are reflected and mapped
         /// </summary>
-        private readonly IDictionary<Type, AttributedObjectReflector> registeredObjects;
+        private readonly IDictionary<Type, MapperData> registeredObjects;
 
         #endregion
 
@@ -42,7 +44,7 @@ namespace Toolbox.CommandLineMapper.Mapper
              * mapper (such a mapping typically happens just once when an application
              * is started).
              */
-            this.registeredObjects = new Dictionary<Type, AttributedObjectReflector>(10);
+            this.registeredObjects = new Dictionary<Type, MapperData>(10);
         }
 
         #endregion
@@ -50,30 +52,43 @@ namespace Toolbox.CommandLineMapper.Mapper
         #region ICommandLineMapper Implementation
 
         /// <inheritdoc />
-        public void Register<T>() where T : new()
+        public void Register<T>() where T : class, new()
         {
             if (this.IsRegistered<T>())
                 return;
+
+            var mapperData = new MapperData() {Reflector = new AttributedObjectReflector(() => new T())};
             
-            this.registeredObjects.Add(typeof(T), new AttributedObjectReflector(() => new T()));
+            this.registeredObjects.Add(typeof(T), mapperData);
         }
 
         /// <inheritdoc />
-        public void UnRegister<T>() where T : new()
+        public void UnRegister<T>() where T : class, new()
         {
             this.registeredObjects.Remove(typeof(T));
         }
 
         /// <inheritdoc />
-        public bool IsRegistered<T>() where T : new()
+        public bool IsRegistered<T>() where T : class, new()
         {
             return this.registeredObjects.ContainsKey(typeof(T));
         }
 
         /// <inheritdoc />
-        public IMapperResult<T> GetMapperResult<T>() where T : new()
-        {
-            throw new System.NotImplementedException();
+        /// <exception cref="ArgumentException">
+        ///    Thrown if an object with the passed type was
+        ///     not registered using <see cref="Register{T}"/>
+        ///     before
+        /// </exception>
+        public IMapperResult<T> GetMapperResult<T>() where T : class, new()
+        { 
+            if(!this.IsRegistered<T>())
+                throw new ArgumentException($"The object '{typeof(T).FullName}' is not registered");
+
+            var data = this.registeredObjects[typeof(T)];
+            
+            return new MapperResult<T>(data.Reflector.Source as T,
+                                       data.Errors);
         }
 
         /// <inheritdoc />
@@ -112,15 +127,8 @@ namespace Toolbox.CommandLineMapper.Mapper
         {
             var optionValuePairs = new Dictionary<string, string>();
 
-            for (int i = 0; i < argsList.Count - 1; i++)
+            for (int i = 0; i < argsList.Count - 1; i += 2)
             {
-                /*
-                 * We only need every 2nd iteration. Every first iteration
-                 * is the option, the second the value
-                 */
-                if (i % 2 == 0)
-                    continue;
-
                 argsList[i] = argsList[i].Replace(options.OptionPrefix, string.Empty);
 
                 if (optionValuePairs.ContainsKey(argsList[i]))
@@ -129,18 +137,7 @@ namespace Toolbox.CommandLineMapper.Mapper
                 optionValuePairs.Add(argsList[i], argsList[i + 1]);
             }
 
-            this.MapCommandLineValuesToObjects(optionValuePairs);
-
-            //TODO: Implement this
-
-            //1. Create pairs of option <-> value
-
-            //2. Search the registered types for all objects having a property with option-name
-
-            //3. Assign the value to the correct property of all found objects
-
-            //4. Create IMappingResult
-            //4.1 What information should be in 'IMapperResult'
+            this.MapCommandLineValuesToObjects(optionValuePairs, options);
         }
 
         /// <summary>
@@ -150,32 +147,129 @@ namespace Toolbox.CommandLineMapper.Mapper
         /// <param name="optionValuePairs">
         ///     The pairs of options and values that are mapped to objects properties.
         /// </param>
-        private void MapCommandLineValuesToObjects(IDictionary<string, string> optionValuePairs)
+        /// <param name="mapperOptions">
+        ///    Options for the mapper
+        /// </param>
+        private void MapCommandLineValuesToObjects(IDictionary<string, string> optionValuePairs,
+                                                   MapperOptions mapperOptions)
         {
-            foreach (var optionValuePair in optionValuePairs)
+            foreach (var mapperData in this.registeredObjects.Values)
             {
-                foreach (var attributedObject in this.registeredObjects.Values)
+                foreach (var optionValuePair in optionValuePairs)
                 {
                     MapCommandLineValueToSingleObject(optionValuePair, 
-                                                      attributedObject);
+                                                      mapperData);
+
+                    if (!mapperOptions.ContinueOnError)
+                        break;
                 }
             }
         }
 
         /// <summary>
         ///     Maps a single pair of option and value to all suitable
-        ///     properties of the object held by <paramref name="attributedObject"/>
+        ///     properties of the object held by <paramref name="mapperData.Reflector"/>
         /// </summary>
         /// <param name="optionValuePair">
         ///     A single pair of option and value
         /// </param>
-        /// <param name="attributedObject">
-        ///     An object whose properties are mapped to <paramref name="optionValuePair"/>
+        /// <param name="mapperData">
+        ///    Contains objects required for mapping and receives the result
         /// </param>
-        private static void MapCommandLineValueToSingleObject(KeyValuePair<string, string> optionValuePair, 
-                                                              AttributedObjectReflector attributedObject)
+        private static void MapCommandLineValueToSingleObject(KeyValuePair<string, string> optionValuePair,
+                                                              MapperData mapperData)
         {
+            try
+            {
+                MapCommandLineValueToOption(optionValuePair, mapperData.Reflector.GetOptions());
 
+                MapCommandLineValueToValue(optionValuePair, mapperData.Reflector.GetValues());
+            }
+            catch (Exception e)
+            {
+                mapperData.Errors.Add(new MappingError
+                {
+                    OptionName = optionValuePair.Key,
+                    OptionValue = optionValuePair.Value,
+                    Cause = e
+                });
+            }
+        }
+
+        /// <summary>
+        ///     Maps a single <paramref name="optionValuePair"/> to the
+        ///     first property in the <see cref="IPropertyContainer{TAttribute}"/>
+        ///     whose name matches the <see cref="KeyValuePair{TKey,TValue}.Key"/>
+        /// </summary>
+        /// <param name="optionValuePair">
+        ///    A single option-value pair
+        /// </param>
+        /// <param name="optionProperties">
+        ///    A collection of properties that have an <see cref="OptionAttribute"/>
+        /// </param>
+        /// <exception cref="PropertyNotFoundException">
+        ///    Thrown if a property with a name specified as 'Key' of the passed
+        ///     <paramref name="optionValuePair"/> is not found.
+        /// </exception>
+        /// <exception cref="InvalidCastException">
+        ///    Thrown if the 'Value' of the passed <paramref name="optionValuePair"/>
+        ///     can not be cast/converted to the type of the property.
+        /// </exception>
+        private static void MapCommandLineValueToOption(KeyValuePair<string, string> optionValuePair, 
+                                                        IPropertyContainer<OptionAttribute> optionProperties)
+        {
+            var option = optionProperties.GetProperty(optionValuePair.Key);
+            
+            option.Assign(optionValuePair.Value);
+        }
+
+        /// <summary>
+        ///     Maps a single <paramref name="optionValuePair"/> to the
+        ///     first property in the <see cref="IPropertyContainer{TAttribute}"/>
+        ///     whose name matches the <see cref="KeyValuePair{TKey,TValue}.Key"/>
+        /// </summary>
+        /// <param name="optionValuePair">
+        ///    A single option-value pair
+        /// </param>
+        /// <param name="valueProperties">
+        ///    A collection of properties that have an <see cref="ValueAttribute"/>
+        /// </param>
+        /// <exception cref="PropertyNotFoundException">
+        ///    Thrown if a property with a name specified as 'Key' of the passed
+        ///     <paramref name="optionValuePair"/> is not found.
+        /// </exception>
+        /// <exception cref="InvalidCastException">
+        ///    Thrown if the 'Value' of the passed <paramref name="optionValuePair"/>
+        ///     can not be cast/converted to the type of the property.
+        /// </exception>
+        private static void MapCommandLineValueToValue(KeyValuePair<string, string> optionValuePair, 
+                                                       IPropertyContainer<ValueAttribute> valueProperties)
+        {
+            var value = valueProperties.GetProperty(optionValuePair.Key);
+            
+            value.Assign(optionValuePair.Value);
+        }
+
+        #endregion
+
+        #region Nested Types
+
+        /// <summary>
+        ///     Just a single data object that contains objects required
+        ///     during the mapping
+        /// </summary>
+        private class MapperData
+        {
+            /// <summary>
+            ///     Contains a single object with its properties
+            /// </summary>
+            public AttributedObjectReflector Reflector { get; set; }
+            
+            /// <summary>
+            ///     Contains errors that were caused, when the object held by
+            ///     <see cref="Reflector"/> was mapped to command line arguments
+            /// </summary>
+            public IList<MappingError> Errors { get; } = new List<MappingError>();
         }
 
         #endregion

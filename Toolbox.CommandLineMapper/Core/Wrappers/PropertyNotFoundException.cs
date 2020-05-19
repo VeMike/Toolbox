@@ -14,7 +14,7 @@ namespace Toolbox.CommandLineMapper.Core.Wrappers
     ///     <see cref="IPropertyContainer"/> using a
     ///     name.
     /// </summary>
-    internal class PropertyNotFoundException : Exception
+    public class PropertyNotFoundException : Exception
     {
         /// <summary>
         ///     Creates a new instance of the class

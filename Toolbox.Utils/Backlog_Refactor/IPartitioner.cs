@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Com.Toolbox.Utils.Common
+namespace Com.Toolbox.Utils.Backlog_Refactor
 {
     /// <summary>
     ///     The interface for a class capable of creating partitions of a list of

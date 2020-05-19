@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Com.Toolbox.Utils.Common
+namespace Com.Toolbox.Utils.Backlog_Refactor
 {
     interface IUnmanagedMemory : IDisposable
     {

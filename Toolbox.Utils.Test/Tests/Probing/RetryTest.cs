@@ -7,7 +7,6 @@
 
 using System;
 using Com.Toolbox.Utils.ControlFlow;
-using Com.Toolbox.Utils.Probing;
 using NUnit.Framework;
 
 namespace Toolbox.Utils.Test.Tests.Probing

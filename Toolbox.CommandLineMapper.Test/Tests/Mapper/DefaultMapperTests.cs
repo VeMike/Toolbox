@@ -6,8 +6,11 @@
 // ===================================================================================================
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using NUnit.Framework;
 using Toolbox.CommandLineMapper.Common;
+using Toolbox.CommandLineMapper.Core.Wrappers;
 using Toolbox.CommandLineMapper.Mapper;
 using Toolbox.CommandLineMapper.Test.MockData.MockObjects;
 
@@ -64,6 +67,28 @@ namespace Toolbox.CommandLineMapper.Test.Tests.Mapper
                 Assert.IsTrue(mapper.IsRegistered<OtherOptions>());
             });
         }
+        
+        [Test]
+        public void MapMethodThrowsIfArgumentsAreNull()
+        {
+            Assert.Throws<ArgumentNullException>(() =>
+            {
+                var mapper = new DefaultMapper();
+
+                mapper.Map(null);
+            });
+        }
+
+        [Test]
+        public void MapMethodThrowsIfOptionsAreNull()
+        {
+            Assert.Throws<ArgumentNullException>(() =>
+            {
+                var mapper = new DefaultMapper();
+
+                mapper.Map(Enumerable.Empty<string>(), null);
+            });
+        }
 
         [Test]
         public void GetMapperResultThrowsIfObjectNotRegistered()
@@ -96,6 +121,23 @@ namespace Toolbox.CommandLineMapper.Test.Tests.Mapper
                 Assert.AreEqual("C:\\some\\file\\path", result.Path);
                 Assert.AreEqual(200, result.Size);
             });
+        }
+
+        [Test]
+        public void SingleObjectPropertyIsNotFound()
+        {
+            var result = MapSingleOptionsObject("-p C:\\some\\file\\path -x 200");
+            
+            Assert.IsInstanceOf<PropertyNotFoundException>(result.Errors[0].Cause);
+        }
+
+        [Test]
+        public void SingleObjectPropertyCanNotBeCast()
+        {
+            var result = MapSingleOptionsObject("-p C:\\some\\file\\path -s foo");
+            
+            //Parameter '-s' expects an integer
+            Assert.IsInstanceOf<InvalidCastException>(result.Errors[0].Cause);
         }
 
         #endregion

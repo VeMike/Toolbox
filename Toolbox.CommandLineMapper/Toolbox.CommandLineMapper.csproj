@@ -58,6 +58,8 @@
     <Compile Include="Core\Wrappers\ShortAssignableProperty.cs" />
     <Compile Include="Core\Wrappers\StringAssignableProperty.cs" />
     <Compile Include="Core\Wrappers\TypeMismatchException.cs" />
+    <Compile Include="Mapper\DefaultRegistrationService.cs" />
+    <Compile Include="Mapper\IRegistrationService.cs" />
     <Compile Include="Mapper\MapperResult.cs" />
     <Compile Include="Mapper\MappingError.cs" />
     <Compile Include="Mapper\ICommandLineMapper.cs" />

@@ -49,6 +49,7 @@
     <Compile Include="MockData\MockObjects\Options.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tests\Common\StringExtensionTests.cs" />
+    <Compile Include="Tests\Mapper\DefaultRegistrationServiceTests.cs" />
     <Compile Include="Tests\Mapper\MapperOptionsTests.cs" />
     <Compile Include="Tests\Mapper\DefaultMapperTests.cs" />
   </ItemGroup>

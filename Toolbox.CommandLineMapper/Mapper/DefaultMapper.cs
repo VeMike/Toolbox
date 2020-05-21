@@ -23,10 +23,9 @@ namespace Toolbox.CommandLineMapper.Mapper
         #region Attributes
 
         /// <summary>
-        ///     Contains the collection of <see cref="object"/> whose
-        ///     attributes are reflected and mapped
+        ///     Contains helpers required during object mapping
         /// </summary>
-        private readonly IDictionary<Type, MapperData> registeredObjects;
+        private readonly IList<MapperData> mapperData;
 
         #endregion
 
@@ -35,16 +34,23 @@ namespace Toolbox.CommandLineMapper.Mapper
         /// <summary>
         ///     Creates a new instance of the class
         /// </summary>
-        public DefaultMapper()
+        public DefaultMapper() : this(new DefaultRegistrationService())
         {
-            /*
-             * We set the default size to 10, since it is not considered typical to
-             * map many objects to command line parameters. The cost of resizing the
-             * collection is not that high if more than 10 objects are added to the
-             * mapper (such a mapping typically happens just once when an application
-             * is started).
-             */
-            this.registeredObjects = new Dictionary<Type, MapperData>(10);
+
+        }
+
+        /// <summary>
+        ///     Creates a new instance of the class
+        /// </summary>
+        /// <param name="registrationService">
+        ///    Handles types and instances, that can be registered
+        ///     for command line mapping
+        /// </param>
+        public DefaultMapper(IRegistrationService registrationService)
+        {
+            this.mapperData = new List<MapperData>();
+
+            this.RegistrationService = registrationService;
         }
 
         #endregion
@@ -52,42 +58,19 @@ namespace Toolbox.CommandLineMapper.Mapper
         #region ICommandLineMapper Implementation
 
         /// <inheritdoc />
-        public void Register<T>() where T : class, new()
-        {
-            if (this.IsRegistered<T>())
-                return;
-
-            var mapperData = new MapperData() {Reflector = new AttributedObjectReflector(() => new T())};
-            
-            this.registeredObjects.Add(typeof(T), mapperData);
-        }
-
-        /// <inheritdoc />
-        public void UnRegister<T>() where T : class, new()
-        {
-            this.registeredObjects.Remove(typeof(T));
-        }
-
-        /// <inheritdoc />
-        public bool IsRegistered<T>() where T : class, new()
-        {
-            return this.registeredObjects.ContainsKey(typeof(T));
-        }
-
-        /// <inheritdoc />
         /// <exception cref="ArgumentException">
         ///    Thrown if an object with the passed type was
         ///     not registered using <see cref="Register{T}"/>
         ///     before
         /// </exception>
-        public IMapperResult<T> GetMapperResult<T>() where T : class, new()
+        public IMapperResult<TMapTarget> GetMapperResult<TMapTarget>() where TMapTarget : class, new()
         { 
-            if(!this.IsRegistered<T>())
-                throw new ArgumentException($"The object '{typeof(T).FullName}' is not registered");
+            if(!this.RegistrationService.IsRegistered<TMapTarget>())
+                throw new ArgumentException($"The object '{typeof(TMapTarget).FullName}' is not registered");
 
-            var data = this.registeredObjects[typeof(T)];
+            var data = this.registeredObjects[typeof(TMapTarget)];
             
-            return new MapperResult<T>(data.Reflector.Source as T,
+            return new MapperResult<TMapTarget>(data.Reflector.Source as TMapTarget,
                                        data.Errors);
         }
 
@@ -101,17 +84,29 @@ namespace Toolbox.CommandLineMapper.Mapper
             Guard.AgainstNullArgument(nameof(args), args);
             Guard.AgainstNullArgument(nameof(options), options);
 
+            this.CreateMapperDataObjects();
+            
             // ReSharper disable once PossibleMultipleEnumeration
             this.ProcessArgumentList(args.ToList(), options);
         }
 
         /// <inheritdoc />
-        public int Registrations => this.registeredObjects.Count;
+        public IRegistrationService RegistrationService { get; }
 
         #endregion
 
         #region Methods
 
+        /// <summary>
+        ///     Creates instances of <see cref="MapperData"/> for
+        ///     each object currently registered at the
+        ///     <see cref="RegistrationService"/>
+        /// </summary>
+        private void CreateMapperDataObjects()
+        {
+            throw new NotImplementedException();
+        }
+        
         /// <summary>
         ///     Processes the passed <paramref name="argsList"/> by applying
         ///     the mapping to all registered objects

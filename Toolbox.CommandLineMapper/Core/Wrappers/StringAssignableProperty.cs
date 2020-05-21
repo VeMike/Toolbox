@@ -8,6 +8,7 @@
 
 using System;
 using System.Reflection;
+using Toolbox.CommandLineMapper.Specification;
 
 namespace Toolbox.CommandLineMapper.Core.Wrappers
 {
@@ -15,7 +16,7 @@ namespace Toolbox.CommandLineMapper.Core.Wrappers
     ///     An implementation of <see cref="IAssignableProperty{TAttribute}"/> that
     ///     assigns properties of type <see cref="string"/>
     /// </summary>
-    internal sealed class StringAssignableProperty<TAttribute> : AssignablePropertyBase<TAttribute> where TAttribute : Attribute
+    internal sealed class StringAssignableProperty<TAttribute> : AssignablePropertyBase<TAttribute> where TAttribute : AttributeBase
     {
         /// <inheritdoc />
         public StringAssignableProperty(object owner,

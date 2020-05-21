@@ -7,8 +7,8 @@
 
 
 using System;
+using System.Linq;
 using Com.Toolbox.Utils.Probing;
-using Toolbox.CommandLineMapper.Common;
 
 namespace Toolbox.CommandLineMapper.Specification
 {
@@ -27,7 +27,7 @@ namespace Toolbox.CommandLineMapper.Specification
         ///     The long name of the option consisting of a
         ///     single word.
         /// </param>
-        public OptionAttribute(string longName) : this(longName.ToSingleCharString(), longName)
+        public OptionAttribute(string longName) : this(longName.First().ToString(), longName)
         {
 
         }
@@ -62,24 +62,11 @@ namespace Toolbox.CommandLineMapper.Specification
 
             this.ShortName = shortName;
             this.LongName = longName;
-            this.HasValue = true;
         }
 
         #endregion
 
         #region Properties
-
-        /// <summary>
-        ///     Gets or sets the short name of a command line
-        ///     option. This is just a single character.
-        /// </summary>
-        public string ShortName { get; set; }
-
-        /// <summary>
-        ///     Gets or sets the long name of a command line
-        ///     option. This should be just a single word.
-        /// </summary>
-        public string LongName { get; set; }
 
         /// <summary>
         ///     Indicates if the option is specified with a
@@ -90,7 +77,7 @@ namespace Toolbox.CommandLineMapper.Specification
         ///     - myapp.exe -verbose ('standalone' with no additional value)
         /// 
         /// </summary>
-        public bool HasValue { get; set; }
+        public bool HasValue { get; set; } = true;
 
         #endregion
 

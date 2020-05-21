@@ -7,6 +7,7 @@
 
 using System;
 using System.Reflection;
+using Toolbox.CommandLineMapper.Specification;
 
 namespace Toolbox.CommandLineMapper.Core.Wrappers
 {
@@ -14,7 +15,7 @@ namespace Toolbox.CommandLineMapper.Core.Wrappers
     ///     An implementation of <see cref="IAssignableProperty{TAttribute}"/> that
     ///     assigns properties of type <see cref="bool"/>
     /// </summary>
-    internal class BooleanAssignableProperty<TAttribute> : AssignablePropertyBase<TAttribute> where TAttribute : Attribute
+    internal class BooleanAssignableProperty<TAttribute> : AssignablePropertyBase<TAttribute> where TAttribute : AttributeBase
     {
         /// <inheritdoc />
         public BooleanAssignableProperty(object owner,
@@ -31,6 +32,9 @@ namespace Toolbox.CommandLineMapper.Core.Wrappers
         /// </exception>
         protected override object Convert(string value)
         {
+            if (string.IsNullOrEmpty(value))
+                return default(bool);
+            
             if (bool.TryParse(value, out var boolValue))
             {
                 return boolValue;

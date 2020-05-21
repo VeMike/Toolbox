@@ -102,7 +102,7 @@ namespace Toolbox.CommandLineMapper.Mapper
             Guard.AgainstNullArgument(nameof(options), options);
 
             // ReSharper disable once PossibleMultipleEnumeration
-            this.ProcessArgumentList(args.Select(a => a.ToLower()).ToList(), options);
+            this.ProcessArgumentList(args.ToList(), options);
         }
 
         /// <inheritdoc />
@@ -134,7 +134,7 @@ namespace Toolbox.CommandLineMapper.Mapper
                 if (optionValuePairs.ContainsKey(argsList[i]))
                     continue;
 
-                optionValuePairs.Add(argsList[i], argsList[i + 1]);
+                optionValuePairs.Add(argsList[i].ToLower(), argsList[i + 1]);
             }
 
             this.MapCommandLineValuesToObjects(optionValuePairs, options);
@@ -160,7 +160,7 @@ namespace Toolbox.CommandLineMapper.Mapper
                     MapCommandLineValueToSingleObject(optionValuePair, 
                                                       mapperData);
 
-                    if (!mapperOptions.ContinueOnError)
+                    if (mapperData.Errors.Any() && !mapperOptions.ContinueOnError)
                         break;
                 }
             }
@@ -182,8 +182,6 @@ namespace Toolbox.CommandLineMapper.Mapper
             try
             {
                 MapCommandLineValueToOption(optionValuePair, mapperData.Reflector.GetOptions());
-
-                MapCommandLineValueToValue(optionValuePair, mapperData.Reflector.GetValues());
             }
             catch (Exception e)
             {
@@ -218,36 +216,12 @@ namespace Toolbox.CommandLineMapper.Mapper
         private static void MapCommandLineValueToOption(KeyValuePair<string, string> optionValuePair, 
                                                         IPropertyContainer<OptionAttribute> optionProperties)
         {
+            if (optionProperties.Properties == 0)
+                return;
+            
             var option = optionProperties.GetProperty(optionValuePair.Key);
             
             option.Assign(optionValuePair.Value);
-        }
-
-        /// <summary>
-        ///     Maps a single <paramref name="optionValuePair"/> to the
-        ///     first property in the <see cref="IPropertyContainer{TAttribute}"/>
-        ///     whose name matches the <see cref="KeyValuePair{TKey,TValue}.Key"/>
-        /// </summary>
-        /// <param name="optionValuePair">
-        ///    A single option-value pair
-        /// </param>
-        /// <param name="valueProperties">
-        ///    A collection of properties that have an <see cref="ValueAttribute"/>
-        /// </param>
-        /// <exception cref="PropertyNotFoundException">
-        ///    Thrown if a property with a name specified as 'Key' of the passed
-        ///     <paramref name="optionValuePair"/> is not found.
-        /// </exception>
-        /// <exception cref="InvalidCastException">
-        ///    Thrown if the 'Value' of the passed <paramref name="optionValuePair"/>
-        ///     can not be cast/converted to the type of the property.
-        /// </exception>
-        private static void MapCommandLineValueToValue(KeyValuePair<string, string> optionValuePair, 
-                                                       IPropertyContainer<ValueAttribute> valueProperties)
-        {
-            var value = valueProperties.GetProperty(optionValuePair.Key);
-            
-            value.Assign(optionValuePair.Value);
         }
 
         #endregion

@@ -7,6 +7,7 @@
 
 using System;
 using System.Reflection;
+using Toolbox.CommandLineMapper.Specification;
 
 namespace Toolbox.CommandLineMapper.Core.Wrappers
 {
@@ -14,7 +15,7 @@ namespace Toolbox.CommandLineMapper.Core.Wrappers
     ///     An implementation of <see cref="IAssignableProperty{TAttribute}"/> that
     ///     assigns properties of type <see cref="float"/>
     /// </summary>
-    internal class FloatAssignableProperty<TAttribute> : AssignablePropertyBase<TAttribute> where TAttribute : Attribute
+    internal class FloatAssignableProperty<TAttribute> : AssignablePropertyBase<TAttribute> where TAttribute : AttributeBase
     {
         /// <inheritdoc />
         public FloatAssignableProperty(object owner,
@@ -31,6 +32,9 @@ namespace Toolbox.CommandLineMapper.Core.Wrappers
         /// </exception>
         protected override object Convert(string value)
         {
+            if (string.IsNullOrEmpty(value))
+                return default(float);
+            
             if (float.TryParse(value, out var floatValue))
             {
                 return floatValue;

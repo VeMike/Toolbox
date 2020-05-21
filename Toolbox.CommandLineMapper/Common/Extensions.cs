@@ -5,49 +5,46 @@
 // = Description :
 // ===================================================================================================
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
 namespace Toolbox.CommandLineMapper.Common
 {
     /// <summary>
     ///     A collection of extension methods for <see cref="string"/>
     /// </summary>
-    internal static class StringExtensions
+    public static class StringExtensions
     {
         /// <summary>
-        ///     Converts this <see cref="string"/> to a single
-        ///     <see cref="char"/> by stripping all it's characters after
-        ///     the first one.
+        ///     Splits a single string with command line arguments
+        ///     into single parts with a single argument
+        ///     e.g.
+        ///         Pass: '-p SomeOptionValue -a AnotherValue'
+        ///         Result: ['-p', 'SomeOptionValue', '-a', 'AnotherValue']
         /// </summary>
         /// <param name="value">
-        ///     The string converted to a single character
+        ///    The single string that should be splitted
+        /// </param>
+        /// <param name="splitChar">
+        ///    The character used to split <paramref name="value"/>
+        /// </param>
+        /// <param name="skip">
+        ///    The amount of characters that should be skipped
+        ///    from the resulting enumeration. 
         /// </param>
         /// <returns>
-        ///    The first character of the <paramref name="value"/>.
-        ///    If the string is empty 'default(char)' is returned.
+        ///    The single parts of the passed <paramref name="value"/>
+        ///    split at <paramref name="splitChar"/>
         /// </returns>
-        public static char ToChar(this string value)
+        public static IEnumerable<string> SplitArguments(this string value, 
+                                                         string splitChar = " ", 
+                                                         int skip = 0)
         {
-            if (value.Length >= 1)
-            {
-                return value[0];
-            }
-
-            return default;
-        }
-
-        /// <summary>
-        ///     Converts this <see cref="string"/> to a new
-        ///     string consisting of a single <see cref="char"/>
-        ///     by stripping all it's characters after
-        ///     the first one.
-        /// </summary>
-        ///     The string converted to a single character
-        /// <returns>
-        ///    The first character of the <paramref name="value"/>.
-        ///    If the string is empty <see cref="string.Empty"/> is returned.
-        /// </returns>
-        public static string ToSingleCharString(this string value)
-        {
-            return value.ToChar().ToString();
+            if(string.IsNullOrEmpty(splitChar))
+                throw new ArgumentException($"'{nameof(splitChar)}' can not be null or empty");
+            
+            return value.Split(new[] {splitChar}, StringSplitOptions.RemoveEmptyEntries).Skip(skip);
         }
     }
 }

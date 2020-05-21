@@ -5,9 +5,9 @@
 // = Description :
 // ===================================================================================================
 
-using System;
 using System.Reflection;
 using Com.Toolbox.Utils.Probing;
+using Toolbox.CommandLineMapper.Specification;
 
 namespace Toolbox.CommandLineMapper.Core.Wrappers
 {
@@ -15,7 +15,7 @@ namespace Toolbox.CommandLineMapper.Core.Wrappers
     ///     The base implementation/skelleton for assignable
     ///     properties.
     /// </summary>
-    internal abstract class AssignablePropertyBase<TAttribute> : IAssignableProperty<TAttribute> where TAttribute : Attribute
+    internal abstract class AssignablePropertyBase<TAttribute> : IAssignableProperty<TAttribute> where TAttribute : AttributeBase
     {
         #region Attributes
 
@@ -52,6 +52,8 @@ namespace Toolbox.CommandLineMapper.Core.Wrappers
             this.Owner = owner;
             this.property = property;
             this.Attribute = attribute;
+            
+            this.Assign(this.Attribute.Default);
         }
 
         #endregion

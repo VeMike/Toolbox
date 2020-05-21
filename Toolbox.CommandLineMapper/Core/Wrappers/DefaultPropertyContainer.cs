@@ -6,6 +6,7 @@
 // ===================================================================================================
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Com.Toolbox.Utils.Probing;
@@ -58,6 +59,9 @@ namespace Toolbox.CommandLineMapper.Core.Wrappers
         public object Source { get; }
 
         /// <inheritdoc />
+        public int Properties => this.properties.Count;
+
+        /// <inheritdoc />
         public IAssignableProperty<TAttribute> GetProperty(string name)
         {
             Guard.AgainstNullArgument(nameof(name), name);
@@ -74,6 +78,12 @@ namespace Toolbox.CommandLineMapper.Core.Wrappers
 
             throw new PropertyNotFoundException($"The property '{name}' was not found", name);
         }
+        
+        /// <inheritdoc />
+        public IEnumerator<string> GetEnumerator() => this.properties.Keys.GetEnumerator();
+
+        /// <inheritdoc />
+        IEnumerator IEnumerable.GetEnumerator() => this.GetEnumerator();
 
         #endregion
 

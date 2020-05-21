@@ -68,7 +68,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Specification\AttributeBase.cs" />
     <Compile Include="Specification\OptionAttribute.cs" />
-    <Compile Include="Specification\ValueAttribute.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Toolbox.Utils\Toolbox.Utils.csproj">

@@ -15,37 +15,36 @@ namespace Toolbox.CommandLineMapper.Specification
     /// </summary>
     public class AttributeBase : Attribute
     {
-        #region Constructor
-
-        /// <summary>
-        ///     Default initialization of properties
-        /// </summary>
-        public AttributeBase()
-        {
-            this.HelpText = string.Empty;
-            this.IsRequired = false;
-        }
-
-        #endregion
-
         #region Properties
 
         /// <summary>
         ///     Gets or sets the help text for a command line option.
         /// </summary>
-        public string HelpText { get; set; }
+        public string HelpText { get; set; } = string.Empty;
 
         /// <summary>
         ///     Gets or sets the default value for a command line
         ///     option.
         /// </summary>
-        public string Default { get; set; }
+        public string Default { get; set; } = string.Empty;
 
         /// <summary>
         ///     Gets or sets a value indicating, if the option
         ///     is required.
         /// </summary>
-        public bool IsRequired { get; set; }
+        public bool IsRequired { get; set; } = false;
+
+        /// <summary>
+        ///     Gets or sets the short name of a command line
+        ///     option. This is just a single character.
+        /// </summary>
+        public string ShortName { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the long name of a command line
+        ///     option. This should be just a single word.
+        /// </summary>
+        public string LongName { get; set; }
 
         #endregion
     }

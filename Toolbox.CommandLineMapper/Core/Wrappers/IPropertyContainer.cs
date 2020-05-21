@@ -6,14 +6,19 @@
 // ===================================================================================================
 
 using System;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace Toolbox.CommandLineMapper.Core.Wrappers
 {
     /// <summary>
     ///     Wraps around any <see cref="object"/> that has
-    ///     <see cref="IAssignableProperty{TAttribute}"/>s
+    ///     <see cref="IAssignableProperty{TAttribute}"/>s.
+    ///
+    ///     When enumerated, gets all the names of properties
+    ///     currently held by this instance
     /// </summary>
-    internal interface IPropertyContainer<TAttribute> where TAttribute : Attribute
+    internal interface IPropertyContainer<TAttribute> : IEnumerable<string> where TAttribute : Attribute
     {
         #region Properties
 
@@ -22,6 +27,12 @@ namespace Toolbox.CommandLineMapper.Core.Wrappers
         ///     inside container instance
         /// </summary>
         object Source { get; }
+        
+        /// <summary>
+        ///     Gets the amount of properties this
+        ///     container holds
+        /// </summary>
+        int Properties { get; }
 
         #endregion
 

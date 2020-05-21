@@ -31,6 +31,12 @@ namespace Toolbox.CommandLineMapper.Core
         /// </summary>
         private readonly Lazy<object> source;
 
+        /// <summary>
+        ///     Contains all properties of an object that have
+        ///     an <see cref="OptionAttribute"/>
+        /// </summary>
+        private readonly Lazy<IPropertyContainer<OptionAttribute>> propertyContainer;
+        
         #endregion
 
         #region Constructor
@@ -67,6 +73,7 @@ namespace Toolbox.CommandLineMapper.Core
             Guard.AgainstNullArgument(nameof(objectFactory), objectFactory);
 
             this.source = new Lazy<object>(objectFactory);
+            this.propertyContainer = new Lazy<IPropertyContainer<OptionAttribute>>(this.CreateContainerForAttribute<OptionAttribute>);
         }
 
         #endregion
@@ -91,21 +98,7 @@ namespace Toolbox.CommandLineMapper.Core
         /// </returns>
         public IPropertyContainer<OptionAttribute> GetOptions()
         {
-            return this.CreateContainerForAttribute<OptionAttribute>();
-        }
-
-        /// <summary>
-        ///     A wrapper around the <see cref="object"/> passed as
-        ///     constructor argument, that contains all properties
-        ///     of this object who have an applied <see cref="OptionAttribute"/>
-        /// </summary>
-        /// <returns>
-        ///     The <see cref="IPropertyContainer{TAttribute}"/> that represents
-        ///     a wrapper around the constructor argument.
-        /// </returns>
-        public IPropertyContainer<ValueAttribute> GetValues()
-        {
-            return this.CreateContainerForAttribute<ValueAttribute>();
+            return this.propertyContainer.Value;
         }
 
         #endregion
@@ -123,7 +116,7 @@ namespace Toolbox.CommandLineMapper.Core
         ///     A new <see cref="IPropertyContainer{TAttribute}"/> for the object passed
         ///     as the constructor argument
         /// </returns>
-        private IPropertyContainer<TAttribute> CreateContainerForAttribute<TAttribute>() where TAttribute : Attribute
+        private IPropertyContainer<TAttribute> CreateContainerForAttribute<TAttribute>() where TAttribute : AttributeBase
         {
             return new DefaultPropertyContainer<TAttribute>(this.source.Value, this.CreateAssignableProperties<TAttribute>());
         }
@@ -142,10 +135,12 @@ namespace Toolbox.CommandLineMapper.Core
         ///     A collection of <see cref="IAssignableProperty{TAttribute}"/>s of
         ///     the object passed as the constructor argument
         /// </returns>
-        private IEnumerable<IAssignableProperty<TAttribute>> CreateAssignableProperties<TAttribute>() where TAttribute : Attribute
+        private IEnumerable<IAssignableProperty<TAttribute>> CreateAssignableProperties<TAttribute>() where TAttribute : AttributeBase
         {
             foreach (var property in this.source.Value.GetType().GetProperties())
             {
+                if (!Attribute.IsDefined(property, typeof(TAttribute)))
+                    yield break;
                 yield return this.CreateTypedAssignableProperty<TAttribute>(property);
             }
         }
@@ -166,9 +161,9 @@ namespace Toolbox.CommandLineMapper.Core
         ///     A new instance of <see cref="IAssignableProperty{TAttribute}"/> that matches
         ///     the type of the <paramref name="property"/>
         /// </returns>
-        private IAssignableProperty<TAttribute> CreateTypedAssignableProperty<TAttribute>(PropertyInfo property) where TAttribute : Attribute
+        private IAssignableProperty<TAttribute> CreateTypedAssignableProperty<TAttribute>(PropertyInfo property) where TAttribute : AttributeBase
         {
-            var propertyType = property.GetType();
+            var propertyType = property.PropertyType;
             //Multiple attributes of the same type are not supported. Accessing [0] is fine
             var attribute = property.GetCustomAttributes(typeof(TAttribute), true)[0] as TAttribute;
 

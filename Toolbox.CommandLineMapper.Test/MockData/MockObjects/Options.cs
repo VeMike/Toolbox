@@ -5,6 +5,8 @@
 // = Description :
 // ===================================================================================================
 
+using Toolbox.CommandLineMapper.Specification;
+
 namespace Toolbox.CommandLineMapper.Test.MockData.MockObjects
 {
     /// <summary>
@@ -13,7 +15,11 @@ namespace Toolbox.CommandLineMapper.Test.MockData.MockObjects
     /// </summary>
     public class Options
     {
+        [Option("p", "path")]
+        public string Path { get; set; }
         
+        [Option("s", "size")]
+        public int Size { get; set; }
     }
     
     /// <summary>

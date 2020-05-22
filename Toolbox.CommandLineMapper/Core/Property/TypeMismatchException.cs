@@ -7,7 +7,7 @@
 
 using System;
 
-namespace Toolbox.CommandLineMapper.Core.Wrappers
+namespace Toolbox.CommandLineMapper.Core.Property
 {
     /// <summary>
     ///     Thrown if the type of objects assigned to an

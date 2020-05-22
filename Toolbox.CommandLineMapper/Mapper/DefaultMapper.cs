@@ -9,8 +9,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Com.Toolbox.Utils.Probing;
+using Toolbox.CommandLineMapper.Common;
 using Toolbox.CommandLineMapper.Core;
-using Toolbox.CommandLineMapper.Core.Wrappers;
+using Toolbox.CommandLineMapper.Core.Property;
 using Toolbox.CommandLineMapper.Specification;
 
 namespace Toolbox.CommandLineMapper.Mapper
@@ -25,7 +26,12 @@ namespace Toolbox.CommandLineMapper.Mapper
         /// <summary>
         ///     Contains helpers required during object mapping
         /// </summary>
-        private readonly IList<MapperData> mapperData;
+        private readonly List<MapperData> mapperDatas;
+
+        /// <summary>
+        ///     An instance of <see cref="IAssignablePropertyFactory{TAttribute}"/>
+        /// </summary>
+        private readonly IAssignablePropertyFactory<OptionAttribute> assignablePropertyFactory;
 
         #endregion
 
@@ -34,23 +40,70 @@ namespace Toolbox.CommandLineMapper.Mapper
         /// <summary>
         ///     Creates a new instance of the class
         /// </summary>
-        public DefaultMapper() : this(new DefaultRegistrationService())
+        public DefaultMapper() : this(new DefaultRegistrationService(),
+                                      new DefaultAssignablePropertyFactory<OptionAttribute>())
         {
-
+            
         }
 
         /// <summary>
-        ///     Creates a new instance of the class
+        ///     Creates a new instance of the class. This constructor
+        ///     allows to provide a custom <see cref="IRegistrationService"/>
         /// </summary>
         /// <param name="registrationService">
         ///    Handles types and instances, that can be registered
         ///     for command line mapping
         /// </param>
-        public DefaultMapper(IRegistrationService registrationService)
+        /// <exception cref="ArgumentNullException">
+        ///    Thrown if the passed argument is null
+        /// </exception>
+        public DefaultMapper(IRegistrationService registrationService) 
+            : this(registrationService, new DefaultAssignablePropertyFactory<OptionAttribute>())
         {
-            this.mapperData = new List<MapperData>();
+
+        }
+
+        /// <summary>
+        ///     Creates a new instance of the class. This constructor allows
+        ///     to provide a custom <see cref="IAssignablePropertyFactory{TAttribute}"/>
+        /// </summary>
+        /// <param name="assignablePropertyFactory">
+        ///    The factory that provides instances of <see cref="IAssignableProperty{TAttribute}"/>
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        ///    Thrown if the passed argument is null
+        /// </exception>
+        public DefaultMapper(IAssignablePropertyFactory<OptionAttribute> assignablePropertyFactory) 
+            : this(new DefaultRegistrationService(), assignablePropertyFactory)
+            
+        {
+            
+        }
+
+        /// <summary>
+        ///     Creates a new instance of the class. This constructor allows to
+        ///     specify a custom <see cref="IRegistrationService"/> and
+        ///     <see cref="IAssignablePropertyFactory{TAttribute}"/>
+        /// </summary>
+        /// <param name="registrationService">
+        ///    An instance of <see cref="IRegistrationService"/>
+        /// </param>
+        /// <param name="assignablePropertyFactory">
+        ///    An instance of <see cref="IAssignablePropertyFactory{TAttribute}"/>
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        ///    Thrown if either of the arguments is null
+        /// </exception>
+        public DefaultMapper(IRegistrationService registrationService,
+                             IAssignablePropertyFactory<OptionAttribute> assignablePropertyFactory)
+        {
+            Guard.AgainstNullArgument(nameof(registrationService), registrationService);
+            Guard.AgainstNullArgument(nameof(assignablePropertyFactory), assignablePropertyFactory);
+            
+            this.mapperDatas = new List<MapperData>();
 
             this.RegistrationService = registrationService;
+            this.assignablePropertyFactory = assignablePropertyFactory;
         }
 
         #endregion
@@ -68,10 +121,10 @@ namespace Toolbox.CommandLineMapper.Mapper
             if(!this.RegistrationService.IsRegistered<TMapTarget>())
                 throw new ArgumentException($"The object '{typeof(TMapTarget).FullName}' is not registered");
 
-            var data = this.registeredObjects[typeof(TMapTarget)];
+            var data = this.mapperDatas.Find(m => m.Reflector.Source.GetType() == typeof(TMapTarget));
             
             return new MapperResult<TMapTarget>(data.Reflector.Source as TMapTarget,
-                                       data.Errors);
+                                                data.Errors);
         }
 
         /// <inheritdoc />
@@ -87,7 +140,7 @@ namespace Toolbox.CommandLineMapper.Mapper
             this.CreateMapperDataObjects();
             
             // ReSharper disable once PossibleMultipleEnumeration
-            this.ProcessArgumentList(args.ToList(), options);
+            this.ProcessArgumentList(args.ToArgument(options.OptionPrefix), options);
         }
 
         /// <inheritdoc />
@@ -104,58 +157,39 @@ namespace Toolbox.CommandLineMapper.Mapper
         /// </summary>
         private void CreateMapperDataObjects()
         {
-            throw new NotImplementedException();
+            foreach (var type in this.RegistrationService)
+            {
+                this.mapperDatas.Add(new MapperData
+                {
+                    Reflector = new AttributedObjectReflector<OptionAttribute>(this.RegistrationService.GetInstanceOf(type),
+                                                                               this.assignablePropertyFactory)
+                });
+            }
         }
         
         /// <summary>
-        ///     Processes the passed <paramref name="argsList"/> by applying
+        ///     Processes the passed <paramref name="arguments"/> by applying
         ///     the mapping to all registered objects
         /// </summary>
-        /// <param name="argsList">
+        /// <param name="arguments">
         ///     The list of arguments passed via command line
         /// </param>
         /// <param name="options">
         ///     The <see cref="MapperOptions"/> passed to on of the mapping
         ///     methods
         /// </param>
-        private void ProcessArgumentList(IList<string> argsList, MapperOptions options)
+        private void ProcessArgumentList(IEnumerable<Argument> arguments, MapperOptions options)
         {
-            var optionValuePairs = new Dictionary<string, string>();
-
-            for (int i = 0; i < argsList.Count - 1; i += 2)
+            var argsList = arguments.ToList();
+            
+            foreach (var mapperData in this.mapperDatas)
             {
-                argsList[i] = argsList[i].Replace(options.OptionPrefix, string.Empty);
-
-                if (optionValuePairs.ContainsKey(argsList[i]))
-                    continue;
-
-                optionValuePairs.Add(argsList[i].ToLower(), argsList[i + 1]);
-            }
-
-            this.MapCommandLineValuesToObjects(optionValuePairs, options);
-        }
-
-        /// <summary>
-        ///     Maps all passed <paramref name="optionValuePairs"/> to the objects that
-        ///     were registered at this mapper class
-        /// </summary>
-        /// <param name="optionValuePairs">
-        ///     The pairs of options and values that are mapped to objects properties.
-        /// </param>
-        /// <param name="mapperOptions">
-        ///    Options for the mapper
-        /// </param>
-        private void MapCommandLineValuesToObjects(IDictionary<string, string> optionValuePairs,
-                                                   MapperOptions mapperOptions)
-        {
-            foreach (var mapperData in this.registeredObjects.Values)
-            {
-                foreach (var optionValuePair in optionValuePairs)
+                foreach (var argument in argsList)
                 {
-                    MapCommandLineValueToSingleObject(optionValuePair, 
+                    MapCommandLineValueToSingleObject(argument, 
                                                       mapperData);
 
-                    if (mapperData.Errors.Any() && !mapperOptions.ContinueOnError)
+                    if (mapperData.Errors.Any() && !options.ContinueOnError)
                         break;
                 }
             }
@@ -165,37 +199,36 @@ namespace Toolbox.CommandLineMapper.Mapper
         ///     Maps a single pair of option and value to all suitable
         ///     properties of the object held by <paramref name="mapperData.Reflector"/>
         /// </summary>
-        /// <param name="optionValuePair">
-        ///     A single pair of option and value
+        /// <param name="argument">
+        ///     A single <see cref="Argument"/> passed via command line
         /// </param>
         /// <param name="mapperData">
         ///    Contains objects required for mapping and receives the result
         /// </param>
-        private static void MapCommandLineValueToSingleObject(KeyValuePair<string, string> optionValuePair,
+        private static void MapCommandLineValueToSingleObject(Argument argument,
                                                               MapperData mapperData)
         {
             try
             {
-                MapCommandLineValueToOption(optionValuePair, mapperData.Reflector.GetOptions());
+                MapCommandLineValueToOption(argument, mapperData.Reflector.GetOptions());
             }
             catch (Exception e)
             {
                 mapperData.Errors.Add(new MappingError
                 {
-                    OptionName = optionValuePair.Key,
-                    OptionValue = optionValuePair.Value,
+                    Argument = argument,
                     Cause = e
                 });
             }
         }
 
         /// <summary>
-        ///     Maps a single <paramref name="optionValuePair"/> to the
+        ///     Maps a single <paramref name="argument"/> to the
         ///     first property in the <see cref="IPropertyContainer{TAttribute}"/>
         ///     whose name matches the <see cref="KeyValuePair{TKey,TValue}.Key"/>
         /// </summary>
-        /// <param name="optionValuePair">
-        ///    A single option-value pair
+        /// <param name="argument">
+        ///    A single <see cref="Argument"/>
         /// </param>
         /// <param name="optionProperties">
         ///    A collection of properties that have an <see cref="OptionAttribute"/>
@@ -208,15 +241,15 @@ namespace Toolbox.CommandLineMapper.Mapper
         ///    Thrown if the 'Value' of the passed <paramref name="optionValuePair"/>
         ///     can not be cast/converted to the type of the property.
         /// </exception>
-        private static void MapCommandLineValueToOption(KeyValuePair<string, string> optionValuePair, 
+        private static void MapCommandLineValueToOption(Argument argument, 
                                                         IPropertyContainer<OptionAttribute> optionProperties)
         {
             if (optionProperties.Properties == 0)
                 return;
             
-            var option = optionProperties.GetProperty(optionValuePair.Key);
-            
-            option.Assign(optionValuePair.Value);
+            var option = optionProperties.GetProperty(argument.CommandWithoutPrefix);
+
+            option.Assign(argument.HasValue ? argument.Value : string.Empty);
         }
 
         #endregion
@@ -232,7 +265,7 @@ namespace Toolbox.CommandLineMapper.Mapper
             /// <summary>
             ///     Contains a single object with its properties
             /// </summary>
-            public AttributedObjectReflector Reflector { get; set; }
+            public AttributedObjectReflector<OptionAttribute> Reflector { get; set; }
             
             /// <summary>
             ///     Contains errors that were caused, when the object held by

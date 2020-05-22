@@ -81,5 +81,15 @@ namespace Toolbox.CommandLineMapper.Specification
 
         #endregion
 
+        #region ToString
+
+        /// <inheritdoc />
+        public override string ToString()
+        {
+            return $"{base.ToString()}, {nameof(this.HasValue)}: {this.HasValue}";
+        }
+
+        #endregion
+
     }
 }

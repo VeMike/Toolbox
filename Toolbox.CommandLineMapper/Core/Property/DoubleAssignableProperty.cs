@@ -6,10 +6,10 @@
 // ===================================================================================================
 
 using System;
-using System.Reflection;
+using System.Globalization;
 using Toolbox.CommandLineMapper.Specification;
 
-namespace Toolbox.CommandLineMapper.Core.Wrappers
+namespace Toolbox.CommandLineMapper.Core.Property
 {
     /// <summary>
     ///     An implementation of <see cref="IAssignableProperty{TAttribute}"/> that
@@ -18,12 +18,9 @@ namespace Toolbox.CommandLineMapper.Core.Wrappers
     internal class DoubleAssignableProperty<TAttribute> : AssignablePropertyBase<TAttribute> where TAttribute : AttributeBase
     {
         /// <inheritdoc />
-        public DoubleAssignableProperty(object owner,
-                                        PropertyInfo property,
-                                        TAttribute attribute) : base(owner, 
-                                                                     property, 
-                                                                     attribute)
+        public DoubleAssignableProperty()
         {
+            this.AssignableType = typeof(double);
         }
 
         /// <inheritdoc />
@@ -35,7 +32,7 @@ namespace Toolbox.CommandLineMapper.Core.Wrappers
             if (string.IsNullOrEmpty(value))
                 return default(double);
             
-            if (double.TryParse(value, out var doubleValue))
+            if (double.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out var doubleValue))
             {
                 return doubleValue;
             }

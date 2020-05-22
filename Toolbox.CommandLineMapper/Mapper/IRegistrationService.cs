@@ -55,16 +55,13 @@ namespace Toolbox.CommandLineMapper.Mapper
         bool IsRegistered<TMapTarget>() where TMapTarget : class, new();
 
         /// <summary>
-        ///     Gets an instance of <typeparam name="TMapTarget"/>
+        ///     Gets an instance of the passed <see cref="type"/>
         /// </summary>
-        /// <typeparam name="TMapTarget">
-        ///    The type whose instance shall be accessed
-        /// </typeparam>
         /// <returns>
-        ///    An instance of <typeparam name="TMapTarget"/>. Each
+        ///    An instance of <paramref name="type"/>. Each
         ///     call returns the same instance. 
         /// </returns>
-        TMapTarget GetInstance<TMapTarget>() where TMapTarget : class, new();
+        object GetInstanceOf(Type type);
 
         #endregion
 

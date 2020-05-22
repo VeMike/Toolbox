@@ -6,10 +6,9 @@
 // ===================================================================================================
 
 using System;
-using System.Reflection;
 using Toolbox.CommandLineMapper.Specification;
 
-namespace Toolbox.CommandLineMapper.Core.Wrappers
+namespace Toolbox.CommandLineMapper.Core.Property
 {
     /// <summary>
     ///     An implementation of <see cref="IAssignableProperty{TAttribute}"/> that
@@ -18,12 +17,9 @@ namespace Toolbox.CommandLineMapper.Core.Wrappers
     internal class BooleanAssignableProperty<TAttribute> : AssignablePropertyBase<TAttribute> where TAttribute : AttributeBase
     {
         /// <inheritdoc />
-        public BooleanAssignableProperty(object owner,
-                                         PropertyInfo property,
-                                         TAttribute attribute) : base(owner, 
-                                                                      property, 
-                                                                      attribute)
+        public BooleanAssignableProperty()
         {
+            this.AssignableType = typeof(bool);
         }
 
         /// <inheritdoc />
@@ -32,9 +28,17 @@ namespace Toolbox.CommandLineMapper.Core.Wrappers
         /// </exception>
         protected override object Convert(string value)
         {
-            if (string.IsNullOrEmpty(value))
+            if (value is null)
                 return default(bool);
             
+            /*
+             * For boolean properties, an empty string indicates, that an argument
+             * is present on the command line. Boolean arguments do no really required
+             * a value.
+             */
+            if (value.Equals(string.Empty))
+                return true;
+
             if (bool.TryParse(value, out var boolValue))
             {
                 return boolValue;

@@ -6,7 +6,8 @@
 // ===================================================================================================
 
 using System;
-using Toolbox.CommandLineMapper.Core.Wrappers;
+using Toolbox.CommandLineMapper.Common;
+using Toolbox.CommandLineMapper.Core.Property;
 
 namespace Toolbox.CommandLineMapper.Mapper
 {
@@ -17,16 +18,10 @@ namespace Toolbox.CommandLineMapper.Mapper
     public class MappingError
     {
         /// <summary>
-        ///     The name of the option as it was specified
-        ///     on the command line
+        ///     The argument that failed to be mapped to
+        ///     an object
         /// </summary>
-        public string OptionName { get; set; }
-        
-        /// <summary>
-        ///     The value of the option as it was specified
-        ///     on the command line
-        /// </summary>
-        public string OptionValue { get; set; }
+        public Argument Argument { get; set; }
         
         /// <summary>
         ///     The <see cref="Exception"/> that caused the mapping to

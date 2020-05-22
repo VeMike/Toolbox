@@ -17,48 +17,60 @@ namespace Toolbox.CommandLineMapper.Test.Tests.Mapper
         [Test]
         public void TypeCanBeRegistered()
         {
-            var mapper = new DefaultRegistrationService();
+            var service = new DefaultRegistrationService();
 
-            mapper.Register<Options>();
+            service.Register<Options>();
 
-            Assert.IsTrue(mapper.IsRegistered<Options>());
+            Assert.IsTrue(service.IsRegistered<Options>());
         }
 
         [Test]
         public void SameTypeOnlyRegisteredOnce()
         {
-            var mapper = new DefaultRegistrationService();
+            var service = new DefaultRegistrationService();
 
-            mapper.Register<Options>();
-            mapper.Register<Options>();
+            service.Register<Options>();
+            service.Register<Options>();
 
-            Assert.AreEqual(1, mapper.Registrations);
+            Assert.AreEqual(1, service.Registrations);
         }
 
         [Test]
         public void RegisteredTypeCanBeRemoved()
         {
-            var mapper = new DefaultRegistrationService();
+            var service = new DefaultRegistrationService();
 
-            mapper.Register<Options>();
-            mapper.UnRegister<Options>();
+            service.Register<Options>();
+            service.UnRegister<Options>();
 
-            Assert.IsFalse(mapper.IsRegistered<Options>());
+            Assert.IsFalse(service.IsRegistered<Options>());
         }
 
         [Test]
         public void DifferentTypesCanBeRegistered()
         {
-            var mapper = new DefaultRegistrationService();
+            var service = new DefaultRegistrationService();
 
-            mapper.Register<Options>();
-            mapper.Register<OtherOptions>();
+            service.Register<Options>();
+            service.Register<OtherOptions>();
 
             Assert.Multiple(() =>
             {
-                Assert.IsTrue(mapper.IsRegistered<Options>());
-                Assert.IsTrue(mapper.IsRegistered<OtherOptions>());
+                Assert.IsTrue(service.IsRegistered<Options>());
+                Assert.IsTrue(service.IsRegistered<OtherOptions>());
             });
+        }
+
+        [Test]
+        public void InstanceOfTypeIsReturned()
+        {
+            var service = new DefaultRegistrationService();
+            
+            service.Register<Options>();
+
+            var instance = service.GetInstanceOf(typeof(Options));
+            
+            Assert.IsInstanceOf<Options>(instance);
         }
     }
 }

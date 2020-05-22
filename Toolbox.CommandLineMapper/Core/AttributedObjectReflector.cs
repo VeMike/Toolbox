@@ -6,11 +6,11 @@
 // ===================================================================================================
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using Com.Toolbox.Utils.Probing;
-using Toolbox.CommandLineMapper.Core.Wrappers;
+using Toolbox.CommandLineMapper.Core.Property;
 using Toolbox.CommandLineMapper.Specification;
 
 namespace Toolbox.CommandLineMapper.Core
@@ -21,13 +21,15 @@ namespace Toolbox.CommandLineMapper.Core
     ///     objects whose properties are mapped to command line
     ///     arguments
     /// </summary>
-    internal sealed class AttributedObjectReflector
+    /// <typeparam name="TAttribute">
+    ///    The type of attribute applied to the properties
+    /// </typeparam>
+    internal sealed class AttributedObjectReflector<TAttribute> where TAttribute : AttributeBase
     {
         #region Attributes
 
         /// <summary>
-        ///     The applied <see cref="OptionAttribute"/> or
-        ///     <see cref="ValueAttribute"/> that should be reflected  
+        ///     The object whose properties have an applied <see cref="OptionAttribute"/>
         /// </summary>
         private readonly Lazy<object> source;
 
@@ -35,7 +37,12 @@ namespace Toolbox.CommandLineMapper.Core
         ///     Contains all properties of an object that have
         ///     an <see cref="OptionAttribute"/>
         /// </summary>
-        private readonly Lazy<IPropertyContainer<OptionAttribute>> propertyContainer;
+        private readonly Lazy<IPropertyContainer<TAttribute>> propertyContainer;
+
+        /// <summary>
+        ///     A factory that creates instances of <see cref="IAssignableProperty{TAttribute}"/>
+        /// </summary>
+        private readonly IAssignablePropertyFactory<TAttribute> assignablePropertyFactory;
         
         #endregion
 
@@ -45,11 +52,15 @@ namespace Toolbox.CommandLineMapper.Core
         ///     Creates a new instance of the class
         /// </summary>
         /// <param name="source">
-        ///     The <see cref="object"/> whose properties with
-        ///     applied <see cref="OptionAttribute"/> or
-        ///     <see cref="ValueAttribute"/> should be reflected
+        ///    The object that has properties with an applied
+        ///     attribute
         /// </param>
-        public AttributedObjectReflector(object source) : this(() => source)
+        /// <param name="assignableProperties">
+        ///     A factory that creates instances of <see cref="IAssignableProperty{TAttribute}"/>
+        /// </param>
+        public AttributedObjectReflector(object source, 
+                                         IAssignablePropertyFactory<TAttribute> assignablePropertyFactory) : this(() => source,
+                                                                                                                  assignablePropertyFactory)
         {
 
         }
@@ -68,20 +79,24 @@ namespace Toolbox.CommandLineMapper.Core
         ///
         ///     The factory must not return 'null'
         /// </param>
-        public AttributedObjectReflector(Func<object> objectFactory)
+        /// <param name="assignablePropertyFactory">
+        ///     A factory that creates instances of <see cref="IAssignableProperty{TAttribute}"/>
+        /// </param>
+        public AttributedObjectReflector(Func<object> objectFactory,
+                                         IAssignablePropertyFactory<TAttribute> assignablePropertyFactory)
         {
             Guard.AgainstNullArgument(nameof(objectFactory), objectFactory);
+            Guard.AgainstNullArgument(nameof(assignablePropertyFactory), assignablePropertyFactory);
 
             this.source = new Lazy<object>(objectFactory);
-            this.propertyContainer = new Lazy<IPropertyContainer<OptionAttribute>>(this.CreateContainerForAttribute<OptionAttribute>);
+            this.propertyContainer = new Lazy<IPropertyContainer<TAttribute>>(this.CreateContainerForAttribute);
+            this.assignablePropertyFactory = assignablePropertyFactory;
         }
 
         #endregion
 
         /// <summary>
-        ///     The <see cref="object"/> whose properties with
-        ///     applied <see cref="OptionAttribute"/> or
-        ///     <see cref="ValueAttribute"/> should be reflected
+        ///     The object whose properties have an applied <see cref="OptionAttribute"/>
         /// </summary>
         public object Source => this.source.Value;
 
@@ -96,7 +111,7 @@ namespace Toolbox.CommandLineMapper.Core
         ///     The <see cref="IPropertyContainer{TAttribute}"/> that represents
         ///     a wrapper around the constructor argument.
         /// </returns>
-        public IPropertyContainer<OptionAttribute> GetOptions()
+        public IPropertyContainer<TAttribute> GetOptions()
         {
             return this.propertyContainer.Value;
         }
@@ -116,16 +131,16 @@ namespace Toolbox.CommandLineMapper.Core
         ///     A new <see cref="IPropertyContainer{TAttribute}"/> for the object passed
         ///     as the constructor argument
         /// </returns>
-        private IPropertyContainer<TAttribute> CreateContainerForAttribute<TAttribute>() where TAttribute : AttributeBase
+        private IPropertyContainer<TAttribute> CreateContainerForAttribute()
         {
-            return new DefaultPropertyContainer<TAttribute>(this.source.Value, this.CreateAssignableProperties<TAttribute>());
+            return new DefaultPropertyContainer<TAttribute>(this.source.Value, this.GetRequiredAssignableProperties());
         }
 
         /// <summary>
         ///     Reflects upon the properties of the object passed as the
-        ///     argument to the constructor and creates a new
-        ///     <see cref="IAssignableProperty{TAttribute}"/> for each of
-        ///     the objects properties, that has the specified type of attribute
+        ///     argument to the constructor and determines all
+        ///     <see cref="IAssignableProperty{TAttribute}"/>s that are
+        ///     required by the instance
         /// </summary>
         /// <typeparam name="TAttribute">
         ///     The type of the attribute the property must have to be considered
@@ -133,78 +148,49 @@ namespace Toolbox.CommandLineMapper.Core
         /// </typeparam>
         /// <returns>
         ///     A collection of <see cref="IAssignableProperty{TAttribute}"/>s of
-        ///     the object passed as the constructor argument
+        ///     the object passed as the constructor argument. Each returned
+        ///     <see cref="IAssignableProperty{TAttribute}"/> represents a wrapper
+        ///     around an actual property of the object.
         /// </returns>
-        private IEnumerable<IAssignableProperty<TAttribute>> CreateAssignableProperties<TAttribute>() where TAttribute : AttributeBase
+        private IEnumerable<IAssignableProperty<TAttribute>> GetRequiredAssignableProperties()
         {
             foreach (var property in this.source.Value.GetType().GetProperties())
             {
                 if (!Attribute.IsDefined(property, typeof(TAttribute)))
                     yield break;
-                yield return this.CreateTypedAssignableProperty<TAttribute>(property);
+                yield return this.GetSingleRequiredAssignableProperty(property);
             }
         }
 
         /// <summary>
-        ///     Creates an instance of <see cref="IAssignableProperty{TAttribute}"/> from
-        ///     the passed <paramref name="property"/>. The actual implementation of
-        ///     <see cref="IAssignableProperty{TAttribute}"/> returned here matches the
-        ///     type of the <paramref name="property"/>
+        ///     Gets a single instance of <see cref="IAssignableProperty{TAttribute}"/> that
+        ///     is essentially a wrapper around <paramref name="property"/>
         /// </summary>
         /// <typeparam name="TAttribute">
         ///     The type of attribute this property has
         /// </typeparam>
         /// <param name="property">
-        ///     The property from whom the <see cref="IAssignableProperty{TAttribute}"/> is created
+        ///     The property from whom the <see cref="IAssignableProperty{TAttribute}"/> is a wrapper
         /// </param>
         /// <returns>
-        ///     A new instance of <see cref="IAssignableProperty{TAttribute}"/> that matches
+        ///     An instance of <see cref="IAssignableProperty{TAttribute}"/> that matches
         ///     the type of the <paramref name="property"/>
         /// </returns>
-        private IAssignableProperty<TAttribute> CreateTypedAssignableProperty<TAttribute>(PropertyInfo property) where TAttribute : AttributeBase
+        private IAssignableProperty<TAttribute> GetSingleRequiredAssignableProperty(PropertyInfo property)
         {
-            var propertyType = property.PropertyType;
             //Multiple attributes of the same type are not supported. Accessing [0] is fine
             var attribute = property.GetCustomAttributes(typeof(TAttribute), true)[0] as TAttribute;
 
-            if (propertyType == typeof(string))
-            {
-                return new StringAssignableProperty<TAttribute>(this.source.Value, property, attribute);
-            }
-            if (propertyType == typeof(int))
-            {
-                return new IntegerAssignableProperty<TAttribute>(this.source.Value, property, attribute);
-            }
-            if (propertyType == typeof(bool))
-            {
-                return new BooleanAssignableProperty<TAttribute>(this.source.Value, property, attribute);
-            }
-            if (propertyType == typeof(char))
-            {
-                return new CharAssignableProperty<TAttribute>(this.source.Value, property, attribute);
-            }
-            if (propertyType == typeof(byte))
-            {
-                return new ByteAssignableProperty<TAttribute>(this.source.Value, property, attribute);
-            }
-            if (propertyType == typeof(short))
-            {
-                return new BooleanAssignableProperty<TAttribute>(this.source.Value, property, attribute);
-            }
-            if (propertyType == typeof(long))
-            {
-                return new LongAssignableProperty<TAttribute>(this.source.Value, property, attribute);
-            }
-            if (propertyType == typeof(float))
-            {
-                return new FloatAssignableProperty<TAttribute>(this.source.Value, property, attribute);
-            }
-            if (propertyType == typeof(double))
-            {
-                return new DoubleAssignableProperty<TAttribute>(this.source.Value, property, attribute);
-            }
+            var assignableProperty = this.assignablePropertyFactory.CreatePropertyForType(property.PropertyType);
+            
+            assignableProperty.Property = property;
+            assignableProperty.Attribute = attribute;
+            assignableProperty.Owner = this.Source;
 
-            throw new NotSupportedException($"Mapping to properties of type '{propertyType.Name}' is currently not supported");
+            if(!(attribute is null))
+                assignableProperty.Assign(attribute.Default);
+            
+            return assignableProperty;
         }
 
         #endregion

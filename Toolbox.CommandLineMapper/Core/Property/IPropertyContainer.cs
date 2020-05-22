@@ -5,11 +5,10 @@
 // = Description : 
 // ===================================================================================================
 
-using System;
-using System.Collections;
 using System.Collections.Generic;
+using Toolbox.CommandLineMapper.Specification;
 
-namespace Toolbox.CommandLineMapper.Core.Wrappers
+namespace Toolbox.CommandLineMapper.Core.Property
 {
     /// <summary>
     ///     Wraps around any <see cref="object"/> that has
@@ -18,7 +17,7 @@ namespace Toolbox.CommandLineMapper.Core.Wrappers
     ///     When enumerated, gets all the names of properties
     ///     currently held by this instance
     /// </summary>
-    internal interface IPropertyContainer<TAttribute> : IEnumerable<string> where TAttribute : Attribute
+    internal interface IPropertyContainer<TAttribute> : IEnumerable<string> where TAttribute : AttributeBase
     {
         #region Properties
 

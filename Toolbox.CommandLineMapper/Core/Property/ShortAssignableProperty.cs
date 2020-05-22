@@ -6,10 +6,9 @@
 // ===================================================================================================
 
 using System;
-using System.Reflection;
 using Toolbox.CommandLineMapper.Specification;
 
-namespace Toolbox.CommandLineMapper.Core.Wrappers
+namespace Toolbox.CommandLineMapper.Core.Property
 {
     /// <summary>
     ///     An implementation of <see cref="IAssignableProperty{TAttribute}"/> that
@@ -18,12 +17,9 @@ namespace Toolbox.CommandLineMapper.Core.Wrappers
     internal class ShortAssignableProperty<TAttribute> : AssignablePropertyBase<TAttribute> where TAttribute : AttributeBase
     {
         /// <inheritdoc />
-        public ShortAssignableProperty(object owner,
-                                       PropertyInfo property,
-                                       TAttribute attribute) : base(owner, 
-                                                                    property, 
-                                                                    attribute)
+        public ShortAssignableProperty()
         {
+            this.AssignableType = typeof(short);
         }
 
         /// <inheritdoc />

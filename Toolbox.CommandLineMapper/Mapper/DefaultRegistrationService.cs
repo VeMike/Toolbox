@@ -75,14 +75,14 @@ namespace Toolbox.CommandLineMapper.Mapper
         ///    Thrown if an instance of type <typeparam name="TMapTarget"/>
         ///     is not found
         /// </exception>
-        public TMapTarget GetInstance<TMapTarget>() where TMapTarget : class, new()
+        public object GetInstanceOf(Type type)
         {
-            if (this.registrations.TryGetValue(typeof(TMapTarget), out var instance))
+            if (this.registrations.TryGetValue(type, out var instance))
             {
-                return instance as TMapTarget;
+                return instance;
             }
             
-            throw new KeyNotFoundException($"An instance of type '{typeof(TMapTarget).FullName}' was not found");
+            throw new KeyNotFoundException($"An instance of type '{type.FullName}' was not found");
         }
 
         /// <inheritdoc />

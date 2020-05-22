@@ -6,10 +6,10 @@
 // ===================================================================================================
 
 using System;
-using System.Reflection;
+using System.Globalization;
 using Toolbox.CommandLineMapper.Specification;
 
-namespace Toolbox.CommandLineMapper.Core.Wrappers
+namespace Toolbox.CommandLineMapper.Core.Property
 {
     /// <summary>
     ///     An implementation of <see cref="IAssignableProperty{TAttribute}"/> that
@@ -18,12 +18,9 @@ namespace Toolbox.CommandLineMapper.Core.Wrappers
     internal class FloatAssignableProperty<TAttribute> : AssignablePropertyBase<TAttribute> where TAttribute : AttributeBase
     {
         /// <inheritdoc />
-        public FloatAssignableProperty(object owner,
-                                       PropertyInfo property,
-                                       TAttribute attribute) : base(owner, 
-                                                                    property, 
-                                                                    attribute)
+        public FloatAssignableProperty()
         {
+            this.AssignableType = typeof(float);
         }
 
         /// <inheritdoc />
@@ -35,7 +32,7 @@ namespace Toolbox.CommandLineMapper.Core.Wrappers
             if (string.IsNullOrEmpty(value))
                 return default(float);
             
-            if (float.TryParse(value, out var floatValue))
+            if (float.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out var floatValue))
             {
                 return floatValue;
             }

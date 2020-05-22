@@ -6,11 +6,9 @@
 // ===================================================================================================
 
 
-using System;
-using System.Reflection;
 using Toolbox.CommandLineMapper.Specification;
 
-namespace Toolbox.CommandLineMapper.Core.Wrappers
+namespace Toolbox.CommandLineMapper.Core.Property
 {
     /// <summary>
     ///     An implementation of <see cref="IAssignableProperty{TAttribute}"/> that
@@ -19,12 +17,9 @@ namespace Toolbox.CommandLineMapper.Core.Wrappers
     internal sealed class StringAssignableProperty<TAttribute> : AssignablePropertyBase<TAttribute> where TAttribute : AttributeBase
     {
         /// <inheritdoc />
-        public StringAssignableProperty(object owner,
-                                        PropertyInfo property,
-                                        TAttribute attribute) : base(owner, 
-                                                                     property, 
-                                                                     attribute)
+        public StringAssignableProperty()
         {
+            this.AssignableType = typeof(string);
         }
 
         /// <inheritdoc />

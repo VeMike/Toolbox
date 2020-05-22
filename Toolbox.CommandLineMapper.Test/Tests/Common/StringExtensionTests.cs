@@ -6,6 +6,8 @@
 // ===================================================================================================
 
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
 using Toolbox.CommandLineMapper.Common;
@@ -19,34 +21,34 @@ namespace Toolbox.CommandLineMapper.Test.Tests.Common
 
         [TestCase(null)]
         [TestCase("")]
-        public void SplitArgumentsThrowsIfSplitcharIsInvalid(string param)
+        public void SimpleSplitArgumentsThrowsIfSplitcharIsInvalid(string param)
         {
             Assert.Throws<ArgumentException>(() =>
             {
-                "String To Split".SplitArguments(param);
+                "String To Split".SimpleSplitArguments(param);
             });
         }
 
         [Test]
-        public void SplitArgumentsSkipsValues()
+        public void SimpleSplitArgumentsSkipsValues()
         {
             var args = "-p FirstArgument -a SecondArgument -b ThirdArgument";
 
-            var split = args.SplitArguments(skip:1);
+            var split = args.SimpleSplitArguments(skip:1);
             
             CollectionAssert.DoesNotContain(split, "-p");
         }
 
         [Test]
-        public void SplitArgumentsReturnsEmptyCollectionIfAllAreSkipped()
+        public void SimpleSplitArgumentsReturnsEmptyCollectionIfAllAreSkipped()
         {
             var args = "-p FirstArgument -a SecondArgument -b ThirdArgument";
 
-            var split = args.SplitArguments(skip:10);
+            var split = args.SimpleSplitArguments(skip:10);
             
             CollectionAssert.IsEmpty(split);
         }
-
+        
         #endregion
     }
 }

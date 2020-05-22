@@ -5,19 +5,19 @@
 // = Description :
 // ===================================================================================================
 
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Com.Toolbox.Utils.Probing;
+using Toolbox.CommandLineMapper.Specification;
 
-namespace Toolbox.CommandLineMapper.Core.Wrappers
+namespace Toolbox.CommandLineMapper.Core.Property
 {
     /// <summary>
     ///     An implementation of <see cref="IPropertyContainer{TAttribute}"/> that just
     ///     holds a collection of <see cref="IAssignableProperty{TAttribute}"/>s
     /// </summary>
-    internal class DefaultPropertyContainer<TAttribute> : IPropertyContainer<TAttribute> where TAttribute : Attribute
+    internal class DefaultPropertyContainer<TAttribute> : IPropertyContainer<TAttribute> where TAttribute : AttributeBase
     {
         #region Attributes
 
@@ -66,17 +66,21 @@ namespace Toolbox.CommandLineMapper.Core.Wrappers
         {
             Guard.AgainstNullArgument(nameof(name), name);
 
-            if (this.properties.TryGetValue(name, out var value))
+            //Matches 'LongName' or full property name
+            if (this.properties.TryGetValue(name.ToLower(), out var value))
             {
                 return value;
             }
+            
+            //Matches 'ShortName' of the attribute
+            var property = this.properties.Values.FirstOrDefault(val => val.Attribute.ShortName.Equals(name));
 
-            foreach (var pair in this.properties.Where(pair => pair.Key.StartsWith(name)))
+            if (property is null)
             {
-                return pair.Value;
+                throw new PropertyNotFoundException($"The property '{name}' was not found", name);
             }
 
-            throw new PropertyNotFoundException($"The property '{name}' was not found", name);
+            return property;
         }
         
         /// <inheritdoc />

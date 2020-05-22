@@ -47,5 +47,11 @@ namespace Toolbox.CommandLineMapper.Specification
         public string LongName { get; set; }
 
         #endregion
+
+        /// <inheritdoc />
+        public override string ToString()
+        {
+            return $"{nameof(this.HelpText)}: {this.HelpText}, {nameof(this.Default)}: {this.Default}, {nameof(this.IsRequired)}: {this.IsRequired}, {nameof(this.ShortName)}: {this.ShortName}, {nameof(this.LongName)}: {this.LongName}";
+        }
     }
 }

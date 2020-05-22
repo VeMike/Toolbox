@@ -7,11 +7,9 @@
 
 using System;
 using System.Linq;
-using System.Reflection;
-using Toolbox.CommandLineMapper.Common;
 using Toolbox.CommandLineMapper.Specification;
 
-namespace Toolbox.CommandLineMapper.Core.Wrappers
+namespace Toolbox.CommandLineMapper.Core.Property
 {
     /// <summary>
     ///     An implementation of <see cref="IAssignableProperty{TAttribute}"/> that
@@ -20,12 +18,9 @@ namespace Toolbox.CommandLineMapper.Core.Wrappers
     internal class CharAssignableProperty<TAttribute> : AssignablePropertyBase<TAttribute> where TAttribute : AttributeBase
     {
         /// <inheritdoc />
-        public CharAssignableProperty(object owner,
-                                      PropertyInfo property,
-                                      TAttribute attribute) : base(owner, 
-                                                                   property, 
-                                                                   attribute)
+        public CharAssignableProperty()
         {
+            this.AssignableType = typeof(char);
         }
 
         /// <inheritdoc />
@@ -36,8 +31,13 @@ namespace Toolbox.CommandLineMapper.Core.Wrappers
         {
             if (string.IsNullOrEmpty(value))
                 return default(char);
-            
-            return value.First().ToString();
+
+            if (value.Length != 1)
+            {
+                throw new InvalidCastException($"A string with more than one character can not be cast to 'char'");
+            }
+
+            return value[0];
         }
     }
 }

@@ -6,7 +6,6 @@
 // ===================================================================================================
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
 using Toolbox.CommandLineMapper.Common;
@@ -59,7 +58,7 @@ namespace Toolbox.CommandLineMapper.Test.Tests.Mapper
         [Test]
         public void SingleObjectPropertyIsNotFound()
         {
-            var result = MapToIntegratedTypesOptions("-stringProperty C:\\some\\file\\path -foo 200");
+            var result = MapArgumentsToType<IntegratedTypesOptions>("-stringProperty C:\\some\\file\\path -foo 200");
             
             Assert.IsInstanceOf<PropertyNotFoundException>(result.Errors[0].Cause);
         }
@@ -67,7 +66,7 @@ namespace Toolbox.CommandLineMapper.Test.Tests.Mapper
         [Test]
         public void SingleObjectPropertyCanNotBeCast()
         {
-            var result = MapToIntegratedTypesOptions("-stringProperty C:\\some\\file\\path -integerProperty bar");
+            var result = MapArgumentsToType<IntegratedTypesOptions>("-stringProperty C:\\some\\file\\path -integerProperty bar");
             
             //Parameter '-s' expects an integer
             Assert.IsInstanceOf<InvalidCastException>(result.Errors[0].Cause);
@@ -76,29 +75,20 @@ namespace Toolbox.CommandLineMapper.Test.Tests.Mapper
         [Test]
         public void FirstPropertyIsMappedIfShortNameConflicts()
         {
-            var mapper = new DefaultMapper();
-            mapper.RegistrationService.Register<ConflictingShortNames>();
-            
-            mapper.Map("-a TheValue".SimpleSplitArguments());
-            var result = mapper.GetMapperResult<ConflictingShortNames>().Value;
-            
+            var result = MapArgumentsToType<ConflictingShortNames>("-a TheValue").Value;
+
             Assert.Multiple(() =>
             {
                 Assert.AreEqual("TheValue", result.FirstProperty);
                 Assert.AreEqual("", result.SecondProperty);
             });
-            
         }
         
         [Test]
         public void FirstPropertyIsMappedIfLongNameConflicts()
         {
-            var mapper = new DefaultMapper();
-            mapper.RegistrationService.Register<ConflictingLongNames>();
-            
-            mapper.Map("-firstProperty TheValue".SimpleSplitArguments());
-            var result = mapper.GetMapperResult<ConflictingLongNames>().Value;
-            
+            var result = MapArgumentsToType<ConflictingShortNames>("-firstProperty TheValue").Value;
+
             Assert.Multiple(() =>
             {
                 Assert.AreEqual("TheValue", result.FirstProperty);
@@ -110,7 +100,7 @@ namespace Toolbox.CommandLineMapper.Test.Tests.Mapper
         [Test]
         public void BooleanPropertyIsMappedWithoutValue()
         {
-            var result = MapToIntegratedTypesOptions("-booleanProperty").Value;
+            var result = MapArgumentsToType<IntegratedTypesOptions>("-booleanProperty").Value;
             
             Assert.IsTrue(result.BooleanProperty);
         }
@@ -118,7 +108,7 @@ namespace Toolbox.CommandLineMapper.Test.Tests.Mapper
         [Test]
         public void BooleanPropertyIsMappedWithValue()
         {
-            var result = MapToIntegratedTypesOptions("-booleanProperty true").Value;
+            var result = MapArgumentsToType<IntegratedTypesOptions>("-booleanProperty true").Value;
             
             Assert.IsTrue(result.BooleanProperty);
         }
@@ -126,7 +116,7 @@ namespace Toolbox.CommandLineMapper.Test.Tests.Mapper
         [Test]
         public void BytePropertyIsMapped()
         {
-            var result = MapToIntegratedTypesOptions("-byteProperty 15").Value;
+            var result = MapArgumentsToType<IntegratedTypesOptions>("-byteProperty 15").Value;
             
             Assert.AreEqual(15, result.ByteProperty);
         }
@@ -134,7 +124,7 @@ namespace Toolbox.CommandLineMapper.Test.Tests.Mapper
         [Test]
         public void CharPropertyIsMapped()
         {
-            var result = MapToIntegratedTypesOptions("-charProperty A").Value;
+            var result = MapArgumentsToType<IntegratedTypesOptions>("-charProperty A").Value;
             
             Assert.AreEqual('A', result.CharProperty);
         }
@@ -142,7 +132,7 @@ namespace Toolbox.CommandLineMapper.Test.Tests.Mapper
         [Test]
         public void DoublePropertyIsMapped()
         {
-            var result = MapToIntegratedTypesOptions("-doubleProperty 1.234").Value;
+            var result = MapArgumentsToType<IntegratedTypesOptions>("-doubleProperty 1.234").Value;
             
             Assert.AreEqual(1.234, result.DoubleProperty, 0.005);
         }
@@ -150,7 +140,7 @@ namespace Toolbox.CommandLineMapper.Test.Tests.Mapper
         [Test]
         public void FloatPropertyIsMapped()
         {
-            var result = MapToIntegratedTypesOptions("-floatProperty 1.234").Value;
+            var result = MapArgumentsToType<IntegratedTypesOptions>("-floatProperty 1.234").Value;
             
             Assert.AreEqual(1.234, result.FloatProperty, 0.005);
         }
@@ -158,7 +148,7 @@ namespace Toolbox.CommandLineMapper.Test.Tests.Mapper
         [Test]
         public void IntegerPropertyIsMapped()
         {
-            var result = MapToIntegratedTypesOptions("-integerProperty 12").Value;
+            var result = MapArgumentsToType<IntegratedTypesOptions>("-integerProperty 12").Value;
             
             Assert.AreEqual(12, result.IntegerProperty);
         }
@@ -166,7 +156,7 @@ namespace Toolbox.CommandLineMapper.Test.Tests.Mapper
         [Test]
         public void LongPropertyIsMapped()
         {
-            var result = MapToIntegratedTypesOptions("-longProperty 5000").Value;
+            var result = MapArgumentsToType<IntegratedTypesOptions>("-longProperty 5000").Value;
             
             Assert.AreEqual(5000, result.LongProperty);
         }
@@ -174,7 +164,7 @@ namespace Toolbox.CommandLineMapper.Test.Tests.Mapper
         [Test]
         public void ShortPropertyIsMapped()
         {
-            var result = MapToIntegratedTypesOptions("-shortProperty 4").Value;
+            var result = MapArgumentsToType<IntegratedTypesOptions>("-shortProperty 4").Value;
             
             Assert.AreEqual(4, result.ShortProperty);
         }
@@ -182,39 +172,41 @@ namespace Toolbox.CommandLineMapper.Test.Tests.Mapper
         [Test]
         public void StringPropertyIsMapped()
         {
-            var result = MapToIntegratedTypesOptions("-stringProperty C:\\some\\file\\path").Value;
+            var result = MapArgumentsToType<IntegratedTypesOptions>("-stringProperty C:\\some\\file\\path").Value;
             
             Assert.AreEqual("C:\\some\\file\\path", result.StringProperty);
         }
 
         [Test]
+        public void OptionLongNameDifferentFromPropertyName()
+        {
+            var result = MapArgumentsToType<PropertyNamesOtherThanOptionName>("-foo 300").Value;
+
+            Assert.AreEqual(300, result.LongNameDifferent);
+        }
+
+        [Test]
+        public void OptionShortNameDifferentFromPropertyName()
+        {
+            var result = MapArgumentsToType<PropertyNamesOtherThanOptionName>("-a 12").Value;
+
+            Assert.AreEqual(12, result.ShortNameDifferent);
+        }
+
+        [Test]
         public void ShortNameOptionFoundIfLongNameSpecified()
         {
-            var mapper = new DefaultMapper();
+            var result = MapArgumentsToType<NamedOptions>("-n 100").Value;
             
-            mapper.RegistrationService.Register<NamedOptions>();
-            
-            //Property 'NumberLongName' should be recognized by short name 'n' even if not specified as attribute
-            mapper.Map("-n 100".SimpleSplitArguments());
-            
-            var result = mapper.GetMapperResult<NamedOptions>();
-            
-            Assert.AreEqual(100, result.Value.NumberLongName);
+            Assert.AreEqual(100, result.NumberLongName);
         }
 
         [Test]
         public void LongNameOptionFoundIfShortNameSpecified()
         {
-            var mapper = new DefaultMapper();
+            var result = MapArgumentsToType<NamedOptions>("-textShortName TheText").Value;
             
-            mapper.RegistrationService.Register<NamedOptions>();
-            
-            //Property 'TextShortName' should be recognized by its full name even if not specified as attribute
-            mapper.Map("-textShortName TheText".SimpleSplitArguments());
-            
-            var result = mapper.GetMapperResult<NamedOptions>();
-            
-            Assert.AreEqual("TheText", result.Value.TextShortName);
+            Assert.AreEqual("TheText", result.TextShortName);
         }
 
         #endregion
@@ -222,24 +214,39 @@ namespace Toolbox.CommandLineMapper.Test.Tests.Mapper
         #region Helpers
 
         /// <summary>
-        ///     Maps the passed command line string to an
-        ///     <see cref="Options"/> mock object
+        ///     Maps the passed arguments to the specified type
         /// </summary>
         /// <param name="arguments">
-        ///    The arguments, that should be mapped
+        ///    The arguments mapped to the specified type
         /// </param>
+        /// <typeparam name="T">
+        ///    The type to whom the arguments are mapped
+        /// </typeparam>
         /// <returns>
-        ///    The result of this operation
+        ///    An instance of the specified type with all
+        ///     properties mapped to the passed arguments
         /// </returns>
-        private static IMapperResult<IntegratedTypesOptions> MapToIntegratedTypesOptions(string arguments)
+        private static IMapperResult<T> MapArgumentsToType<T>(string arguments) where T : class, new()
         {
             var mapper = new DefaultMapper();
-
-            mapper.RegistrationService.Register<IntegratedTypesOptions>();
-
+            
+            mapper.RegistrationService.Register<T>();
+            
             mapper.Map(arguments.SimpleSplitArguments());
 
-            return mapper.GetMapperResult<IntegratedTypesOptions>();
+            var result = mapper.GetMapperResult<T>();
+
+            if (result.Errors.Count > 0)
+            {
+                foreach (var error in result.Errors)
+                {
+                    Console.WriteLine(error);
+                }
+                
+                Assert.Inconclusive($"Failed to map arguments {arguments} to '{typeof(T).Name}'");
+            }
+
+            return result;
         }
 
         #endregion

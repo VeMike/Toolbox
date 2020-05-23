@@ -60,6 +60,20 @@ namespace Toolbox.CommandLineMapper.Test.MockData.MockObjects
         [Option("FirstProperty")]
         public string SecondProperty { get; set; }
     }
+
+    /// <summary>
+    ///     Contains properties with option names
+    ///     that differ from the name of the
+    ///     property the attribute is applied to
+    /// </summary>
+    public class PropertyNamesOtherThanOptionName
+    {
+        [Option("foo")]
+        public int LongNameDifferent { get; set; }
+        
+        [Option('a')]
+        public short ShortNameDifferent { get; set; }
+    }
     
     /// <summary>
     ///     A mock object used for some of the implemented

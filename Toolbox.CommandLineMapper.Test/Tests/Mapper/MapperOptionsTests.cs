@@ -5,7 +5,6 @@
 // = Description :
 // ===================================================================================================
 
-using System;
 using NUnit.Framework;
 using Toolbox.CommandLineMapper.Mapper;
 

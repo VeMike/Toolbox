@@ -10,9 +10,9 @@ using System;
 namespace Toolbox.CommandLineMapper.Core.Property
 {
     /// <summary>
-    ///     Thrown if a property can not be found in
-    ///     <see cref="IPropertyContainer"/> using a
-    ///     name.
+    ///     Thrown if an argument on the command line
+    ///     can not be mapped to an argument of the
+    ///     command line.
     /// </summary>
     public class PropertyNotFoundException : Exception
     {

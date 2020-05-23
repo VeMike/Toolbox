@@ -7,7 +7,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 using Com.Toolbox.Utils.Probing;
 using Toolbox.CommandLineMapper.Core.Property;
@@ -55,7 +54,7 @@ namespace Toolbox.CommandLineMapper.Core
         ///    The object that has properties with an applied
         ///     attribute
         /// </param>
-        /// <param name="assignableProperties">
+        /// <param name="assignablePropertyFactory">
         ///     A factory that creates instances of <see cref="IAssignableProperty{TAttribute}"/>
         /// </param>
         public AttributedObjectReflector(object source, 
@@ -70,8 +69,8 @@ namespace Toolbox.CommandLineMapper.Core
         ///     constructor allows to lazily create the
         ///     <see cref="object"/>.
         ///     The creation of the object happens when
-        ///     <see cref="GetOptions"/> or <see cref="GetValues"/>
-        ///     are called or when <see cref="Source"/> is accessed
+        ///     the properties of the object are reflected
+        ///     during the mapping
         /// </summary>
         /// <param name="objectFactory">
         ///     A factory that creates a new instance of the

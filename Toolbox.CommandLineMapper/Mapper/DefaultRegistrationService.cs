@@ -72,7 +72,7 @@ namespace Toolbox.CommandLineMapper.Mapper
 
         /// <inheritdoc />
         /// <exception cref="KeyNotFoundException">
-        ///    Thrown if an instance of type <typeparam name="TMapTarget"/>
+        ///    Thrown if an instance of type <paramref name="type"/>
         ///     is not found
         /// </exception>
         public object GetInstanceOf(Type type)

@@ -6,7 +6,6 @@
 // ===================================================================================================
 
 using System;
-using System.Collections.Generic;
 using Toolbox.CommandLineMapper.Specification;
 
 namespace Toolbox.CommandLineMapper.Core.Property

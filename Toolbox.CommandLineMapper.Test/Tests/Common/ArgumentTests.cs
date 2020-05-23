@@ -22,7 +22,7 @@ namespace Toolbox.CommandLineMapper.Test.Tests.Common
         {
             Assert.Throws<ArgumentNullException>(() =>
             {
-                var arg = new Argument(command, prefix);
+                var _ = new Argument(command, prefix);
             });
         }
 

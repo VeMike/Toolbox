@@ -113,7 +113,7 @@ namespace Toolbox.CommandLineMapper.Mapper
         /// <inheritdoc />
         /// <exception cref="ArgumentException">
         ///    Thrown if an object with the passed type was
-        ///     not registered using <see cref="Register{T}"/>
+        ///     not registered using <see cref="RegistrationService"/>
         ///     before
         /// </exception>
         public IMapperResult<TMapTarget> GetMapperResult<TMapTarget>() where TMapTarget : class, new()
@@ -235,10 +235,10 @@ namespace Toolbox.CommandLineMapper.Mapper
         /// </param>
         /// <exception cref="PropertyNotFoundException">
         ///    Thrown if a property with a name specified as 'Key' of the passed
-        ///     <paramref name="optionValuePair"/> is not found.
+        ///     <paramref name="argument"/> is not found.
         /// </exception>
         /// <exception cref="InvalidCastException">
-        ///    Thrown if the 'Value' of the passed <paramref name="optionValuePair"/>
+        ///    Thrown if the 'Value' of the passed <paramref name="argument"/>
         ///     can not be cast/converted to the type of the property.
         /// </exception>
         private static void MapCommandLineValueToOption(Argument argument, 

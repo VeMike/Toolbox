@@ -6,6 +6,7 @@
 // ===================================================================================================
 
 using System.Collections.Generic;
+using Toolbox.CommandLineMapper.Common;
 
 namespace Toolbox.CommandLineMapper.Mapper
 {
@@ -24,6 +25,12 @@ namespace Toolbox.CommandLineMapper.Mapper
         /// </summary>
         TMappedObject Value { get; }
 
+        /// <summary>
+        ///     Gets all the arguments, that were mapped to
+        ///     the object held by <see cref="Value"/>
+        /// </summary>
+        IList<Argument> MappedArguments { get; }
+        
         /// <summary>
         ///     Contains any errors that were caused
         ///     while trying to map command line

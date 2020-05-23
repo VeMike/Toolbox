@@ -21,6 +21,19 @@ namespace Toolbox.CommandLineMapper.Test.MockData.MockObjects
         [Option("s", "size")]
         public int Size { get; set; }
     }
+    
+    /// <summary>
+    ///     A mock object used for some of the implemented
+    ///     unit tests
+    /// </summary>
+    public class OtherOptions
+    {
+        [Option("v", "verbose")]
+        public bool Verbose { get; set; }
+        
+        [Option("t", "timeout")]
+        public int Timeout { get; set; }
+    }
 
     /// <summary>
     ///     Used for testing if the specified names are
@@ -73,15 +86,6 @@ namespace Toolbox.CommandLineMapper.Test.MockData.MockObjects
         
         [Option('a')]
         public short ShortNameDifferent { get; set; }
-    }
-    
-    /// <summary>
-    ///     A mock object used for some of the implemented
-    ///     unit tests
-    /// </summary>
-    public class OtherOptions
-    {
-        
     }
 
     /// <summary>

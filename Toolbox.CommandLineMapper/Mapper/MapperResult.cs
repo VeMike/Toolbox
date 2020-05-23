@@ -7,6 +7,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using Toolbox.CommandLineMapper.Common;
 
 namespace Toolbox.CommandLineMapper.Mapper
 {
@@ -27,8 +28,13 @@ namespace Toolbox.CommandLineMapper.Mapper
         /// <param name="value">
         ///    The object whose mapping results are accessed
         /// </param>
-        public MapperResult(TMappedObject value) : this(value,
-                                                        Enumerable.Empty<MappingError>())
+        /// <param name="mappedArgs">
+        ///    All arguments that were mapped to <paramref name="value"/>
+        /// </param>
+        public MapperResult(TMappedObject value,
+                            IEnumerable<Argument> mappedArgs) : this(value,
+                                                                     mappedArgs,
+                                                                     Enumerable.Empty<MappingError>())
         {
             
         }
@@ -39,14 +45,19 @@ namespace Toolbox.CommandLineMapper.Mapper
         /// <param name="value">
         ///    The object whose mapping results are accessed
         /// </param>
+        /// <param name="mappedArgs">
+        ///    All arguments that were mapped to <paramref name="value"/>
+        /// </param>
         /// <param name="errors">
         ///    Errors that were caused while mapping
         ///     the <paramref name="value"/>
         /// </param>
         public MapperResult(TMappedObject value,
+                            IEnumerable<Argument> mappedArgs,
                             IEnumerable<MappingError> errors)
         {
             this.Value = value;
+            this.MappedArguments = mappedArgs.ToList();
             this.Errors = new List<MappingError>(errors);
         }
 
@@ -56,6 +67,9 @@ namespace Toolbox.CommandLineMapper.Mapper
 
         /// <inheritdoc />
         public TMappedObject Value { get; }
+
+        /// <inheritdoc />
+        public IList<Argument> MappedArguments { get; }
 
         /// <inheritdoc />
         public IList<MappingError> Errors { get; }

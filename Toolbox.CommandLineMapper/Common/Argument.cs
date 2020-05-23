@@ -29,7 +29,8 @@ namespace Toolbox.CommandLineMapper.Common
         ///    The prefix of the command
         /// </param>
         /// <param name="command">
-        ///     The command passed in the command line
+        ///     The command passed in the command line including
+        ///     the prefix.
         /// </param>
         /// <exception cref="ArgumentNullException">
         ///    Thrown if:
@@ -51,7 +52,8 @@ namespace Toolbox.CommandLineMapper.Common
         ///    The prefix of the command
         /// </param>
         /// <param name="command">
-        ///     The command passed in the command line
+        ///     The command passed in the command line including
+        ///     the prefix.
         /// </param>
         /// <param name="value">
         ///    The value of the command
@@ -111,6 +113,12 @@ namespace Toolbox.CommandLineMapper.Common
         ///     a <see cref="Value"/>.
         /// </summary>
         public bool HasValue { get; }
+        
+        /// <summary>
+        ///     Gets or sets a value that indicates if this
+        ///     argument was mapped to any object.
+        /// </summary>
+        public bool IsMapped { get; set; }
 
         #endregion
 

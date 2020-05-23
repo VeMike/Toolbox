@@ -30,5 +30,11 @@ namespace Toolbox.CommandLineMapper.Mapper
         ///         - <see cref="InvalidCastException"/>
         /// </summary>
         public Exception Cause { get; set; }
+
+        /// <inheritdoc />
+        public override string ToString()
+        {
+            return $"{nameof(this.Argument)}: {this.Argument}, {nameof(this.Cause)}: {this.Cause}";
+        }
     }
 }

@@ -8,6 +8,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using Com.Toolbox.Utils.Probing;
 using Toolbox.CommandLineMapper.Common;
 using Toolbox.CommandLineMapper.Core;
@@ -101,6 +102,7 @@ namespace Toolbox.CommandLineMapper.Mapper
             Guard.AgainstNullArgument(nameof(assignablePropertyFactory), assignablePropertyFactory);
             
             this.mapperDatas = new List<MapperData>();
+            this.UnmappedArguments = Enumerable.Empty<Argument>();
 
             this.RegistrationService = registrationService;
             this.assignablePropertyFactory = assignablePropertyFactory;
@@ -124,6 +126,7 @@ namespace Toolbox.CommandLineMapper.Mapper
             var data = this.mapperDatas.Find(m => m.Reflector.Source.GetType() == typeof(TMapTarget));
             
             return new MapperResult<TMapTarget>(data.Reflector.Source as TMapTarget,
+                                                data.MappedArguments,
                                                 data.Errors);
         }
 
@@ -145,6 +148,9 @@ namespace Toolbox.CommandLineMapper.Mapper
 
         /// <inheritdoc />
         public IRegistrationService RegistrationService { get; }
+
+        /// <inheritdoc />
+        public IEnumerable<Argument> UnmappedArguments { get; private set; }
 
         #endregion
 
@@ -186,6 +192,10 @@ namespace Toolbox.CommandLineMapper.Mapper
             {
                 foreach (var argument in argsList)
                 {
+                    //Argument is already mapped to some object. We do not map the same arg twice
+                    if(argument.IsMapped)
+                        continue;
+                    
                     MapCommandLineValueToSingleObject(argument, 
                                                       mapperData);
 
@@ -193,6 +203,8 @@ namespace Toolbox.CommandLineMapper.Mapper
                         break;
                 }
             }
+
+            this.UnmappedArguments = argsList.Where(a => !a.IsMapped);
         }
 
         /// <summary>
@@ -211,6 +223,9 @@ namespace Toolbox.CommandLineMapper.Mapper
             try
             {
                 MapCommandLineValueToOption(argument, mapperData.Reflector.GetOptions());
+                
+                if(argument.IsMapped)
+                    mapperData.MappedArguments.Add(argument);
             }
             catch (Exception e)
             {
@@ -233,10 +248,6 @@ namespace Toolbox.CommandLineMapper.Mapper
         /// <param name="optionProperties">
         ///    A collection of properties that have an <see cref="OptionAttribute"/>
         /// </param>
-        /// <exception cref="PropertyNotFoundException">
-        ///    Thrown if a property with a name specified as 'Key' of the passed
-        ///     <paramref name="argument"/> is not found.
-        /// </exception>
         /// <exception cref="InvalidCastException">
         ///    Thrown if the 'Value' of the passed <paramref name="argument"/>
         ///     can not be cast/converted to the type of the property.
@@ -246,10 +257,19 @@ namespace Toolbox.CommandLineMapper.Mapper
         {
             if (optionProperties.Properties == 0)
                 return;
-            
-            var option = optionProperties.GetProperty(argument.CommandWithoutPrefix);
 
-            option.Assign(argument.HasValue ? argument.Value : string.Empty);
+            try
+            {
+                var option = optionProperties.GetProperty(argument.CommandWithoutPrefix);
+
+                option.Assign(argument.HasValue ? argument.Value : string.Empty);
+
+                argument.IsMapped = true;
+            }
+            catch (PropertyNotFoundException e)
+            {
+                argument.IsMapped = false;
+            }
         }
 
         #endregion
@@ -266,6 +286,12 @@ namespace Toolbox.CommandLineMapper.Mapper
             ///     Contains a single object with its properties
             /// </summary>
             public AttributedObjectReflector<OptionAttribute> Reflector { get; set; }
+            
+            /// <summary>
+            ///     Contains all arguments, that were mapped to the object
+            ///     held by <see cref="Reflector"/>
+            /// </summary>
+            public IList<Argument> MappedArguments { get; } = new List<Argument>();
             
             /// <summary>
             ///     Contains errors that were caused, when the object held by

@@ -14,7 +14,7 @@ namespace Toolbox.CommandLineMapper.Core.Property
     ///     can not be mapped to an argument of the
     ///     command line.
     /// </summary>
-    public class PropertyNotFoundException : Exception
+    internal class PropertyNotFoundException : Exception
     {
         /// <summary>
         ///     Creates a new instance of the class

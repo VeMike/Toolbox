@@ -6,6 +6,7 @@
 // ===================================================================================================
 
 using System.Collections.Generic;
+using Toolbox.CommandLineMapper.Common;
 
 namespace Toolbox.CommandLineMapper.Mapper
 {
@@ -63,6 +64,15 @@ namespace Toolbox.CommandLineMapper.Mapper
         ///     to command line arguments
         /// </summary>
         IRegistrationService RegistrationService { get; }
+        
+        /// <summary>
+        ///     Gets a collection of arguments, that were not
+        ///     mapped to any object. This typically happens
+        ///     if the command line argument has a value that
+        ///     does not match the name (long name, short name or
+        ///     actual name) of the property.
+        /// </summary>
+        IEnumerable<Argument> UnmappedArguments { get; } 
 
         #endregion
     }

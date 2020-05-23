@@ -6,6 +6,8 @@
 // ===================================================================================================
 
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
 using Toolbox.CommandLineMapper.Common;
@@ -58,9 +60,16 @@ namespace Toolbox.CommandLineMapper.Test.Tests.Mapper
         [Test]
         public void SingleObjectPropertyIsNotFound()
         {
-            var result = MapArgumentsToType<IntegratedTypesOptions>("-stringProperty C:\\some\\file\\path -foo 200");
+            var expectedUnmappedArg = new Argument("-", "-foo", "200");
             
-            Assert.IsInstanceOf<PropertyNotFoundException>(result.Errors[0].Cause);
+            var mapper = new DefaultMapper();
+            
+            mapper.RegistrationService.Register<IntegratedTypesOptions>();
+            mapper.Map("-stringProperty C:\\some\\file\\path -foo 200".SimpleSplitArguments());
+
+            var unmapped = mapper.UnmappedArguments.ToList()[0];
+            
+            Assert.AreEqual(expectedUnmappedArg, unmapped);
         }
 
         [Test]
@@ -97,84 +106,13 @@ namespace Toolbox.CommandLineMapper.Test.Tests.Mapper
             
         }
         
-        [Test]
-        public void BooleanPropertyIsMappedWithoutValue()
+        [TestCaseSource(typeof(DefaultMapperTests), nameof(GetAllPropertyTypesTestCases))]
+        public object PropertyIsMappedToValidArgument(string arguments, 
+                                                          Func<IntegratedTypesOptions, object> resultFactory)
         {
-            var result = MapArgumentsToType<IntegratedTypesOptions>("-booleanProperty").Value;
-            
-            Assert.IsTrue(result.BooleanProperty);
-        }
+            var result = MapArgumentsToType<IntegratedTypesOptions>(arguments).Value;
 
-        [Test]
-        public void BooleanPropertyIsMappedWithValue()
-        {
-            var result = MapArgumentsToType<IntegratedTypesOptions>("-booleanProperty true").Value;
-            
-            Assert.IsTrue(result.BooleanProperty);
-        }
-
-        [Test]
-        public void BytePropertyIsMapped()
-        {
-            var result = MapArgumentsToType<IntegratedTypesOptions>("-byteProperty 15").Value;
-            
-            Assert.AreEqual(15, result.ByteProperty);
-        }
-        
-        [Test]
-        public void CharPropertyIsMapped()
-        {
-            var result = MapArgumentsToType<IntegratedTypesOptions>("-charProperty A").Value;
-            
-            Assert.AreEqual('A', result.CharProperty);
-        }
-        
-        [Test]
-        public void DoublePropertyIsMapped()
-        {
-            var result = MapArgumentsToType<IntegratedTypesOptions>("-doubleProperty 1.234").Value;
-            
-            Assert.AreEqual(1.234, result.DoubleProperty, 0.005);
-        }
-        
-        [Test]
-        public void FloatPropertyIsMapped()
-        {
-            var result = MapArgumentsToType<IntegratedTypesOptions>("-floatProperty 1.234").Value;
-            
-            Assert.AreEqual(1.234, result.FloatProperty, 0.005);
-        }
-        
-        [Test]
-        public void IntegerPropertyIsMapped()
-        {
-            var result = MapArgumentsToType<IntegratedTypesOptions>("-integerProperty 12").Value;
-            
-            Assert.AreEqual(12, result.IntegerProperty);
-        }
-        
-        [Test]
-        public void LongPropertyIsMapped()
-        {
-            var result = MapArgumentsToType<IntegratedTypesOptions>("-longProperty 5000").Value;
-            
-            Assert.AreEqual(5000, result.LongProperty);
-        }
-        
-        [Test]
-        public void ShortPropertyIsMapped()
-        {
-            var result = MapArgumentsToType<IntegratedTypesOptions>("-shortProperty 4").Value;
-            
-            Assert.AreEqual(4, result.ShortProperty);
-        }
-
-        [Test]
-        public void StringPropertyIsMapped()
-        {
-            var result = MapArgumentsToType<IntegratedTypesOptions>("-stringProperty C:\\some\\file\\path").Value;
-            
-            Assert.AreEqual("C:\\some\\file\\path", result.StringProperty);
+            return resultFactory(result);
         }
 
         [Test]
@@ -209,8 +147,83 @@ namespace Toolbox.CommandLineMapper.Test.Tests.Mapper
             Assert.AreEqual("TheText", result.TextShortName);
         }
 
+        [Test]
+        public void MultipleObjectsAreMappedToValidArgumentString()
+        {
+            var mapper =
+                MapArgumentsToTwoTypes<Options, OtherOptions>("-path C:\\temp\\test.txt -s 1000 -timeout 10 -verbose");
+
+            var optionsResult = mapper.GetMapperResult<Options>();
+            var otherOptionsResult = mapper.GetMapperResult<OtherOptions>();
+            
+            PrintAndAssertMappingError(optionsResult.Errors);
+            PrintAndAssertMappingError(otherOptionsResult.Errors);
+            
+            Assert.Multiple(() =>
+            {
+                Assert.AreEqual("C:\\temp\\test.txt" ,optionsResult.Value.Path);
+                Assert.AreEqual(1000, optionsResult.Value.Size);
+                
+                Assert.AreEqual(10, otherOptionsResult.Value.Timeout);
+                Assert.IsTrue(otherOptionsResult.Value.Verbose);
+            });
+        }
+
+        [Test]
+        public void OneObjectMappedEvenIfOtherObjectIsNotFullyMapped()
+        {
+            var expectedUnmappedArgument = new Argument("-", "-foo", "10");
+            
+            var mapper =
+                MapArgumentsToTwoTypes<Options, OtherOptions>("-path C:\\temp\\test.txt -s 1000 -foo 10 -verbose");
+
+            var optionsResult = mapper.GetMapperResult<Options>();
+
+            Assert.Multiple(() =>
+            {
+                Assert.AreEqual("C:\\temp\\test.txt" ,optionsResult.Value.Path);
+                Assert.AreEqual(1000, optionsResult.Value.Size);
+                
+                Assert.AreEqual(expectedUnmappedArgument, mapper.UnmappedArguments.ToList()[0]);
+            });
+        }
+
         #endregion
 
+        #region Test Data
+
+        /// <summary>
+        ///     Gets test cases for all default available mappable properties 
+        /// </summary>
+        private static IEnumerable GetAllPropertyTypesTestCases
+        {
+            get
+            {
+                yield return new TestCaseData("-booleanProperty", 
+                                              new Func<IntegratedTypesOptions, object>(r => r.BooleanProperty)).Returns(true);
+                yield return new TestCaseData("-booleanProperty true", 
+                                              new Func<IntegratedTypesOptions, object>(r => r.BooleanProperty)).Returns(true);
+                yield return new TestCaseData("-byteProperty 15", 
+                                              new Func<IntegratedTypesOptions, object>(r => r.ByteProperty)).Returns(15);
+                yield return new TestCaseData("-charProperty A", 
+                                              new Func<IntegratedTypesOptions, object>(r => r.CharProperty)).Returns('A');
+                yield return new TestCaseData("-doubleProperty 1.234", 
+                                              new Func<IntegratedTypesOptions, object>(r => r.DoubleProperty)).Returns(1.234d);
+                yield return new TestCaseData("-floatProperty 1.234", 
+                                              new Func<IntegratedTypesOptions, object>(r => r.FloatProperty)).Returns(1.234f);
+                yield return new TestCaseData("-integerProperty 12", 
+                                              new Func<IntegratedTypesOptions, object>(r => r.IntegerProperty)).Returns(12);
+                yield return new TestCaseData("-longProperty 5000", 
+                                              new Func<IntegratedTypesOptions, object>(r => r.LongProperty)).Returns(5000);
+                yield return new TestCaseData("-shortProperty 4", 
+                                              new Func<IntegratedTypesOptions, object>(r => r.ShortProperty)).Returns(4);
+                yield return new TestCaseData("-stringProperty C:\\some\\file\\path", 
+                                              new Func<IntegratedTypesOptions, object>(r => r.StringProperty)).Returns("C:\\some\\file\\path");
+            }
+        }
+
+        #endregion
+        
         #region Helpers
 
         /// <summary>
@@ -236,17 +249,57 @@ namespace Toolbox.CommandLineMapper.Test.Tests.Mapper
 
             var result = mapper.GetMapperResult<T>();
 
-            if (result.Errors.Count > 0)
-            {
-                foreach (var error in result.Errors)
-                {
-                    Console.WriteLine(error);
-                }
-                
-                Assert.Inconclusive($"Failed to map arguments {arguments} to '{typeof(T).Name}'");
-            }
-
             return result;
+        }
+
+        /// <summary>
+        ///     Maps the passed arguments to the specified types
+        /// </summary>
+        /// <param name="arguments">
+        ///    The arguments to map
+        /// </param>
+        /// <typeparam name="TFirst">
+        ///    The first type to map
+        /// </typeparam>
+        /// <typeparam name="TSecond">
+        ///    The second type to map
+        /// </typeparam>
+        /// <returns>
+        ///    The mapper that contains the result of the operation
+        /// </returns>
+        private static ICommandLineMapper MapArgumentsToTwoTypes<TFirst, TSecond>(string arguments)
+            where TFirst : class, new()
+            where TSecond : class, new()
+        {
+            var mapper = new DefaultMapper();
+            
+            mapper.RegistrationService.Register<TFirst>();
+            mapper.RegistrationService.Register<TSecond>();
+            
+            mapper.Map(arguments.SimpleSplitArguments());
+
+            return mapper;
+        }
+
+        /// <summary>
+        ///     Checks if the passed list contains any erros
+        ///     and if so print them to the console and calls
+        ///     <see cref="Assert.Inconclusive(string,object[])"/>
+        /// </summary>
+        /// <param name="errors">
+        ///    A list that can contains errors
+        /// </param>
+        private static void PrintAndAssertMappingError(IList<MappingError> errors)
+        {
+            if (errors.Count == 0)
+                return;
+
+            foreach (var mappingError in errors)
+            {
+                Console.WriteLine($"{mappingError}");
+            }
+            
+            Assert.Inconclusive($"'{errors.Count}' errors occured while mapping args ");
         }
 
         #endregion

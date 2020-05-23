@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace Com.Toolbox.Utils.Backlog_Refactor
+namespace Com.Toolbox.Utils.Memory
 {
-    interface IUnmanagedMemory : IDisposable
+    public interface IUnmanagedMemory : IDisposable
     {
         /// <summary>
         ///     Sets the data, which will be copied into unmanaged

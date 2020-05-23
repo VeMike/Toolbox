@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.Resources;
 
-namespace Com.Toolbox.Utils.Backlog_Refactor
+namespace Com.Toolbox.Utils.Attribute
 {
     /// <summary>
     ///     Allows to use localized description attributes.
@@ -10,6 +10,7 @@ namespace Com.Toolbox.Utils.Backlog_Refactor
     public class LocalizedDescription : DescriptionAttribute
     {
         #region Attributes
+        
         /// <summary>
         ///     The key of the resource, that will be accessed
         /// </summary>
@@ -18,9 +19,11 @@ namespace Com.Toolbox.Utils.Backlog_Refactor
         ///     The actual resource, that will be accessed
         /// </summary>
         private readonly ResourceManager resource;
+        
         #endregion
 
         #region Constructor
+        
         /// <summary>
         ///     The constructor
         /// </summary>
@@ -35,9 +38,11 @@ namespace Com.Toolbox.Utils.Backlog_Refactor
             this.resource = new ResourceManager(resourceType);
             this.resourceKey = resourceKey;
         }
+        
         #endregion
 
         #region Overriding Properties
+        
         /// <summary>
         ///     Accesses the value of the description attribute. In this
         ///     case, the value is the key of a resource inside the
@@ -49,9 +54,7 @@ namespace Com.Toolbox.Utils.Backlog_Refactor
             {
                 try
                 {
-                    //Read the string from the resources
                     var displayName = this.resource.GetString(this.resourceKey);
-                    //Check, if there is a resource with this name
                     return string.IsNullOrEmpty(displayName) ? this.resourceKey : displayName;
                 }
                 catch (Exception)
@@ -60,6 +63,7 @@ namespace Com.Toolbox.Utils.Backlog_Refactor
                 }
             }
         }
+        
         #endregion
     }
 }

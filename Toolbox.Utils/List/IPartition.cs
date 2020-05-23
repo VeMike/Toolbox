@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Com.Toolbox.Utils.Backlog_Refactor
+namespace Com.Toolbox.Utils.List
 {
     /// <summary>
     ///     The interface for a class capable of creating partitions of a list of
@@ -9,7 +9,7 @@ namespace Com.Toolbox.Utils.Backlog_Refactor
     /// <typeparam name="T">
     ///     The type of object in the list
     /// </typeparam>
-    interface IPartitioner<T>
+    public interface IPartition<T>
     {
         /// <summary>
         ///     Creates partitions from a passed <see cref="IList{T}" />

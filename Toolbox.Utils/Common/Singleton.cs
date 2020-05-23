@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Com.Toolbox.Utils.Backlog_Refactor
+namespace Com.Toolbox.Utils.Common
 {
     /// <summary>
     ///     An abstract singleton class

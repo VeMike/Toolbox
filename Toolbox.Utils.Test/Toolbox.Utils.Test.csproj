@@ -50,7 +50,7 @@
     <Compile Include="MockObjects\Enumerations.cs" />
     <Compile Include="MockObjects\SingletonObject.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Tests\Common\EnumerationExtensionTests.cs" />
+    <Compile Include="Tests\Common\EnumerationTests.cs" />
     <Compile Include="Tests\Common\SingletonTests.cs" />
     <Compile Include="Tests\Common\StringUtilsTests.cs" />
     <Compile Include="Tests\List\PartitionerTests.cs" />

@@ -5,6 +5,8 @@
 // = Description :
 // ===================================================================================================
 
+using System;
+using System.Linq;
 using Com.Toolbox.Utils.Common;
 using NUnit.Framework;
 using Toolbox.Utils.Test.MockObjects;
@@ -30,6 +32,33 @@ namespace Toolbox.Utils.Test.Tests.Common
         public string EnumValueNameIsReturnedIfDescriptionNotPresent(NumbersWithoutDescription number)
         {
             return number.GetDescription();
+        }
+
+        #endregion
+    }
+
+    [TestFixture]
+    public class EnumUtilTests
+    {
+        #region Tests
+
+        [Test]
+        public void GetValuesYieldsEmptyEnumerationIfEnumIsEmpty()
+        {
+            var result = EnumUtil.GetValues<EmptyEnumeration>();
+            
+            CollectionAssert.IsEmpty(result);
+        }
+
+        [Test]
+        public void GetValuesYieldsAllEnumValues()
+        {
+            var result = EnumUtil.GetValues<NumbersWithoutDescription>();
+
+            var allValuesEnumerated = result.All(e => Enum.IsDefined(typeof(NumbersWithoutDescription), 
+                                                                                                      e));
+            
+            Assert.IsTrue(allValuesEnumerated);
         }
 
         #endregion

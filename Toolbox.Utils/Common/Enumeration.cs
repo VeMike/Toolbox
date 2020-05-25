@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Reflection;
 
@@ -86,5 +87,33 @@ namespace Com.Toolbox.Utils.Common
         }
         
         #endregion
+    }
+    
+    /// <summary>
+    ///     A collection of utility methods for <see cref="Enum"/>
+    /// </summary>
+    public static class EnumUtil
+    {
+        /// <summary>
+        ///     Iterates over all the defined values
+        ///     of an enum.
+        /// </summary>
+        /// <typeparam name="T">
+        ///     The type of the enum
+        /// </typeparam>
+        /// <returns>
+        ///     A collection of the enums values
+        /// </returns>
+        public static IEnumerable<T> GetValues<T>()
+        {
+            //This is the case, if 'GetValues' returns null
+            if (!(Enum.GetValues(typeof(T)) is T[] values))
+            {
+                yield break;
+            }
+
+            foreach (var value in values)
+                yield return value;
+        }
     }
 }

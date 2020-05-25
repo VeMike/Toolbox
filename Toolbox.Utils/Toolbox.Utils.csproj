@@ -42,7 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Attribute\LocalizedDescription.cs" />
-    <Compile Include="Common\EnumerationExtension.cs" />
+    <Compile Include="Common\Enumeration.cs" />
     <Compile Include="Common\Singleton.cs" />
     <Compile Include="Common\StringUtils.cs" />
     <Compile Include="ControlFlow\Retry.cs" />

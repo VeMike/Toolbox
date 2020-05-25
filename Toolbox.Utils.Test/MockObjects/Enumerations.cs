@@ -35,4 +35,12 @@ namespace Toolbox.Utils.Test.MockObjects
         
         THREE
     }
+
+    /// <summary>
+    ///     An enumeration that does not have any members
+    /// </summary>
+    public enum EmptyEnumeration
+    {
+        
+    }
 }

@@ -76,7 +76,7 @@ namespace Com.Toolbox.Utils.List
         {
             return index >= 0 && index < this.partitions.Count ? 
                 this.partitions[index]
-                : null;
+                : throw new IndexOutOfRangeException($"The index '{index}' is out of range");
         }
 
         /// <summary>

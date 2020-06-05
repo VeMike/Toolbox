@@ -53,11 +53,11 @@
     <Compile Include="Tests\Common\EnumerationTests.cs" />
     <Compile Include="Tests\Common\SingletonTests.cs" />
     <Compile Include="Tests\Common\StringUtilsTests.cs" />
+    <Compile Include="Tests\ControlFlow\RetryTest.cs" />
     <Compile Include="Tests\List\PartitionerTests.cs" />
     <Compile Include="Tests\Memory\UnmanagedMemoryTest.cs" />
     <Compile Include="Tests\Probing\AreWeTest.cs" />
     <Compile Include="Tests\Probing\GuardTest.cs" />
-    <Compile Include="Tests\Probing\RetryTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

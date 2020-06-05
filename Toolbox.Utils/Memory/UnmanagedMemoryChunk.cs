@@ -24,7 +24,7 @@ namespace Com.Toolbox.Utils.Memory
         public UnmanagedMemoryChunk()
         {
             this.Memory = IntPtr.Zero;
-            this.MemorySize = 0;
+            this.Size = 0;
         }
         #endregion
 
@@ -53,7 +53,7 @@ namespace Com.Toolbox.Utils.Memory
         ///     The number of bytes, that are currently stored in unmanaged
         ///     memory.
         /// </summary>
-        public int MemorySize { get; private set; }
+        public int Size { get; private set; }
         
         #endregion
 
@@ -95,11 +95,11 @@ namespace Com.Toolbox.Utils.Memory
             {
                 this.Memory = Marshal.AllocHGlobal(data.Length);
                 Marshal.Copy(data, 0, this.Memory, data.Length);
-                this.MemorySize = data.Length;
+                this.Size = data.Length;
             }
             catch (OutOfMemoryException)
             {
-                this.MemorySize = 0;
+                this.Size = 0;
             }
             catch (Exception)
             {
@@ -117,7 +117,7 @@ namespace Com.Toolbox.Utils.Memory
             if (this.Memory != IntPtr.Zero)
                 Marshal.FreeHGlobal(this.Memory);
             this.Memory = IntPtr.Zero;
-            this.MemorySize = 0;
+            this.Size = 0;
         } 
         
         #endregion

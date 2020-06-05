@@ -28,6 +28,33 @@ namespace Toolbox.Utils.Test.Tests.List
                 partition.Partition(null, 1);
             });
         }
+
+        [Test]
+        public void GetThrowsIfIndexIsOutOfRange()
+        {
+            var partition = new SequentialPartition<int>();
+
+            partition.Partition(new List<int>{1, 2, 3, 4, 5}, 2);
+
+            Assert.Throws<IndexOutOfRangeException>(() => partition.Get(200));
+        }
+
+        [Test]
+        public void GetReturnsPartitionAtIndex()
+        {
+            var expectedFirstPartition = new List<int>{1,2,3};
+            var expectedSecondPartition = new List<int>{4, 5};
+            
+            var partition = new SequentialPartition<int>();
+
+            partition.Partition(new List<int>{1, 2, 3, 4, 5}, 3);
+            
+            Assert.Multiple(() =>
+            {
+                CollectionAssert.AreEqual(expectedFirstPartition, partition.Get(0));
+                CollectionAssert.AreEqual(expectedSecondPartition, partition.Get(1));
+            });
+        }
         
         [TestCaseSource(typeof(PartitionerTests), nameof(PartitionCreatedTestCases))]
         public int PartitionsAreCreatedFromList(IList<int> input, int partitionSize)

@@ -9,7 +9,7 @@ using System;
 using Com.Toolbox.Utils.ControlFlow;
 using NUnit.Framework;
 
-namespace Toolbox.Utils.Test.Tests.Probing
+namespace Toolbox.Utils.Test.Tests.ControlFlow
 {
     [TestFixture]
     public class RetryTest
@@ -17,35 +17,48 @@ namespace Toolbox.Utils.Test.Tests.Probing
         #region Tests
 
         [Test]
-        [Description("Calls 'Retry.Do()' with a function that always returns false")]
-        public void RetryDoBoolAllAttemptsFail()
+        public void RetryTimeSpanAllAttemptsFail()
         {
-            Assert.Throws<RetryFailedException>(() => Retry.Do(() => false, 
-                                                               TimeSpan.FromMilliseconds(0),
+            Assert.Throws<RetryFailedException>(() => Retry.Until(() => false, 
+                                                               TimeSpan.Zero,
                                                                2),
+                                                "'Retry.Do' did not throw after max. attempts were reached");
+        }
+        
+        [Test]
+        public void RetryImmediateAllAttemptsFail()
+        {
+            Assert.Throws<RetryFailedException>(() => Retry.Until(() => false,
+                                                                  2),
                                                 "'Retry.Do' did not throw after max. attempts were reached");
         }
 
         [Test]
-        [Description("Calls 'Retry.Do()' with a function that always returns true")]
-        public void RetryDoBoolAttemptSucceeds()
+        public void RetryTimeSpanAttemptSucceed()
         {
-            Assert.DoesNotThrow(() => Retry.Do(() => true, 
-                                               TimeSpan.FromMilliseconds(0),
+            Assert.DoesNotThrow(() => Retry.Until(() => true, 
+                                               TimeSpan.Zero,
                                                2),
+                                "'Retry.Do' did throw before max. attempts were reached");
+        }
+        
+        [Test]
+        public void RetryImmediateAttemptSucceed()
+        {
+            Assert.DoesNotThrow(() => Retry.Until(() => true,
+                                                  2),
                                 "'Retry.Do' did throw before max. attempts were reached");
         }
 
         [Test]
-        [Description("Calls 'Retry.Do' with a function that always returns false with 3 retries")]
-        public void RetryDoBoolMaxAttemptsReportedCorrectly()
+        public void RetryTimeSpanMaxAttemptsReportedCorrectly()
         {
             var expectedAttempts = 3;
 
             try
             {
-                Retry.Do(() => false,
-                         TimeSpan.FromMilliseconds(0),
+                Retry.Until(() => false,
+                         TimeSpan.Zero,
                          expectedAttempts);
             }
             catch (RetryFailedException e)

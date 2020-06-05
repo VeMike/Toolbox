@@ -48,7 +48,7 @@ namespace Toolbox.Utils.Test.Tests.Memory
 
             using (var memory = new UnmanagedMemoryChunk {Data = data})
             {
-                Assert.AreEqual(100, memory.MemorySize);
+                Assert.AreEqual(100, memory.Size);
             }
         }
 
@@ -65,6 +65,23 @@ namespace Toolbox.Utils.Test.Tests.Memory
             }
             
             Assert.AreEqual(IntPtr.Zero, memory.Memory);
+        }
+
+        [Test]
+        public void SecondDataAssignmentFreesPreviousMemory()
+        {
+            var firstData = new byte[100];
+            var secondData = new byte[200];
+            new Random().NextBytes(firstData);
+            new Random().NextBytes(secondData);
+
+            using (var memory = new UnmanagedMemoryChunk())
+            {
+                memory.Data = firstData;
+                memory.Data = secondData;
+                
+                Assert.AreEqual(200, memory.Size);
+            }
         }
 
         #endregion

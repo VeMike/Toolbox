@@ -20,6 +20,6 @@ namespace Com.Toolbox.Utils.Memory
         ///     The number of bytes, that are currently stored in unmanaged
         ///     memory.
         /// </summary>
-        int MemorySize { get; }
+        int Size { get; }
     }
 }

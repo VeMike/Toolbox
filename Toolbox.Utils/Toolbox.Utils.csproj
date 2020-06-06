@@ -45,14 +45,14 @@
     <Compile Include="Common\Enumeration.cs" />
     <Compile Include="Common\Singleton.cs" />
     <Compile Include="Common\StringUtils.cs" />
-    <Compile Include="ControlFlow\Retry.cs" />
-    <Compile Include="ControlFlow\RetryFailedException.cs" />
-    <Compile Include="List\IPartition.cs" />
-    <Compile Include="List\SequentialPartition.cs" />
+    <Compile Include="Collection\IPartition.cs" />
+    <Compile Include="Collection\SequentialPartition.cs" />
     <Compile Include="Memory\IUnmanagedMemory.cs" />
     <Compile Include="Memory\UnmanagedMemoryChunk.cs" />
     <Compile Include="Probing\AreWe.cs" />
     <Compile Include="Probing\Guard.cs" />
+    <Compile Include="Probing\Retry.cs" />
+    <Compile Include="Probing\RetryFailedException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

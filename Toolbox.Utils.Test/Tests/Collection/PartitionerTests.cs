@@ -8,10 +8,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Com.Toolbox.Utils.List;
+using Com.Toolbox.Utils.Collection;
 using NUnit.Framework;
 
-namespace Toolbox.Utils.Test.Tests.List
+namespace Toolbox.Utils.Test.Tests.Collection
 {
     [TestFixture]
     public class PartitionerTests

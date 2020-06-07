@@ -43,10 +43,18 @@
   <ItemGroup>
     <Compile Include="Attribute\LocalizedDescription.cs" />
     <Compile Include="Common\Enumeration.cs" />
+    <Compile Include="Common\Extensions.cs" />
     <Compile Include="Common\Singleton.cs" />
     <Compile Include="Common\StringUtils.cs" />
     <Compile Include="Collection\IPartition.cs" />
     <Compile Include="Collection\SequentialPartition.cs" />
+    <Compile Include="Dispatching\DispatcherBase.cs" />
+    <Compile Include="Dispatching\ICommandHandler.cs" />
+    <Compile Include="Dispatching\IDependencyCommandDispatcher.cs" />
+    <Compile Include="Dispatching\IDependencyCommandHandler.cs" />
+    <Compile Include="Dispatching\IDispatcher.cs" />
+    <Compile Include="Dispatching\ReflectionDependencyDispatcher.cs" />
+    <Compile Include="Dispatching\ReflectionDispatcher.cs" />
     <Compile Include="Memory\IUnmanagedMemory.cs" />
     <Compile Include="Memory\UnmanagedMemoryChunk.cs" />
     <Compile Include="Probing\AreWe.cs" />

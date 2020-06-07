@@ -8,7 +8,7 @@ namespace Com.Toolbox.Utils.Common
     /// <summary>
     ///     This class contains extension methods for enums
     /// </summary>
-    public static class EnumerationExtension
+    public static class EnumExtension
     {
         #region Extension Methods
         

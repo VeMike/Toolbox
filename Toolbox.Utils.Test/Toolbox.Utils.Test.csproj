@@ -47,13 +47,19 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MockObjects\Dispatcher\Commands.cs" />
+    <Compile Include="MockObjects\Dispatcher\Handler.cs" />
     <Compile Include="MockObjects\Enumerations.cs" />
     <Compile Include="MockObjects\SingletonObject.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tests\Common\EnumerationTests.cs" />
+    <Compile Include="Tests\Common\ExtensionTests.cs" />
     <Compile Include="Tests\Common\SingletonTests.cs" />
     <Compile Include="Tests\Common\StringUtilsTests.cs" />
     <Compile Include="Tests\Collection\PartitionerTests.cs" />
+    <Compile Include="Tests\Dispatching\ReflectionDependencyDispatcherTest.cs" />
+    <Compile Include="Tests\Dispatching\ReflectionDispatcherTest.cs" />
+    <Compile Include="Tests\Dispatching\CommonDispatcherTests.cs" />
     <Compile Include="Tests\Memory\UnmanagedMemoryTest.cs" />
     <Compile Include="Tests\Probing\AreWeTest.cs" />
     <Compile Include="Tests\Probing\GuardTest.cs" />

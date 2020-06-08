@@ -33,6 +33,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.IO.Compression" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -58,6 +59,7 @@
     <Compile Include="Dispatching\ReflectionDispatcher.cs" />
     <Compile Include="Dispatching\RegistrationDependencyDispatcher.cs" />
     <Compile Include="Dispatching\RegistrationDispatcher.cs" />
+    <Compile Include="Memory\FileZipper.cs" />
     <Compile Include="Memory\IUnmanagedMemory.cs" />
     <Compile Include="Memory\UnmanagedMemoryChunk.cs" />
     <Compile Include="Probing\AreWe.cs" />

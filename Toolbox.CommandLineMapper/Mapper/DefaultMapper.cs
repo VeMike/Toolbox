@@ -266,7 +266,7 @@ namespace Toolbox.CommandLineMapper.Mapper
 
                 argument.IsMapped = true;
             }
-            catch (PropertyNotFoundException e)
+            catch (PropertyNotFoundException)
             {
                 argument.IsMapped = false;
             }

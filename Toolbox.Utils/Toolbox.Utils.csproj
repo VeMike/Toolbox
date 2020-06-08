@@ -45,6 +45,7 @@
     <Compile Include="Attribute\LocalizedDescription.cs" />
     <Compile Include="Common\Enumeration.cs" />
     <Compile Include="Common\Extensions.cs" />
+    <Compile Include="Common\PropertyByNameReaderWriter.cs" />
     <Compile Include="Common\Singleton.cs" />
     <Compile Include="Common\StringUtils.cs" />
     <Compile Include="Collection\IPartition.cs" />

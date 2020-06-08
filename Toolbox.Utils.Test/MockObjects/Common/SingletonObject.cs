@@ -7,7 +7,7 @@
 
 using Com.Toolbox.Utils.Common;
 
-namespace Toolbox.Utils.Test.MockObjects
+namespace Toolbox.Utils.Test.MockObjects.Common
 {
     /// <summary>
     ///     An object, that uses the <see cref="Singleton{T}"/> utility

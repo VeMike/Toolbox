@@ -7,7 +7,7 @@
 
 using System.ComponentModel;
 
-namespace Toolbox.Utils.Test.MockObjects
+namespace Toolbox.Utils.Test.MockObjects.Common
 {
     /// <summary>
     ///     An enumeration of numbers with <see cref="DescriptionAttribute"/>

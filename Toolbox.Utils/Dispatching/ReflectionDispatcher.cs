@@ -17,7 +17,7 @@ namespace Com.Toolbox.Utils.Dispatching
     ///     <see cref="Assembly"/> using reflection for implementations
     ///     of <see cref="ICommandHandler{TCommand}"/> 
     /// </summary>
-    public class ReflectionDispatcher : DispatcherBase
+    public class ReflectionDispatcher : CommandHandlerDispatcherBase
     {
         #region Attributes
 
@@ -75,21 +75,6 @@ namespace Com.Toolbox.Utils.Dispatching
         #endregion
 
         #region DispatcherBase Implementation
-
-        /// <inheritdoc />
-        protected override Type GetHandlerType(Type commandType)
-        {
-            return typeof(ICommandHandler<>).MakeGenericType(commandType);
-        }
-
-        /// <inheritdoc />
-        protected override void DispatchToSingleHandler<TCommand>(object handler, TCommand command)
-        {
-            if (handler is ICommandHandler<TCommand> specificHandler)
-            {
-                specificHandler.Handle(command);
-            }
-        }
 
         /// <inheritdoc />
         protected override IEnumerable<Type> RequestHandlerTypes(object handlerType)

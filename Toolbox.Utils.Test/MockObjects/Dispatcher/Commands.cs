@@ -7,6 +7,11 @@
 
 namespace Toolbox.Utils.Test.MockObjects.Dispatcher
 {
+    public class EmptyCommand
+    {
+        
+    }
+    
     public class CalledCommand
     {
         public bool WasCalled { get; set; } = false;

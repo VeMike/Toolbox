@@ -77,7 +77,26 @@ namespace Toolbox.Utils.Test.Tests.Dispatching
             {
                 yield return new ReflectionDispatcher(Assembly.GetExecutingAssembly());
                 yield return new ReflectionDependencyDispatcher<string>("Foo", Assembly.GetExecutingAssembly());
+                foreach (var dispatcher in CreateRegistrationDispatchersWithHandlers())
+                {
+                    yield return dispatcher;
+                }
             }
+        }
+
+        private static IEnumerable<IDispatcher> CreateRegistrationDispatchersWithHandlers()
+        {
+            var registrationDispatcher = new RegistrationDispatcher();
+            registrationDispatcher.AddHandler(new CalledCommandHandler());
+            registrationDispatcher.AddHandler(new FirstAllHandlersCalledHandler());
+            registrationDispatcher.AddHandler(new SecondAllHandlersCalledHandler());
+            yield return registrationDispatcher;
+            
+            var registrationDependencyDispatcher = new RegistrationDependencyDispatcher<string>("Foo");
+            registrationDependencyDispatcher.AddHandler(new CalledDependencyCommandHandler());
+            registrationDependencyDispatcher.AddHandler(new FirstAllDependencyHandlersCalledHandler());
+            registrationDependencyDispatcher.AddHandler(new FirstAllDependencyHandlersCalledHandler());
+            yield return registrationDependencyDispatcher;
         }
 
         #endregion

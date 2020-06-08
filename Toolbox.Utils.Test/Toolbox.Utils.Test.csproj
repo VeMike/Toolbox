@@ -60,6 +60,8 @@
     <Compile Include="Tests\Dispatching\ReflectionDependencyDispatcherTest.cs" />
     <Compile Include="Tests\Dispatching\ReflectionDispatcherTest.cs" />
     <Compile Include="Tests\Dispatching\CommonDispatcherTests.cs" />
+    <Compile Include="Tests\Dispatching\RegistrationDependencyDispatcherTests.cs" />
+    <Compile Include="Tests\Dispatching\RegistrationDispatcherTests.cs" />
     <Compile Include="Tests\Memory\UnmanagedMemoryTest.cs" />
     <Compile Include="Tests\Probing\AreWeTest.cs" />
     <Compile Include="Tests\Probing\GuardTest.cs" />

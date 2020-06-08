@@ -40,6 +40,17 @@ namespace Toolbox.Utils.Test.MockObjects.Dispatcher
             command.Calls++;
         }
     }
+    
+    public class CountingCallsCommandHandler : ICommandHandler<EmptyCommand>
+    {
+        public static int Calls { get; private set; } = 0;
+        
+        /// <inheritdoc />
+        public void Handle(EmptyCommand command)
+        {
+            Calls++;
+        }
+    }
 
     #endregion
 
@@ -90,6 +101,7 @@ namespace Toolbox.Utils.Test.MockObjects.Dispatcher
         }
     }
 
+    // ReSharper disable once UnusedType.Global
     public class InjectCalledBeforeHandleHandler : IDependencyCommandHandler<InjectBeforeHandleCommand, string>
     {
         private bool injectWasCalled;
@@ -107,6 +119,7 @@ namespace Toolbox.Utils.Test.MockObjects.Dispatcher
         }
     }
 
+    // ReSharper disable once UnusedType.Global
     public class GetInjectedDependencyHandler : IDependencyCommandHandler<GetInjectedDependencyCommand, string>
     {
         private string injected;
@@ -121,6 +134,24 @@ namespace Toolbox.Utils.Test.MockObjects.Dispatcher
         public void Inject(string dependency)
         {
             this.injected = dependency;
+        }
+    }
+    
+    // ReSharper disable once UnusedType.Global
+    public class CountingCallsDependencyCommandHandler : IDependencyCommandHandler<EmptyCommand, string>
+    {
+        public static int Calls { get; private set; } = 0;
+        
+        /// <inheritdoc />
+        public void Handle(EmptyCommand command)
+        {
+            Calls++;
+        }
+
+        /// <inheritdoc />
+        public void Inject(string dependency)
+        {
+            
         }
     }
     

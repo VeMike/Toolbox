@@ -6,6 +6,7 @@
 // ===================================================================================================
 
 using System;
+using System.Collections.Generic;
 using NUnit.Framework;
 using Toolbox.UrlParser.Parsing;
 
@@ -30,30 +31,80 @@ namespace Toolbox.UrlParser.Test.Tests.Parsing
                 });
             });
         }
+
+        [Test]
+        public void ConstructorThrowsIfHostIsSpecified()
+        {
+            Assert.Throws<UriFormatException>(() =>
+            {
+                var _ = new Parser("http://localhost/items/{item_id}");
+            });
+        }
+
+        [Test]
+        public void ParseThrowsIfHostIsSpecified()
+        {
+            Assert.Throws<UriFormatException>(() =>
+            {
+                new Parser("/items/{item_id}").Parse("http://localhost/items/5");
+            });
+        }
         
         [Test]
         public void ParseThrowsOnNullArgument()
         {
             Assert.Throws<ArgumentNullException>(() =>
             {
-                var _ = new Parser("http://127.0.0.1:8000").Parse(null);
+                var _ = new Parser("/items/{item_id}").Parse(null);
+            });
+        }
+
+        [Test]
+        public void ParseThrowsIfUrlDoesNotMatchTheAmountOfSegmentsInThePattern()
+        {
+            Assert.Throws<ArgumentException>(() =>
+            {
+                new Parser("/items/{item_id}").Parse("/items/{item_id}/product");
+            });
+        }
+
+        [Test]
+        public void ParseThrowsIfUrlDoesNotMatchTheSegmentValuesInThePattern()
+        {
+            Assert.Throws<ArgumentException>(() =>
+            {
+                new Parser("/items/{item_id}").Parse("/orders/{item_id}");
             });
         }
 
         [Test]
         public void UrlWithSinglePathParameterIsParsed()
         {
-            var parser = new Parser("http://127.0.0.1:8000/items/{item_id}");
-
-            var result = parser.Parse("http://127.0.0.1:8000/items/5");
+            var parser = new Parser("/items/{item_id}");
+            var result = parser.Parse("/items/5");
 
             var parameter = result.PathParameters[0];
             
             Assert.Multiple(() =>
             {
-                Assert.AreEqual(parameter.Name, "item_id");
-                Assert.AreEqual(parameter.Value, "5");
+                Assert.AreEqual("item_id", parameter.Name);
+                Assert.AreEqual("5", parameter.Value);
             });
+        }
+
+        [Test]
+        public void UrlWithMultiplePathParametersIsParsed()
+        {
+            var parser = new Parser("/users/{user_id}/roles/{role_id}");
+            var result = parser.Parse("/users/10/roles/42");
+
+            var expectedParameters = new List<Parameter>
+            {
+                new Parameter("user_id", "10", 2),
+                new Parameter("role_id", "42", 4),
+            };
+            
+            CollectionAssert.AreEqual(expectedParameters, result.PathParameters);
         }
     }
 }

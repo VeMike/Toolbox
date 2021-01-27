@@ -40,5 +40,38 @@ namespace Toolbox.UrlParser.Parsing
         }
 
         #endregion
+
+        #region Methods
+
+        /// <summary>
+        ///     Gets a <see cref="Parameter"/> by the index assigned
+        ///     to the parameter. Note, that 'index' does not refer
+        ///     to the index of the parameter inside this list.
+        ///     The 'index' here is the <see cref="Parameter.Index"/> 
+        /// </summary>
+        /// <param name="index">
+        ///     The index for which a parameter shall be
+        ///     received.
+        /// </param>
+        /// <param name="parameter">
+        ///     Receives the parameter with index <paramref name="index"/>
+        /// </param>
+        /// <returns>
+        ///     'true' if a parameter with the passed index is
+        ///     found, 'false' if not.
+        /// </returns>
+        public bool TryGetParameter(int index, out Parameter parameter)
+        {
+            if (this.Find(p => p.Index == index) is Parameter param)
+            {
+                parameter = param;
+                return true;
+            }
+
+            parameter = null;
+            return false;
+        }
+
+        #endregion
     }
 }

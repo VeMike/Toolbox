@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 using Com.Toolbox.Utils.Probing;
 
@@ -97,9 +98,9 @@ namespace Toolbox.UrlParser.Parsing
         {
             Guard.AgainstNullArgument(nameof(url), url);
 
-            var queryParameters = this.ParseQueryParameters(new Uri(url, UriKind.Relative).OriginalString);
+            var queryParameters = this.ParsePathParameters(new Uri(url, UriKind.Relative).OriginalString);
             
-            return new UrlParserResult(url, queryParameters, new ParameterList());
+            return new UrlParserResult(url, queryParameters, ParseQueryParameters(url));
         }
 
         #endregion
@@ -136,17 +137,22 @@ namespace Toolbox.UrlParser.Parsing
         }
         
         /// <summary>
-        ///     Parses all query parameters in the URL
+        ///     Parses all path parameters in the URL
         /// </summary>
         /// <param name="url">
         ///     The URL whose query parameters shall be parsed
         /// </param>
         /// <returns>
-        ///     The parsed query parameters
+        ///     The parsed path parameters
         /// </returns>
-        private ParameterList ParseQueryParameters(string url)
+        private ParameterList ParsePathParameters(string url)
         {
             var result = new ParameterList();
+
+            //The user did not specify any pattern in the constructor
+            if (this.parsedPattern.Count == 0)
+                return result;
+            
             var urlSegments = url.Split('/');
 
             this.CheckIfPatternSegmentsMatchUrl(urlSegments);
@@ -159,8 +165,43 @@ namespace Toolbox.UrlParser.Parsing
                 if(segment.Equals(string.Empty))
                     continue;
 
-                if(this.parsedPattern.FirstOrDefault(p => p.Index == i) is Parameter param)
+                if (this.parsedPattern.TryGetParameter(i, out var param))
+                {
                     result.Add(new Parameter(param.Name, segment, i));
+                }
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        ///     Parses all query parameters in the URL
+        /// </summary>
+        /// <param name="url">
+        ///     The URL from whose query parameters shall be extracted.
+        /// </param>
+        /// <returns>
+        ///     The query parameters of the URL
+        /// </returns>
+        private static ParameterList ParseQueryParameters(string url)
+        {
+            var result = new ParameterList();
+            var querySplit = url.Split('?');
+            
+            //There are at least two parts now if the url has a query
+            if (querySplit.Length < 2)
+                return result;
+
+            var queryParams = querySplit[1].Split('&');
+
+            for (var i = 0; i < queryParams.Length; i++)
+            {
+                var queryParam = queryParams[i].Split('=');
+
+                if (queryParam.Length != 2)
+                    continue;
+                
+                result.Add(new Parameter(queryParam[0], queryParam[1], i));
             }
 
             return result;

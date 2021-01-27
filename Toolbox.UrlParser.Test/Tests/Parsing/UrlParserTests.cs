@@ -78,6 +78,14 @@ namespace Toolbox.UrlParser.Test.Tests.Parsing
         }
 
         [Test]
+        public void NoPathParametersAreParsedIfUrlDoesNotDefinePatters()
+        {
+            var result = new Parser("/items/number").Parse("/orders/{item_id}");
+            
+            CollectionAssert.IsEmpty(result.PathParameters);
+        }
+
+        [Test]
         public void UrlWithSinglePathParameterIsParsed()
         {
             var parser = new Parser("/items/{item_id}");
@@ -105,6 +113,44 @@ namespace Toolbox.UrlParser.Test.Tests.Parsing
             };
             
             CollectionAssert.AreEqual(expectedParameters, result.PathParameters);
+        }
+
+        [Test]
+        public void UrlWithSingleQueryParametersIsParsed()
+        {
+            var parser = new Parser("/items/item");
+            var result = parser.Parse("/items/5?skip=0");
+            
+            Assert.Multiple(() =>
+            {
+                Assert.AreEqual("skip", result.QueryParameters[0].Name);
+                Assert.AreEqual("0", result.QueryParameters[0].Value);
+            });
+        }
+
+        [Test]
+        public void UrlWithMultipleQueryParametersIsParsed()
+        {
+            var parser = new Parser("/items/item");
+            var result = parser.Parse("/items/5?skip=0&count=23");
+            
+            Assert.Multiple(() =>
+            {
+                Assert.AreEqual("skip", result.QueryParameters[0].Name);
+                Assert.AreEqual("0", result.QueryParameters[0].Value);
+                
+                Assert.AreEqual("count", result.QueryParameters[1].Name);
+                Assert.AreEqual("23", result.QueryParameters[1].Value);
+            });
+        }
+
+        [Test]
+        public void UrlWithNoQueryParametersYieldsEmptyList()
+        {
+            var parser = new Parser("/items/item");
+            var result = parser.Parse("/items/5");
+            
+            CollectionAssert.IsEmpty(result.QueryParameters);
         }
     }
 }

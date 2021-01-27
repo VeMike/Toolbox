@@ -22,5 +22,35 @@ namespace Toolbox.UrlParser.Test.Tests.Parsing
                 var _ = new ParameterList(null);
             });
         }
+
+        [Test]
+        public void ParameterIsFoundByIndex()
+        {
+            var list = new ParameterList {new Parameter("Foo", "Bar", 5)};
+
+            var result = list.TryGetParameter(5, out var param);
+            
+            Assert.Multiple(() =>
+            {
+                Assert.IsTrue(result);
+                
+                Assert.IsNotNull(param);
+            });
+        }
+
+        [Test]
+        public void ParameterIsNotFoundByIndex()
+        {
+            var list = new ParameterList {new Parameter("Foo", "Bar", 5)};
+
+            var result = list.TryGetParameter(9, out var param);
+            
+            Assert.Multiple(() =>
+            {
+                Assert.IsFalse(result);
+                
+                Assert.IsNull(param);
+            });
+        }
     }
 }

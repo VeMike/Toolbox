@@ -45,12 +45,26 @@
     </ItemGroup>
     <ItemGroup>
         <Compile Include="Properties\AssemblyInfo.cs" />
+        <Compile Include="Tests\Parsing\Events\ContentEventArgsTests.cs" />
+        <Compile Include="Tests\Parsing\Events\ParserEventArgsTests.cs" />
+        <Compile Include="Tests\Parsing\Events\PropertyEventArgsTests.cs" />
+        <Compile Include="Tests\Parsing\Files\LineTests.cs" />
+        <Compile Include="Tests\Parsing\Files\LocalTextFileTests.cs" />
+        <Compile Include="Tests\Parsing\ParserOptionsTests.cs" />
     </ItemGroup>
     <ItemGroup>
       <None Include="packages.config" />
     </ItemGroup>
     <ItemGroup>
-      <Folder Include="Tests" />
+      <ProjectReference Include="..\Toolbox.IniFileParser\Toolbox.IniFileParser.csproj">
+        <Project>{46c75ce6-df3b-4688-8a92-61af3cd4d0ec}</Project>
+        <Name>Toolbox.IniFileParser</Name>
+      </ProjectReference>
+    </ItemGroup>
+    <ItemGroup>
+      <Content Include="Mock\Files\MockIniFile.txt">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
     <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

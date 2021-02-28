@@ -47,9 +47,6 @@
         <Compile Include="Properties\AssemblyInfo.cs" />
     </ItemGroup>
     <ItemGroup>
-      <Folder Include="Common" />
-    </ItemGroup>
-    <ItemGroup>
       <ProjectReference Include="..\Toolbox.Utils\Toolbox.Utils.csproj">
         <Project>{4eea5596-43b3-4f0d-ac20-06cf32714764}</Project>
         <Name>Toolbox.Utils</Name>

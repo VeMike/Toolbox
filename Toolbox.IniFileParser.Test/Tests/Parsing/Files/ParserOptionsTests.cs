@@ -7,10 +7,9 @@
 
 using System.Collections.Generic;
 using NUnit.Framework;
-using Toolbox.IniFileParser.Parsing;
 using Toolbox.IniFileParser.Parsing.Files;
 
-namespace Toolbox.IniFileParser.Test.Tests.Parsing
+namespace Toolbox.IniFileParser.Test.Tests.Parsing.Files
 {
     [TestFixture]
     public class ParserOptionsTests

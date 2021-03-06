@@ -38,23 +38,21 @@
         <Reference Include="System.Xml" />
     </ItemGroup>
     <ItemGroup>
+        <Compile Include="Common\Extensions.cs" />
         <Compile Include="Parsing\Events\ContentEventArgs.cs" />
         <Compile Include="Parsing\Events\ParserEventArgs.cs" />
         <Compile Include="Parsing\Events\PropertyEventArgs.cs" />
         <Compile Include="Parsing\Files\IIniFile.cs" />
         <Compile Include="Parsing\Files\IParser.cs" />
+        <Compile Include="Parsing\Files\IProperty.cs" />
+        <Compile Include="Parsing\Files\ISection.cs" />
         <Compile Include="Parsing\Files\ITextFile.cs" />
         <Compile Include="Parsing\Files\Line.cs" />
         <Compile Include="Parsing\Files\LocalTextFile.cs" />
+        <Compile Include="Parsing\Files\Parser.cs" />
         <Compile Include="Parsing\Files\ParserOptions.cs" />
         <Compile Include="Parsing\IFileReaderWriter.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
-    </ItemGroup>
-    <ItemGroup>
-      <ProjectReference Include="..\Toolbox.Utils\Toolbox.Utils.csproj">
-        <Project>{4eea5596-43b3-4f0d-ac20-06cf32714764}</Project>
-        <Name>Toolbox.Utils</Name>
-      </ProjectReference>
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
     <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

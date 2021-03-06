@@ -61,6 +61,16 @@ namespace Toolbox.IniFileParser.Parsing.Files
         /// </summary>
         public string PropertySeparator { get; } = "=";
 
+        /// <summary>
+        ///     Tells the parser if comments should
+        ///     be skipped. If this is set to 'true'
+        ///     no events will be raised if the
+        ///     parser encounters a comment line.
+        ///
+        ///     Default: 'true'
+        /// </summary>
+        public bool SkipComments { get; } = true;
+
         #endregion
     }
 }

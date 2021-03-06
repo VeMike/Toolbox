@@ -30,9 +30,9 @@ namespace Toolbox.IniFileParser.Parsing.Files
         #region Properties
 
         /// <summary>
-        ///     Gets or sets options for the parser
+        ///     Gets the options of the parser
         /// </summary>
-        ParserOptions Options { get; set; }
+        ParserOptions Options { get; }
 
         #endregion
 

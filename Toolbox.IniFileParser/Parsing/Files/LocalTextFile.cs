@@ -9,7 +9,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Com.Toolbox.Utils.Probing;
 
 namespace Toolbox.IniFileParser.Parsing.Files
 {
@@ -47,12 +46,10 @@ namespace Toolbox.IniFileParser.Parsing.Files
         /// </exception>
         public LocalTextFile(FileInfo file)
         {
-            Guard.AgainstNullArgument(nameof(file), file);
-
+            this.file = file ?? throw new ArgumentNullException(nameof(file));
+            
             if (!file.Exists)
                 throw new ArgumentException($"The file '{file}' does not exist");
-            
-            this.file = file;
         }
 
         #endregion

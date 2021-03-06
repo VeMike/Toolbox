@@ -6,7 +6,6 @@
 // ===================================================================================================
 
 using System;
-using Com.Toolbox.Utils.Probing;
 
 namespace Toolbox.IniFileParser.Parsing.Files
 {
@@ -33,9 +32,7 @@ namespace Toolbox.IniFileParser.Parsing.Files
         /// </exception>
         public Line(int number, string content)
         {
-            Guard.AgainstNullArgument(nameof(content), content);
-            
-            this.Content = content;
+            this.Content = content ?? throw new ArgumentNullException(nameof(content));
             this.Number = number;
         }
 

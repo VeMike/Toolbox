@@ -6,7 +6,6 @@
 // ===================================================================================================
 
 using System;
-using Com.Toolbox.Utils.Probing;
 
 namespace Toolbox.IniFileParser.Parsing.Events
 {
@@ -42,9 +41,7 @@ namespace Toolbox.IniFileParser.Parsing.Events
                                 string originalLine,
                                 string content) : base(lineNumber, originalLine)
         {
-            Guard.AgainstNullArgument(nameof(content), content);
-            
-            this.Content = content;
+            this.Content = content ?? throw new ArgumentNullException(nameof(content));
         }
 
         #endregion

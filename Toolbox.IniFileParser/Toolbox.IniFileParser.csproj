@@ -51,6 +51,8 @@
         <Compile Include="Parsing\Files\LocalTextFile.cs" />
         <Compile Include="Parsing\Files\Parser.cs" />
         <Compile Include="Parsing\Files\ParserOptions.cs" />
+        <Compile Include="Parsing\Files\Property.cs" />
+        <Compile Include="Parsing\Files\Section.cs" />
         <Compile Include="Parsing\IFileReaderWriter.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
     </ItemGroup>

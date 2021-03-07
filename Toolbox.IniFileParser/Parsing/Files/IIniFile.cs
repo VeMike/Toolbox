@@ -19,6 +19,12 @@ namespace Toolbox.IniFileParser.Parsing.Files
         IParser Parser { get; }
         
         /// <summary>
+        ///     Gets the amount of <see cref="ISection"/>s
+        ///     of this ini file
+        /// </summary>
+        int Sections { get; }
+        
+        /// <summary>
         ///     Gets the <see cref="ISection"/>
         ///     with the specified name
         /// </summary>
@@ -35,15 +41,15 @@ namespace Toolbox.IniFileParser.Parsing.Files
         ///     The zero based index of the <see cref="ISection"/>
         /// </param>
         ISection this[int index] { get; }
-        
+
         /// <summary>
-        ///     Adds the specified <see cref="ISection"/>
-        ///     to the ini file
+        ///     Adds the passed <see cref="ISection"/> to
+        ///     the ini file
         /// </summary>
         /// <param name="section">
         ///     The section to add
         /// </param>
-        ISection this[ISection section] { set; }
+        void Add(ISection section);
 
         /// <summary>
         ///     Removes the <see cref="ISection"/> at the
@@ -63,9 +69,16 @@ namespace Toolbox.IniFileParser.Parsing.Files
         void Remove(ISection section);
 
         /// <summary>
-        ///     Gets the amount of <see cref="ISection"/>s
-        ///     of this ini file
+        ///     Checks if the ini file contains
+        ///     a section with the passed name
         /// </summary>
-        int Sections { get; }
+        /// <param name="name">
+        ///     The name of the section
+        /// </param>
+        /// <returns>
+        ///     'true' if a section with the passed name
+        ///     is in the ini file, 'false' otherwise.
+        /// </returns>
+        bool Contains(string name);
     }
 }

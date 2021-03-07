@@ -53,6 +53,8 @@
         <Compile Include="Tests\Parsing\Files\LocalTextFileTests.cs" />
         <Compile Include="Tests\Parsing\Files\ParserOptionsTests.cs" />
         <Compile Include="Tests\Parsing\Files\ParserTests.cs" />
+        <Compile Include="Tests\Parsing\Files\PropertyTests.cs" />
+        <Compile Include="Tests\Parsing\Files\SectionTests.cs" />
     </ItemGroup>
     <ItemGroup>
       <None Include="packages.config" />

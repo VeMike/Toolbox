@@ -217,5 +217,17 @@ namespace Toolbox.IniFileParser.Test.Tests.Parsing.Files
             
             Assert.AreEqual("[Foo]\r\nBar=Baz\r\nToz=Taz\r\n\r\n", content);
         }
+
+        [Test]
+        public void IniFileCanBeCreatedProgramatically()
+        {
+            var ini = new IniFile();
+            var section = new Section("Foo");
+            section.Add(new Property("Bar", "Baz"));
+            section.Add(new Property("Toz", "Taz"));
+            ini.Add(section);
+            
+            Assert.AreEqual("[Foo]\r\nBar=Baz\r\nToz=Taz\r\n\r\n", ini.ToString());
+        }
     }
 }

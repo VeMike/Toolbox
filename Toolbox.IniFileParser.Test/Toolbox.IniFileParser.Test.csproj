@@ -49,6 +49,7 @@
         <Compile Include="Tests\Parsing\Events\ContentEventArgsTests.cs" />
         <Compile Include="Tests\Parsing\Events\ParserEventArgsTests.cs" />
         <Compile Include="Tests\Parsing\Events\PropertyEventArgsTests.cs" />
+        <Compile Include="Tests\Parsing\Files\IniFileTests.cs" />
         <Compile Include="Tests\Parsing\Files\LineTests.cs" />
         <Compile Include="Tests\Parsing\Files\LocalTextFileTests.cs" />
         <Compile Include="Tests\Parsing\Files\ParserOptionsTests.cs" />

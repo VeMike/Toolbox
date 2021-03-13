@@ -80,5 +80,25 @@ namespace Toolbox.IniFileParser.Parsing.Files
         ///     is in the ini file, 'false' otherwise.
         /// </returns>
         bool Contains(string name);
+        
+        /// <summary>
+        ///     Creates a 'ToString' representation of
+        ///     this instance
+        /// </summary>
+        /// <param name="sectionStart">
+        ///     The start character of the section
+        /// </param>
+        /// <param name="sectionEnd">
+        ///     The end character of the section
+        /// </param>
+        /// <param name="propertySeparator">
+        ///     The property separator
+        /// </param>
+        /// <returns>
+        ///     A string representation of this instance
+        /// </returns>
+        string ToString(string sectionStart, 
+                        string sectionEnd,
+                        string propertySeparator);
     }
 }

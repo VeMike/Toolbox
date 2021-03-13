@@ -43,6 +43,7 @@
         <Compile Include="Parsing\Events\ParserEventArgs.cs" />
         <Compile Include="Parsing\Events\PropertyEventArgs.cs" />
         <Compile Include="Parsing\Files\IIniFile.cs" />
+        <Compile Include="Parsing\Files\IniFile.cs" />
         <Compile Include="Parsing\Files\IParser.cs" />
         <Compile Include="Parsing\Files\IProperty.cs" />
         <Compile Include="Parsing\Files\ISection.cs" />

@@ -7,6 +7,8 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using Toolbox.IniFileParser.Parsing.Events;
 
 namespace Toolbox.IniFileParser.Parsing.Files
@@ -21,8 +23,16 @@ namespace Toolbox.IniFileParser.Parsing.Files
         /// <summary>
         ///     The sections of this ini file.
         /// </summary>
-        private readonly IList<ISection> sections = new List<ISection>();
+        private readonly List<ISection> sections = new List<ISection>();
 
+        /// <summary>
+        ///     The current section parsed by the <see cref="Parser"/>.
+        ///
+        ///     This is always 'null' if the ini file is created
+        ///     manually without parsing (default constructor).
+        /// </summary>
+        private string currentSection;
+        
         #endregion
         
         #region Constructor
@@ -91,48 +101,125 @@ namespace Toolbox.IniFileParser.Parsing.Files
         public IParser Parser { get; }
 
         /// <inheritdoc />
-        public int Sections { get; }
+        public int Sections => this.sections.Count;
 
         /// <inheritdoc />
-        public ISection this[string name] => throw new NotImplementedException();
+        public ISection this[string name]
+        {
+            get
+            {
+                if (this.Contains(name))
+                    return this.sections.Find(s => s.Name.Equals(name));
+                throw new ArgumentException($"A section with name '{name}' not found");
+            }
+        }
 
         /// <inheritdoc />
-        public ISection this[int index] => throw new NotImplementedException();
+        public ISection this[int index]
+        {
+            get
+            {
+                this.CheckIndex(index);
+
+                return this.sections[index];
+            }
+        }
 
         /// <inheritdoc />
+        /// <exception cref="ArgumentNullException">
+        ///     Thrown if the passed argument is null
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        ///     Thrown if the passed section is already in
+        ///     the ini file.
+        /// </exception>
         public void Add(ISection section)
         {
-            throw new NotImplementedException();
+            if (section is null)
+                throw new ArgumentNullException(nameof(section));
+            if (this.Contains(section.Name))
+                throw new ArgumentException($"The section '{section.Name}' is already in the ini file");
+
+            this.sections.Add(section);
         }
 
         /// <inheritdoc />
+        /// <exception cref="ArgumentOutOfRangeException">
+        ///     Thrown if there is no section at the passed index
+        /// </exception>
         public void Remove(int index)
         {
-            throw new NotImplementedException();
+            this.CheckIndex(index);
+
+            this.sections.RemoveAt(index);
         }
 
         /// <inheritdoc />
+        /// <exception cref="ArgumentNullException">
+        ///     Thrown if the passed argument is null
+        /// </exception>
         public void Remove(ISection section)
         {
-            throw new NotImplementedException();
+            if (section is null)
+                throw new ArgumentNullException(nameof(section));
+
+            this.sections.Remove(section);
         }
 
         /// <inheritdoc />
+        /// <exception cref="ArgumentNullException">
+        ///     Thrown if the passed argument is null
+        /// </exception>
         public bool Contains(string name)
         {
-            throw new NotImplementedException();
+            if (name is null)
+                throw new ArgumentNullException(nameof(name));
+
+            return !(this.sections.Find(s => s.Name.Equals(name)) is null);
         }
 
         /// <inheritdoc />
-        public string ToString(string sectionStart, string sectionEnd, string propertySeparator)
+        public string ToString(string sectionStart, 
+                               string sectionEnd, 
+                               string propertySeparator)
         {
-            throw new NotImplementedException();
+            var builder = new StringBuilder();
+
+            foreach (var section in this.sections)
+            {
+                builder.Append(section.ToString(sectionStart,
+                                                sectionEnd,
+                                                propertySeparator));
+            }
+
+            return builder.ToString();
+        }
+
+        /// <inheritdoc />
+        public override string ToString()
+        {
+            return this.ToString("[", "]", "=");
         }
 
         #endregion
 
         #region Methods
 
+        /// <summary>
+        ///     Checks if the passed index is valid
+        /// </summary>
+        /// <param name="index">
+        ///     The index to check
+        /// </param>
+        /// <exception cref="ArgumentOutOfRangeException">
+        ///     Thrown if the passed index is out of range
+        /// </exception>
+        private void CheckIndex(int index)
+        {
+            if (index >= this.Sections || index < 0)
+                throw new ArgumentOutOfRangeException(nameof(index));
+        }
+        
         /// <summary>
         ///     Adds all event handlers to the parser
         /// </summary>
@@ -160,9 +247,22 @@ namespace Toolbox.IniFileParser.Parsing.Files
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
+        /// <exception cref="InvalidOperationException">
+        ///     Thrown if a property in a ini file is
+        ///     encountered without a prior section
+        /// </exception>
         private void OnProperty(object sender, PropertyEventArgs e)
         {
-            throw new NotImplementedException();
+            /*
+             * If 'currentSection' is 'null' here, the parser
+             * encountered a property before a section. An
+             * ini file that has properties without a section
+             * is not valid.
+             */
+            if (this.currentSection is null)
+                throw new InvalidOperationException($"Section for property '{e.Property}' not found");
+            
+            this[this.currentSection].Add(new Property(e.Property.Key, e.Property.Value));
         }
 
         /// <summary>
@@ -173,7 +273,8 @@ namespace Toolbox.IniFileParser.Parsing.Files
         /// <param name="e"></param>
         private void OnSection(object sender, ContentEventArgs e)
         {
-            throw new NotImplementedException();
+            this.currentSection = e.Content;
+            this.sections.Add(new Section(e.Content));
         }
 
         #endregion

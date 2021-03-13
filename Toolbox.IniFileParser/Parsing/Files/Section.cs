@@ -131,7 +131,7 @@ namespace Toolbox.IniFileParser.Parsing.Files
 
         protected bool Equals(Section other)
         {
-            return Equals(this.properties, other.properties) && this.Name == other.Name;
+            return this.Name == other.Name;
         }
 
         /// <inheritdoc />
@@ -158,10 +158,7 @@ namespace Toolbox.IniFileParser.Parsing.Files
         /// <inheritdoc />
         public override int GetHashCode()
         {
-            unchecked
-            {
-                return ((this.properties != null ? this.properties.GetHashCode() : 0) * 397) ^ (this.Name != null ? this.Name.GetHashCode() : 0);
-            }
+            return (this.Name != null ? this.Name.GetHashCode() : 0);
         }
 
         public static bool operator ==(Section left, Section right)

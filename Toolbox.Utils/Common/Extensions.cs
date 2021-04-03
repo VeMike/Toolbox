@@ -45,25 +45,50 @@ namespace Com.Toolbox.Utils.Common
         /// <summary>
         ///     Reads the full contents of the passed
         ///     <see cref="Stream"/> and copies it
-        ///     into an array
+        ///     into an array.
         /// </summary>
         /// <param name="stream">
         ///     The stream whose contents shall be copied
-        ///     to an array
+        ///     to an array.
+        ///
+        ///     This stream will be copied from its
+        ///     current position.
+        /// </param>
+        /// <returns>
+        ///     A new array with the contents of <paramref name="stream"/>
+        ///     read from the current position
+        /// </returns>
+        public static byte[] ToArray(this Stream stream)
+        {
+            return stream.ToArray(stream.Position);
+        }
+
+        /// <summary>
+        ///     Reads the full contents of the passed
+        ///     <see cref="Stream"/> and copies it
+        ///     into an array.
+        /// </summary>
+        /// <param name="stream">
+        ///     The stream whose contents shall be copied
+        ///     to an array.
+        /// </param>
+        /// <param name="position">
+        ///     The position from which the stream shall be
+        ///     copied.
         /// </param>
         /// <returns>
         ///     A new array with the contents of <paramref name="stream"/>
         /// </returns>
-        public static byte[] ToArray(this Stream stream)
+        public static byte[] ToArray(this Stream stream, long position)
         {
-            stream.Position = 0;
+            stream.Position = position;
             
             using (var memory = new MemoryStream())
             {
                 stream.CopyTo(memory);
 
                 return memory.ToArray();
-            }
+            }   
         }
     }
 }

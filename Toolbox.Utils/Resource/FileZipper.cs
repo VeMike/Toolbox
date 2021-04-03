@@ -11,7 +11,7 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 
-namespace Com.Toolbox.Utils.Memory
+namespace Com.Toolbox.Utils.Resource
 {
 	/// <summary>
 	///     Provides operations to zip a collection of

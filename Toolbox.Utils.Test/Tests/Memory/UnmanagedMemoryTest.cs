@@ -6,7 +6,7 @@
 // ===================================================================================================
 
 using System;
-using Com.Toolbox.Utils.Memory;
+using Com.Toolbox.Utils.Resource;
 using NUnit.Framework;
 
 namespace Toolbox.Utils.Test.Tests.Memory

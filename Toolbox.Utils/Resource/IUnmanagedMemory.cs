@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Com.Toolbox.Utils.Memory
+namespace Com.Toolbox.Utils.Resource
 {
     public interface IUnmanagedMemory : IDisposable
     {

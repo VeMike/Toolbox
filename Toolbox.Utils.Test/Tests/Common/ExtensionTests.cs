@@ -6,6 +6,7 @@
 // ===================================================================================================
 
 using System;
+using System.IO;
 using System.Linq;
 using Com.Toolbox.Utils.Common;
 using NUnit.Framework;
@@ -35,6 +36,24 @@ namespace Toolbox.Utils.Test.Tests.Common
             var enumeratedString = STRING_TO_ENUMERATE.ToEnumerable().ToList();
             
             Assert.AreEqual(1, enumeratedString.Count);
+        }
+
+        [Test]
+        public void ContentOfStreamIsCopiedToArray()
+        {
+            var data = new byte[]
+            {
+                1, 2, 3, 4
+            };
+            
+            using (Stream s = new MemoryStream())
+            {
+                s.Write(data, 0, data.Length);
+
+                var target = s.ToArray();
+                
+                CollectionAssert.AreEqual(data, target);
+            }
         }
 
         #endregion

@@ -5,7 +5,9 @@
 // = Description :
 // ===================================================================================================
 
+using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace Com.Toolbox.Utils.Common
 {
@@ -31,6 +33,37 @@ namespace Com.Toolbox.Utils.Common
         public static IEnumerable<T> ToEnumerable<T>(this T item)
         {
             yield return item;
+        }
+    }
+
+    /// <summary>
+    ///     A collection of extension methods for any <see cref="Stream"/>
+    ///     object
+    /// </summary>
+    public static class StreamExtensions
+    {
+        /// <summary>
+        ///     Reads the full contents of the passed
+        ///     <see cref="Stream"/> and copies it
+        ///     into an array
+        /// </summary>
+        /// <param name="stream">
+        ///     The stream whose contents shall be copied
+        ///     to an array
+        /// </param>
+        /// <returns>
+        ///     A new array with the contents of <paramref name="stream"/>
+        /// </returns>
+        public static byte[] ToArray(this Stream stream)
+        {
+            stream.Position = 0;
+            
+            using (var memory = new MemoryStream())
+            {
+                stream.CopyTo(memory);
+
+                return memory.ToArray();
+            }
         }
     }
 }

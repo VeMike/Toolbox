@@ -9,7 +9,7 @@ using System;
 using Com.Toolbox.Utils.Resource;
 using NUnit.Framework;
 
-namespace Toolbox.Utils.Test.Tests.Memory
+namespace Toolbox.Utils.Test.Tests.Resource
 {
     [TestFixture]
     public class MemoryTests

@@ -52,6 +52,7 @@
     <Compile Include="MockObjects\Common\SingletonObject.cs" />
     <Compile Include="MockObjects\Dispatcher\Commands.cs" />
     <Compile Include="MockObjects\Dispatcher\Handler.cs" />
+    <Compile Include="MockObjects\Resource\MockResource.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tests\Common\EnumerationTests.cs" />
     <Compile Include="Tests\Common\ExtensionTests.cs" />
@@ -64,8 +65,9 @@
     <Compile Include="Tests\Dispatching\CommonDispatcherTests.cs" />
     <Compile Include="Tests\Dispatching\RegistrationDependencyDispatcherTests.cs" />
     <Compile Include="Tests\Dispatching\RegistrationDispatcherTests.cs" />
-    <Compile Include="Tests\Memory\FileZipperTests.cs" />
-    <Compile Include="Tests\Memory\UnmanagedMemoryTest.cs" />
+    <Compile Include="Tests\Resource\FileZipperTests.cs" />
+    <Compile Include="Tests\Resource\SharedHandleTests.cs" />
+    <Compile Include="Tests\Resource\UnmanagedMemoryTest.cs" />
     <Compile Include="Tests\Probing\AreWeTest.cs" />
     <Compile Include="Tests\Probing\GuardTest.cs" />
     <Compile Include="Tests\Probing\RetryTest.cs" />

@@ -61,7 +61,11 @@
     <Compile Include="Dispatching\RegistrationDependencyDispatcher.cs" />
     <Compile Include="Dispatching\RegistrationDispatcher.cs" />
     <Compile Include="Resource\FileZipper.cs" />
+    <Compile Include="Resource\IResource.cs" />
+    <Compile Include="Resource\IResourceHandle.cs" />
     <Compile Include="Resource\IUnmanagedMemory.cs" />
+    <Compile Include="Resource\SharedHandle.cs" />
+    <Compile Include="Resource\Token.cs" />
     <Compile Include="Resource\UnmanagedMemoryChunk.cs" />
     <Compile Include="Probing\AreWe.cs" />
     <Compile Include="Probing\Guard.cs" />

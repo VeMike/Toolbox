@@ -60,9 +60,9 @@
     <Compile Include="Dispatching\ReflectionDispatcher.cs" />
     <Compile Include="Dispatching\RegistrationDependencyDispatcher.cs" />
     <Compile Include="Dispatching\RegistrationDispatcher.cs" />
-    <Compile Include="Memory\FileZipper.cs" />
-    <Compile Include="Memory\IUnmanagedMemory.cs" />
-    <Compile Include="Memory\UnmanagedMemoryChunk.cs" />
+    <Compile Include="Resource\FileZipper.cs" />
+    <Compile Include="Resource\IUnmanagedMemory.cs" />
+    <Compile Include="Resource\UnmanagedMemoryChunk.cs" />
     <Compile Include="Probing\AreWe.cs" />
     <Compile Include="Probing\Guard.cs" />
     <Compile Include="Probing\Retry.cs" />

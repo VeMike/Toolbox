@@ -54,6 +54,7 @@
     <Compile Include="MockObjects\Dispatcher\Handler.cs" />
     <Compile Include="MockObjects\Resource\MockResource.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tests\Collection\ListExtensionTests.cs" />
     <Compile Include="Tests\Common\EnumerationTests.cs" />
     <Compile Include="Tests\Common\ExtensionTests.cs" />
     <Compile Include="Tests\Common\PropertyByNameSetterTests.cs" />

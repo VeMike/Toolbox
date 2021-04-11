@@ -43,6 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Attribute\LocalizedDescription.cs" />
+    <Compile Include="Collection\Extensions.cs" />
     <Compile Include="Common\Enumeration.cs" />
     <Compile Include="Common\Extensions.cs" />
     <Compile Include="Common\PropertyByNameReaderWriter.cs" />

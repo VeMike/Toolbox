@@ -57,12 +57,6 @@
     <Compile Include="Tests\Mapper\DefaultMapperTests.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Toolbox.CommandLineMapper\Toolbox.CommandLineMapper.csproj">
-      <Project>{f3c1401c-55de-481f-a781-db8726ad4271}</Project>
-      <Name>Toolbox.CommandLineMapper</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />

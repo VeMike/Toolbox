@@ -74,12 +74,6 @@
     <Compile Include="Tests\Probing\RetryTest.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Toolbox.Utils\Toolbox.Utils.csproj">
-      <Project>{4EEA5596-43B3-4F0D-AC20-06CF32714764}</Project>
-      <Name>Toolbox.Utils</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />

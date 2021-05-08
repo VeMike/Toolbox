@@ -43,7 +43,7 @@ namespace Toolbox.Utils.Test.MockObjects.Dispatcher
     
     public class CountingCallsCommandHandler : ICommandHandler<EmptyCommand>
     {
-        public static int Calls { get; private set; } = 0;
+        public static int Calls { get; private set; }
         
         /// <inheritdoc />
         public void Handle(EmptyCommand command)
@@ -140,7 +140,7 @@ namespace Toolbox.Utils.Test.MockObjects.Dispatcher
     // ReSharper disable once UnusedType.Global
     public class CountingCallsDependencyCommandHandler : IDependencyCommandHandler<EmptyCommand, string>
     {
-        public static int Calls { get; private set; } = 0;
+        public static int Calls { get; private set; }
         
         /// <inheritdoc />
         public void Handle(EmptyCommand command)

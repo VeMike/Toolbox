@@ -19,7 +19,7 @@ namespace Toolbox.IniFileParser.Test.Mock
         /// <summary>
         ///     The lines of the file
         /// </summary>
-        private IEnumerable<string> lines;
+        private readonly IEnumerable<string> fileLines;
         
         /// <summary>
         ///     Creates a new instance
@@ -29,7 +29,7 @@ namespace Toolbox.IniFileParser.Test.Mock
         /// </param>
         public MockReadableTextFile(IEnumerable<string> lines)
         {
-            this.lines = lines;
+            this.fileLines = lines;
         }
         
         /// <inheritdoc />
@@ -37,7 +37,7 @@ namespace Toolbox.IniFileParser.Test.Mock
         {
             var index = 0;
 
-            foreach (var line in this.lines)
+            foreach (var line in this.fileLines)
             {
                 yield return new Line(index++, line);
             }

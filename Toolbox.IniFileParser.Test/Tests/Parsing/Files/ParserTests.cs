@@ -58,7 +58,7 @@ namespace Toolbox.IniFileParser.Test.Tests.Parsing.Files
 
             var parser = new Parser();
             
-            parser.Section += (sender, args) =>
+            parser.Section += (_, args) =>
             {
                 receivedSections.Add(args.Content);
             };
@@ -85,7 +85,7 @@ namespace Toolbox.IniFileParser.Test.Tests.Parsing.Files
 
             var parser = new Parser();
 
-            parser.Comment += (sender, args) =>
+            parser.Comment += (_, args) =>
             {
                 receivedComments.Add(args.Content);
             };
@@ -117,7 +117,7 @@ namespace Toolbox.IniFileParser.Test.Tests.Parsing.Files
 
             var parser = new Parser();
 
-            parser.Property += (sender, args) =>
+            parser.Property += (_, args) =>
             {
                 receivedProperties.Add(args.Property);
             };

@@ -72,8 +72,8 @@ namespace Toolbox.Utils.Test.Tests.Resource
             var resource = new MockResource();
             var handle = new SharedHandle<MockResource>(() => resource);
 
-            var _1 = handle.Access();
-            var _2 = handle.Access();
+            handle.Access();
+            handle.Access();
             
             Assert.AreEqual(1, resource.AcquireCalls);
         }

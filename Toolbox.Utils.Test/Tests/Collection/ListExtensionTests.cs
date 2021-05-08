@@ -23,7 +23,7 @@ namespace Toolbox.Utils.Test.Tests.Collection
 
             Assert.Throws<ArgumentNullException>(() =>
             {
-                list.AddRange(null);;
+                list.AddRange(null);
             });
         }
 

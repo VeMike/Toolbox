@@ -20,7 +20,7 @@ namespace Toolbox.Utils.Test.Tests.Common
         [TestCase("Foo", 123)]
         public void TryParseReturnsFalseIfStringCanNotBeParsedToType<T>(string value, T target)
         {
-            var result = value.TryParse<T>(out var parsed);
+            var result = value.TryParse<T>(out _);
             
             Assert.IsFalse(result);
         }

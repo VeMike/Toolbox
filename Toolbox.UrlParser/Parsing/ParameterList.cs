@@ -62,7 +62,7 @@ namespace Toolbox.UrlParser.Parsing
         /// </returns>
         public bool TryGetParameter(int index, out Parameter parameter)
         {
-            if (this.Find(p => p.Index == index) is Parameter param)
+            if (this.Find(p => p.Index == index) is { } param)
             {
                 parameter = param;
                 return true;

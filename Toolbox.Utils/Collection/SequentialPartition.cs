@@ -6,7 +6,7 @@ using Toolbox.Utils.Probing;
 namespace Toolbox.Utils.Collection
 {
     /// <summary>
-    ///     An implementation of <see cref="IPartitioner{T}"/>
+    ///     An implementation of <see cref="IPartition{T}"/>
     ///     that creates sequential partition. This means
     ///     each original list will be sequentially split
     ///     into the defined number of partitions.

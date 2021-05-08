@@ -5,7 +5,10 @@
 // = Description :
 // ===================================================================================================
 
+using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Globalization;
 using System.IO;
 
 namespace Toolbox.Utils.Common
@@ -32,6 +35,46 @@ namespace Toolbox.Utils.Common
         public static IEnumerable<T> ToEnumerable<T>(this T item)
         {
             yield return item;
+        }
+    }
+
+    /// <summary>
+    ///     A collection of extension methods for any <see cref="string"/>
+    /// </summary>
+    public static class StringExtensions
+    {
+        /// <summary>
+        ///     Tries to parse a string value to the specified
+        ///     type. The string is parsed using <see cref="CultureInfo.InvariantCulture"/>
+        /// </summary>
+        /// <param name="value">
+        ///     The string that should be parsed
+        /// </param>
+        /// <param name="result">
+        ///     The result of the parser
+        /// </param>
+        /// <typeparam name="T">
+        ///     The type the string should be parsed into
+        /// </typeparam>
+        /// <returns>
+        ///     'true' if the <paramref name="value"/> was
+        ///     parsed successfully, 'false' if not.
+        /// </returns>
+        public static bool TryParse<T>(this string value, out T result)
+        {
+            result = default;
+            var converter = TypeDescriptor.GetConverter(typeof(T));
+
+            try
+            {
+                result = (T) converter.ConvertFromInvariantString(value);
+
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
     }
 

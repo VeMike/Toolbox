@@ -22,7 +22,7 @@ namespace Toolbox.IniFileParser.Parsing.Files
         /// <summary>
         ///     The sections of this ini file.
         /// </summary>
-        private readonly List<ISection> sections = new List<ISection>();
+        private readonly List<ISection> sections = new();
 
         /// <summary>
         ///     The current section parsed by the <see cref="Parser"/>.
@@ -226,18 +226,6 @@ namespace Toolbox.IniFileParser.Parsing.Files
         {
             this.Parser.Section += this.OnSection;
             this.Parser.Property += this.OnProperty;
-            //this.Parser.Comment += this.OnComment;
-        }
-
-        /// <summary>
-        ///     Called whenever the <see cref="Parser"/> encounters
-        ///     a new comment in the ini file
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void OnComment(object sender, ContentEventArgs e)
-        {
-            throw new NotImplementedException();
         }
 
         /// <summary>

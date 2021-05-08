@@ -7,7 +7,6 @@
 
 using System;
 using NUnit.Framework;
-using Toolbox.IniFileParser.Parsing;
 using Toolbox.IniFileParser.Parsing.Events;
 
 namespace Toolbox.IniFileParser.Test.Tests.Parsing.Events

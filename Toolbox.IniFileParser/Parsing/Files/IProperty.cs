@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Toolbox.IniFileParser.Parsing.Files
+﻿namespace Toolbox.IniFileParser.Parsing.Files
 {
     /// <summary>
     ///     Represents a property of an ini file

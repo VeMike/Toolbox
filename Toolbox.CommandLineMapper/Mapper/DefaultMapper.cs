@@ -8,7 +8,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using Toolbox.CommandLineMapper.Common;
 using Toolbox.CommandLineMapper.Core;
 using Toolbox.CommandLineMapper.Core.Property;

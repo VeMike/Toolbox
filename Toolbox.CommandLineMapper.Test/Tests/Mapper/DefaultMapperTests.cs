@@ -11,7 +11,6 @@ using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
 using Toolbox.CommandLineMapper.Common;
-using Toolbox.CommandLineMapper.Core.Property;
 using Toolbox.CommandLineMapper.Mapper;
 using Toolbox.CommandLineMapper.Test.MockData.MockObjects;
 

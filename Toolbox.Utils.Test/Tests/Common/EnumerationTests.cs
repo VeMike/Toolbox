@@ -9,7 +9,6 @@ using System;
 using System.Linq;
 using NUnit.Framework;
 using Toolbox.Utils.Common;
-using Toolbox.Utils.Test.MockObjects;
 using Toolbox.Utils.Test.MockObjects.Common;
 
 namespace Toolbox.Utils.Test.Tests.Common

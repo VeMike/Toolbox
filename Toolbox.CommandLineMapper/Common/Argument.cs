@@ -7,7 +7,7 @@
 
 using System;
 using System.Text.RegularExpressions;
-using Com.Toolbox.Utils.Probing;
+using Toolbox.Utils.Probing;
 
 namespace Toolbox.CommandLineMapper.Common
 {

@@ -5,7 +5,7 @@
 // = Description :
 // ===================================================================================================
 
-namespace Com.Toolbox.Utils.Dispatching
+namespace Toolbox.Utils.Dispatching
 {
     /// <summary>
     ///     The interface for a command dispatcher. Issued commands

@@ -8,8 +8,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Com.Toolbox.Utils.Probing;
 using Toolbox.CommandLineMapper.Specification;
+using Toolbox.Utils.Probing;
 
 namespace Toolbox.CommandLineMapper.Core.Property
 {

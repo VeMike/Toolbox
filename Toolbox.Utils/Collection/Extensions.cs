@@ -8,7 +8,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Com.Toolbox.Utils.Collection
+namespace Toolbox.Utils.Collection
 {
     /// <summary>
     ///     A collection of extension methods for list

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Reflection;
 
-namespace Com.Toolbox.Utils.Common
+namespace Toolbox.Utils.Common
 {
     /// <summary>
     ///     This class contains extension methods for enums

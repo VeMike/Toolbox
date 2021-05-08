@@ -7,8 +7,8 @@
 
 using System;
 using System.Linq;
-using Com.Toolbox.Utils.Common;
 using NUnit.Framework;
+using Toolbox.Utils.Common;
 using Toolbox.Utils.Test.MockObjects;
 using Toolbox.Utils.Test.MockObjects.Common;
 

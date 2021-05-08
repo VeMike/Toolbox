@@ -8,9 +8,9 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using Com.Toolbox.Utils.Probing;
 using Toolbox.CommandLineMapper.Core.Property;
 using Toolbox.CommandLineMapper.Specification;
+using Toolbox.Utils.Probing;
 
 namespace Toolbox.CommandLineMapper.Core
 {

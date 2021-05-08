@@ -8,7 +8,7 @@
 using System;
 using System.Reflection;
 
-namespace Com.Toolbox.Utils.Dispatching
+namespace Toolbox.Utils.Dispatching
 {
     /// <summary>
     ///     An implementation of <see cref="IDependencyCommandDispatcher{TDependency}"/> that searches an

@@ -5,11 +5,10 @@
 // = Description :
 // ===================================================================================================
 
-using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace Com.Toolbox.Utils.Common
+namespace Toolbox.Utils.Common
 {
     /// <summary>
     ///     A collection of extension methods for any <see cref="object"/>

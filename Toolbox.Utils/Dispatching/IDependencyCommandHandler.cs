@@ -5,7 +5,7 @@
 // = Description :
 // ===================================================================================================
 
-namespace Com.Toolbox.Utils.Dispatching
+namespace Toolbox.Utils.Dispatching
 {
     /// <summary>
     ///     Handles a single command with a dependency

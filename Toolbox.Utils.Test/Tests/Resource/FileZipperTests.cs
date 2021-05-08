@@ -10,8 +10,8 @@ using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Com.Toolbox.Utils.Resource;
 using NUnit.Framework;
+using Toolbox.Utils.Resource;
 
 namespace Toolbox.Utils.Test.Tests.Resource
 {

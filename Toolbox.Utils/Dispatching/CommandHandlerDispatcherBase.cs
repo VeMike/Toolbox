@@ -7,7 +7,7 @@
 
 using System;
 
-namespace Com.Toolbox.Utils.Dispatching
+namespace Toolbox.Utils.Dispatching
 {
     /// <summary>
     ///     Provides default implementation for <see cref="IDispatcher"/>

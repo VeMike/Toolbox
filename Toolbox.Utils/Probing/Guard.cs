@@ -8,7 +8,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Com.Toolbox.Utils.Probing
+namespace Toolbox.Utils.Probing
 {
     /// <summary>
     ///     A simple collection of some clauses to check.

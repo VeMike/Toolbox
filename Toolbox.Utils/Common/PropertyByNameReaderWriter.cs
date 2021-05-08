@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-namespace Com.Toolbox.Utils.Common
+namespace Toolbox.Utils.Common
 {
     /// <summary>
     ///     A utility class that gets or sets the values of an

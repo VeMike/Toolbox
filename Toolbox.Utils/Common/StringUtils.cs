@@ -5,11 +5,10 @@
 // = Description :
 // ===================================================================================================
 
-using System;
 using System.IO;
 using System.Text;
 
-namespace Com.Toolbox.Utils.Common
+namespace Toolbox.Utils.Common
 {
     /// <summary>
     ///     A collection of utility methods, that operate

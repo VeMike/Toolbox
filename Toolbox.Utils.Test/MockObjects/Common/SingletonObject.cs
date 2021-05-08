@@ -5,7 +5,7 @@
 // = Description :
 // ===================================================================================================
 
-using Com.Toolbox.Utils.Common;
+using Toolbox.Utils.Common;
 
 namespace Toolbox.Utils.Test.MockObjects.Common
 {

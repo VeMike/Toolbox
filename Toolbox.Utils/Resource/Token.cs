@@ -7,7 +7,7 @@
 
 using System;
 
-namespace Com.Toolbox.Utils.Resource
+namespace Toolbox.Utils.Resource
 {
     /// <summary>
     ///     A token that allows to access a shared resource.
@@ -111,7 +111,7 @@ namespace Com.Toolbox.Utils.Resource
         /// <inheritdoc />
         public override bool Equals(object obj)
         {
-            return ReferenceEquals(this, obj) || obj is Token<TResource> other && Equals(other);
+            return ReferenceEquals(this, obj) || obj is Token<TResource> other && this.Equals(other);
         }
 
         /// <inheritdoc />

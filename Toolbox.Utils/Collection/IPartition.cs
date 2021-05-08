@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Com.Toolbox.Utils.Collection
+namespace Toolbox.Utils.Collection
 {
     /// <summary>
     ///     The interface for a class capable of creating partitions of a list of

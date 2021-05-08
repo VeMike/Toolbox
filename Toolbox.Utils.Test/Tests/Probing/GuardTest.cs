@@ -7,8 +7,8 @@
 
 using System;
 using System.Collections.Generic;
-using Com.Toolbox.Utils.Probing;
 using NUnit.Framework;
+using Toolbox.Utils.Probing;
 
 namespace Toolbox.Utils.Test.Tests.Probing
 {

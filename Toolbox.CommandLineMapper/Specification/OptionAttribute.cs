@@ -8,7 +8,7 @@
 
 using System;
 using System.Linq;
-using Com.Toolbox.Utils.Probing;
+using Toolbox.Utils.Probing;
 
 namespace Toolbox.CommandLineMapper.Specification
 {

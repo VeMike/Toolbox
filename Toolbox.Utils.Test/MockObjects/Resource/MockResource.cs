@@ -5,7 +5,7 @@
 // = Description :
 // ===================================================================================================
 
-using Com.Toolbox.Utils.Resource;
+using Toolbox.Utils.Resource;
 
 namespace Toolbox.Utils.Test.MockObjects.Resource
 {

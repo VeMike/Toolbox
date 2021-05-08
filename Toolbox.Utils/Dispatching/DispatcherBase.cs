@@ -9,7 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Com.Toolbox.Utils.Dispatching
+namespace Toolbox.Utils.Dispatching
 {
     /// <summary>
     ///     A base class for implementations of <see cref="IDispatcher"/>

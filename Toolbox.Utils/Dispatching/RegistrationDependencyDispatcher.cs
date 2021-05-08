@@ -9,7 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Com.Toolbox.Utils.Dispatching
+namespace Toolbox.Utils.Dispatching
 {
     public class RegistrationDependencyDispatcher<TDependency> : DispatcherBase, 
                                                                  IDependencyCommandDispatcher<TDependency> where TDependency : class

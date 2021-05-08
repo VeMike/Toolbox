@@ -6,8 +6,8 @@
 // ===================================================================================================
 
 using System;
-using Com.Toolbox.Utils.Common;
 using NUnit.Framework;
+using Toolbox.Utils.Common;
 
 namespace Toolbox.Utils.Test.Tests.Common
 {

@@ -8,8 +8,8 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using Com.Toolbox.Utils.Collection;
 using NUnit.Framework;
+using Toolbox.Utils.Collection;
 
 namespace Toolbox.Utils.Test.Tests.Collection
 {

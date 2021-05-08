@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading;
 
-namespace Com.Toolbox.Utils.Probing
+namespace Toolbox.Utils.Probing
 {
     /// <summary>
     ///     Provides mechanisms for retrying operations

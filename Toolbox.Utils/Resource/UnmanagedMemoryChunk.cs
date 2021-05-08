@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace Com.Toolbox.Utils.Resource
+namespace Toolbox.Utils.Resource
 {
     /// <summary>
     ///     An implementation of <see cref="IUnmanagedMemory"/>

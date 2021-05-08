@@ -8,8 +8,8 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using Com.Toolbox.Utils.Dispatching;
 using NUnit.Framework;
+using Toolbox.Utils.Dispatching;
 using Toolbox.Utils.Test.MockObjects.Dispatcher;
 
 namespace Toolbox.Utils.Test.Tests.Dispatching

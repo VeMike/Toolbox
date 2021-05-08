@@ -5,7 +5,7 @@
 // = Description :
 // ===================================================================================================
 
-using Com.Toolbox.Utils.Dispatching;
+using Toolbox.Utils.Dispatching;
 
 namespace Toolbox.Utils.Test.MockObjects.Dispatcher
 {

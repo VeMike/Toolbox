@@ -6,7 +6,7 @@
 // ===================================================================================================
 
 using System;
-using Com.Toolbox.Utils.Probing;
+using Toolbox.Utils.Probing;
 
 namespace Toolbox.UrlParser.Parsing
 {

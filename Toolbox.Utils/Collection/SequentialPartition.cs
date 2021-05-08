@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Com.Toolbox.Utils.Probing;
+using Toolbox.Utils.Probing;
 
-namespace Com.Toolbox.Utils.Collection
+namespace Toolbox.Utils.Collection
 {
     /// <summary>
     ///     An implementation of <see cref="IPartitioner{T}"/>

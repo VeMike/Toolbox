@@ -5,7 +5,7 @@
 // = Description :
 // ===================================================================================================
 
-namespace Com.Toolbox.Utils.Resource
+namespace Toolbox.Utils.Resource
 {
     /// <summary>
     ///     A handle for a shared resource that will be

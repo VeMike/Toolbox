@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.Resources;
 
-namespace Com.Toolbox.Utils.Attribute
+namespace Toolbox.Utils.Attribute
 {
     /// <summary>
     ///     Allows to use localized description attributes.

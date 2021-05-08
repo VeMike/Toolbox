@@ -9,7 +9,7 @@
 using System;
 using System.IO;
 
-namespace Com.Toolbox.Utils.Probing
+namespace Toolbox.Utils.Probing
 {
     /// <summary>
     ///     A simple collections of operations to determine

@@ -9,11 +9,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using Com.Toolbox.Utils.Probing;
 using Toolbox.CommandLineMapper.Common;
 using Toolbox.CommandLineMapper.Core;
 using Toolbox.CommandLineMapper.Core.Property;
 using Toolbox.CommandLineMapper.Specification;
+using Toolbox.Utils.Probing;
 
 namespace Toolbox.CommandLineMapper.Mapper
 {

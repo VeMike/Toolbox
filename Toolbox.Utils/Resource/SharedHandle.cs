@@ -9,7 +9,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 
-namespace Com.Toolbox.Utils.Resource
+namespace Toolbox.Utils.Resource
 {
     /// <summary>
     ///     An implementation of <see cref="IResourceHandle{TResource}"/> that

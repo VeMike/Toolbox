@@ -29,7 +29,7 @@ namespace Toolbox.Utils.Resource
         /// <summary>
         ///     Locks access to this instance.
         /// </summary>
-        private readonly object lockInstance = new object();
+        private readonly object lockInstance = new();
         
         /// <summary>
         ///     Creates the resource to which the access

@@ -38,7 +38,7 @@ namespace Toolbox.Utils.Resource
         {
             set
             {
-                if (value != null && value.Length > 0)
+                if (value is { Length: > 0 })
                     this.CopyToUnmanagedMemory(value);
             }
         }
@@ -66,17 +66,19 @@ namespace Toolbox.Utils.Resource
 
         protected virtual void Dispose(bool disposing)
         {
-            if (!this.disposeCalled)
+            if (this.disposeCalled)
             {
-                if (disposing)
-                {
-                    if(this.Memory != IntPtr.Zero)
-                        Marshal.FreeHGlobal(this.Memory);
-                    this.Memory = IntPtr.Zero;
-                }
-
-                this.disposeCalled = true;
+                return;
             }
+
+            if (disposing)
+            {
+                if(this.Memory != IntPtr.Zero)
+                    Marshal.FreeHGlobal(this.Memory);
+                this.Memory = IntPtr.Zero;
+            }
+
+            this.disposeCalled = true;
         }
         #endregion
 

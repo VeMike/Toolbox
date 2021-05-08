@@ -123,6 +123,9 @@ namespace Toolbox.CommandLineMapper.Mapper
                 throw new ArgumentException($"The object '{typeof(TMapTarget).FullName}' is not registered");
 
             var data = this.mapperDatas.Find(m => m.Reflector.Source.GetType() == typeof(TMapTarget));
+
+            if (data is null)
+                throw new ArgumentException($"A mapping result for '{typeof(TMapTarget).FullName}' was n ot found");
             
             return new MapperResult<TMapTarget>(data.Reflector.Source as TMapTarget,
                                                 data.MappedArguments,
@@ -279,7 +282,7 @@ namespace Toolbox.CommandLineMapper.Mapper
         ///     Just a single data object that contains objects required
         ///     during the mapping
         /// </summary>
-        private class MapperData
+        private sealed class MapperData
         {
             /// <summary>
             ///     Contains a single object with its properties

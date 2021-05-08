@@ -18,7 +18,7 @@ namespace Toolbox.Utils.Common
         /// <summary>
         ///     The singleton instance
         /// </summary>
-        private static readonly Lazy<T> instance = new Lazy<T>(CreateInstance, true);
+        private static readonly Lazy<T> instance = new(CreateInstance, true);
 
         /// <summary>
         ///     Provides access to the singleton instance

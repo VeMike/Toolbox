@@ -124,13 +124,11 @@ namespace Toolbox.Utils.Common
         public static byte[] ToArray(this Stream stream, long position)
         {
             stream.Position = position;
-            
-            using (var memory = new MemoryStream())
-            {
-                stream.CopyTo(memory);
 
-                return memory.ToArray();
-            }   
+            using var memory = new MemoryStream();
+            stream.CopyTo(memory);
+
+            return memory.ToArray();
         }
     }
 }

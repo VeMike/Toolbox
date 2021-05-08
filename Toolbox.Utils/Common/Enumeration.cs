@@ -107,7 +107,7 @@ namespace Toolbox.Utils.Common
         public static IEnumerable<T> GetValues<T>()
         {
             //This is the case, if 'GetValues' returns null
-            if (!(Enum.GetValues(typeof(T)) is T[] values))
+            if (Enum.GetValues(typeof(T)) is not T[] values)
             {
                 yield break;
             }

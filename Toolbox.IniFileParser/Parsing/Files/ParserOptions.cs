@@ -48,18 +48,18 @@ namespace Toolbox.IniFileParser.Parsing.Files
         /// <summary>
         ///     The character that indicates a section start
         /// </summary>
-        public string SectionStart { get; } = "[";
+        public string SectionStart => "[";
 
         /// <summary>
         ///     The character that indicates a section end
         /// </summary>
-        public string SectionEnd { get; } = "]";
+        public string SectionEnd => "]";
 
         /// <summary>
         ///     The character that indicates the
         ///     delimiter of ini properties
         /// </summary>
-        public string PropertySeparator { get; } = "=";
+        public string PropertySeparator => "=";
 
         /// <summary>
         ///     Tells the parser if comments should

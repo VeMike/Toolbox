@@ -24,7 +24,7 @@ namespace Toolbox.CommandLineMapper.Core.Property
         /// <summary>
         ///     The property container
         /// </summary>
-        private Dictionary<string, IAssignableProperty<TAttribute>> properties;
+        private readonly Dictionary<string, IAssignableProperty<TAttribute>> properties;
 
         #endregion
 

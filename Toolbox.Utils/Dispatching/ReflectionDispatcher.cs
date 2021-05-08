@@ -66,7 +66,7 @@ namespace Toolbox.Utils.Dispatching
         public Assembly Assembly
         {
             private get { return this.assembly; }
-            set
+            init
             {
                 this.assembly = value ?? throw new ArgumentNullException(nameof(this.Assembly));
             }

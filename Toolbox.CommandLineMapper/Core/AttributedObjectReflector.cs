@@ -7,6 +7,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using Toolbox.CommandLineMapper.Core.Property;
 using Toolbox.CommandLineMapper.Specification;
@@ -153,12 +154,9 @@ namespace Toolbox.CommandLineMapper.Core
         /// </returns>
         private IEnumerable<IAssignableProperty<TAttribute>> GetRequiredAssignableProperties()
         {
-            foreach (var property in this.source.Value.GetType().GetProperties())
-            {
-                if (!Attribute.IsDefined(property, typeof(TAttribute)))
-                    yield break;
-                yield return this.GetSingleRequiredAssignableProperty(property);
-            }
+            return this.source.Value.GetType().GetProperties()
+                       .TakeWhile(property => Attribute.IsDefined(property, typeof(TAttribute)))
+                       .Select(this.GetSingleRequiredAssignableProperty);
         }
 
         /// <summary>
@@ -186,7 +184,7 @@ namespace Toolbox.CommandLineMapper.Core
             assignableProperty.Attribute = attribute;
             assignableProperty.Owner = this.Source;
 
-            if(!(attribute is null))
+            if(attribute is not null)
                 assignableProperty.Assign(attribute.Default);
             
             return assignableProperty;

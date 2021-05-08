@@ -129,14 +129,13 @@ namespace Toolbox.Utils.Resource
 			if(zipFile.Length == 0)
 				throw new ArgumentException($"The passed '{nameof(zipFile)}' does not contain any data");
 
-			using (var archive = new ZipArchive(zipFile, ZipArchiveMode.Read))
-			{
-				foreach (var entry in archive.Entries)
-				{
-					yield return ExtractSingleZipEntry(entry);
-				}
-			}
-		}
+            using var archive = new ZipArchive(zipFile, ZipArchiveMode.Read);
+            
+            foreach (var entry in archive.Entries)
+            {
+                yield return ExtractSingleZipEntry(entry);
+            }
+        }
 		#endregion
 
 		#region Private Methods
@@ -192,7 +191,7 @@ namespace Toolbox.Utils.Resource
 			if(files is null)
 				throw new ArgumentNullException(nameof(files));
 			
-			var fileList = files.Where(f => f != null && f.Exists).ToList();
+			var fileList = files.Where(f => f is { Exists: true }).ToList();
 
 			if (fileList.Count == 0)
 			{
@@ -215,13 +214,11 @@ namespace Toolbox.Utils.Resource
 		private static void AddFilesToArchive(ZipArchive targetArchive, IEnumerable<FileInfo> files)
 		{
 			foreach (var file in files)
-			{
-				using (var entryStream = targetArchive.CreateEntry(file.Name, CompressionLevel.Optimal).Open())
-				using (var writer = new BinaryWriter(entryStream))
-				{
-					writer.Write(File.ReadAllBytes(file.FullName));
-				}
-			}
+            {
+                using var entryStream = targetArchive.CreateEntry(file.Name, CompressionLevel.Optimal).Open();
+                using var writer = new BinaryWriter(entryStream);
+                writer.Write(File.ReadAllBytes(file.FullName));
+            }
 		}
 		
 		#endregion

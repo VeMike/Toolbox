@@ -91,12 +91,14 @@ namespace Toolbox.Utils.Resource
         /// <inheritdoc />
         public void Dispose()
         {
-            if (!this.disposed)
+            if (this.disposed)
             {
-                this.disposeAction(this);
-
-                this.disposed = true;
+                return;
             }
+
+            this.disposeAction(this);
+
+            this.disposed = true;
         }
 
         #endregion

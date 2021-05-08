@@ -72,12 +72,10 @@ namespace Toolbox.IniFileParser.Parsing.Files
         /// <inheritdoc />
         public void WriteLines(IEnumerable<Line> lines)
         {
-            using (var writer = File.AppendText(this.file.FullName))
+            using var writer = File.AppendText(this.file.FullName);
+            foreach (var line in lines.OrderBy(l => l.Number))
             {
-                foreach (var line in lines.OrderBy(l => l.Number))
-                {
-                    writer.WriteLine(line.Content);
-                }
+                writer.WriteLine(line.Content);
             }
         }
 

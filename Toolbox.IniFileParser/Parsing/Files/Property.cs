@@ -66,12 +66,7 @@ namespace Toolbox.IniFileParser.Parsing.Files
                 return true;
             }
 
-            if (obj.GetType() != this.GetType())
-            {
-                return false;
-            }
-
-            return Equals((Property) obj);
+            return obj.GetType() == this.GetType() && this.Equals((Property) obj);
         }
 
         /// <inheritdoc />

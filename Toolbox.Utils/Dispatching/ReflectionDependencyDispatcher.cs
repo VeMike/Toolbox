@@ -93,11 +93,13 @@ namespace Toolbox.Utils.Dispatching
         /// <inheritdoc />
         protected override void DispatchToSingleHandler<TCommand>(object handler, TCommand command)
         {
-            if (handler is IDependencyCommandHandler<TCommand, TDependency> specificHandler)
+            if (handler is not IDependencyCommandHandler<TCommand, TDependency> specificHandler)
             {
-                specificHandler.Inject(this.Dependency);
-                specificHandler.Handle(command);
+                return;
             }
+
+            specificHandler.Inject(this.Dependency);
+            specificHandler.Handle(command);
         }
 
         #endregion

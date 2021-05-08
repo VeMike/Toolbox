@@ -167,24 +167,19 @@ namespace Toolbox.IniFileParser.Parsing.Files
         {
             var parts = rawLine.Split(new []{this.Options.PropertySeparator},
                                       StringSplitOptions.RemoveEmptyEntries);
-            
-            /*
-             * The first index of the array is the key,
-             * the second index is the value. If the array
-             * does not have a second index, the value
-             * of the key is just empty
-             */
-            if (parts.Length >= 2)
-            {
-                return new KeyValuePair<string, string>(parts[0].Trim(), parts[1].Trim());
-            }
 
-            if (parts.Length == 1)
+            return parts.Length switch
             {
-                return new KeyValuePair<string, string>(parts[0].Trim(), string.Empty);
-            }
-
-            return new KeyValuePair<string, string>(string.Empty, string.Empty);
+                /*
+                 * The first index of the array is the key,
+                 * the second index is the value. If the array
+                 * does not have a second index, the value
+                 * of the key is just empty
+                 */
+                >= 2 => new KeyValuePair<string, string>(parts[0].Trim(), parts[1].Trim()),
+                1 => new KeyValuePair<string, string>(parts[0].Trim(), string.Empty),
+                _ => new KeyValuePair<string, string>(string.Empty, string.Empty)
+            };
         }
 
         #endregion

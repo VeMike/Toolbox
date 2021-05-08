@@ -136,7 +136,7 @@ namespace Toolbox.Utils.Dispatching
         private static IEnumerable<object> CreateHandlerInstances(IEnumerable<Type> requestedHandlers)
         {
             return requestedHandlers.Select(Activator.CreateInstance)
-                                    .Where(instance => !(instance is null));
+                                    .Where(instance => instance is not null);
         }
 
         /// <summary>

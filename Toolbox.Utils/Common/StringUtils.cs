@@ -5,7 +5,6 @@
 // = Description :
 // ===================================================================================================
 
-using System.IO;
 using System.Text;
 
 namespace Toolbox.Utils.Common
@@ -18,7 +17,7 @@ namespace Toolbox.Utils.Common
     {
         /// <summary>
         ///     Combines a collection of strings into a URL. This
-        ///     basically does the same thing as any of the <see cref="Path.Combine(string,string)"/>
+        ///     basically does the same thing as any of the <see cref="System.IO.Path.Combine(string,string)"/>
         ///     overloads, but for urls
         /// </summary>
         /// <param name="segments">

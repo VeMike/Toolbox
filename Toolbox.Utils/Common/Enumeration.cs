@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Reflection;
 
 namespace Toolbox.Utils.Common
@@ -114,6 +115,45 @@ namespace Toolbox.Utils.Common
 
             foreach (var value in values)
                 yield return value;
+        }
+        
+        /// <summary>
+        ///     Tries to convert the <typeparamref name="TSource"/>
+        ///     enumeration into <typeparamref name="TTarget"/>.
+        ///
+        ///     The enumerations are mapped to each other using
+        ///     the string representation of their values. So in
+        ///     order for this to work, the names of the values
+        ///     must be equal (the case is ignored).
+        /// </summary>
+        /// <typeparam name="TSource">
+        ///     The type of the source
+        /// </typeparam>
+        /// <typeparam name="TTarget">
+        ///     The type of the target
+        /// </typeparam>
+        /// <param name="value">
+        ///     The source value to convert
+        /// </param>
+        /// <returns>
+        ///     The converted target value
+        /// </returns>
+        /// <exception cref="ArgumentException">
+        ///     Thrown if the conversion fails.
+        /// </exception>
+        public static TTarget Convert<TSource, TTarget>(TSource value) where TSource : Enum
+                                                                       where TTarget : Enum
+        {
+            var sourceValue = value.ToString();
+
+            foreach (var target in Enum.GetValues(typeof(TTarget)).Cast<TTarget>())
+            {
+                if (target.ToString().Equals(sourceValue, StringComparison.InvariantCultureIgnoreCase))
+                    return target;
+            }
+
+            throw new
+                    ArgumentException($"Failed to convert '{typeof(TSource).Name}.{value}' to '{typeof(TTarget).Name}'");
         }
     }
 }

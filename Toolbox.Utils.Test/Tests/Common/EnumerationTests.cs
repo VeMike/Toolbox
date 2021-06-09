@@ -61,6 +61,53 @@ namespace Toolbox.Utils.Test.Tests.Common
             Assert.IsTrue(allValuesEnumerated);
         }
 
+        [TestCase(Foo.ONE, ExpectedResult = Bar.ONE)]
+        [TestCase(Foo.TWO, ExpectedResult = Bar.TWO)]
+        [TestCase(Foo.THREE, ExpectedResult = Bar.THREE)]
+        public Bar EnumsAreConvertedIfTheyHaveTheSameName(Foo source)
+        {
+            return EnumUtil.Convert<Foo, Bar>(source);
+        }
+        
+        [Test]
+        public void EnumsCanNotBeConvertedIfTheNamesDoNotMatch()
+        {
+            Assert.Throws<ArgumentException>(() =>
+            {
+                _ = EnumUtil.Convert<Foo, Bar>(Foo.NOT_DEFINED_IN_BAR);
+            });
+        }
+
+        #endregion
+
+        #region Nested
+
+        /// <summary>
+        ///     A mock enumeration
+        /// </summary>
+        public enum Foo
+        {
+            ONE,
+            
+            TWO,
+            
+            THREE,
+            
+            NOT_DEFINED_IN_BAR
+        }
+
+        /// <summary>
+        ///     A mock enumeration
+        /// </summary>
+        public enum Bar
+        {
+            THREE,
+            
+            TWO,
+            
+            ONE
+        }
+
         #endregion
     }
 }
